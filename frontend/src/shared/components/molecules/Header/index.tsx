@@ -1,6 +1,5 @@
 import React from 'react'
 import { Button } from '@/shared/components/atoms/button'
-import { Moon, Sun } from 'lucide-react'
 import { useTheme } from '@/shared/hooks/useTheme'
 import { Typography } from '@/shared/components/atoms/typography'
 import { HStack } from '../../atoms/hstack'
@@ -8,6 +7,8 @@ import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/shared/constants'
 import { cn } from '@/shared/utils'
 import { useAuth } from '@/shared/hooks/useAuth'
+import { SunIcon } from '@/shared/icons/SunIcon'
+import { MoonIcon } from '@/shared/icons/MoonIcon'
 
 export const Header: React.FC = () => {
   const { logout } = useAuth()
@@ -51,11 +52,15 @@ const ThemeToggle = () => {
   const { theme, toggleTheme } = useTheme()
 
   return (
-    <Button variant="outline" className="px-4 md:px-5" onClick={toggleTheme}>
+    <Button
+      variant="outline"
+      className="px-4 py-0 md:px-5"
+      onClick={toggleTheme}
+    >
       {theme === 'dark' ? (
-        <Sun className="size-4 md:size-5" />
+        <SunIcon className="size-6" />
       ) : (
-        <Moon className="size-4 md:size-5" />
+        <MoonIcon className="size-6" />
       )}
       <span className="sr-only">Toggle theme</span>
     </Button>
