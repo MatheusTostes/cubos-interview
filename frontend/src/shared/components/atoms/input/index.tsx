@@ -29,12 +29,17 @@ const InputLabel = React.forwardRef<
   <label
     ref={ref}
     className={cn(
-      'text-[12.8px] font-bold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
+      'peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
       className
     )}
     {...props}
   >
-    <Typography font="roboto" variant="label">
+    <Typography
+      font="roboto"
+      variant="label"
+      weight="bold"
+      className="text-[12.8px] leading-none"
+    >
       {props.children}
       {required && <span className="text-destructive"> *</span>}
     </Typography>

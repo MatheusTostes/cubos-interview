@@ -6,6 +6,7 @@ import { Typography } from '@/shared/components/atoms/typography'
 import { HStack } from '../../atoms/hstack'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/shared/constants'
+import { cn } from '@/shared/utils'
 
 export const Header: React.FC = () => {
   return (
@@ -21,6 +22,7 @@ export const Header: React.FC = () => {
 
 const HeaderLogo = () => {
   const navigate = useNavigate()
+  const { theme } = useTheme()
 
   const handleClick = () => {
     navigate(ROUTES.HOME)
@@ -29,7 +31,11 @@ const HeaderLogo = () => {
   return (
     <HStack className="cursor-pointer items-center gap-3" onClick={handleClick}>
       <HStack className="w-10 overflow-hidden md:w-[160px]">
-        <img src="/cubos-logo.svg" alt="Logo" className="min-w-[160px]" />
+        <img
+          src="/cubos-logo.svg"
+          alt="Logo"
+          className={cn('min-w-[160px]', theme === 'light' && 'invert')}
+        />
       </HStack>
       <Typography variant="h3">Movies</Typography>
     </HStack>

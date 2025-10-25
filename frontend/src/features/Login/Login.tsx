@@ -6,7 +6,7 @@ import { HStack } from '@/shared/components/atoms/hstack'
 
 export default function Login() {
   return (
-    <Container className="flex h-full items-center justify-center bg-red-600 p-0">
+    <Container className="flex h-full items-center justify-center p-0">
       <Card.Root className="bg-mauve-300 z-10 w-[90%] max-w-[412px] rounded-sm">
         <Card.Content className="flex flex-col gap-4 p-4">
           <LoginForm />
