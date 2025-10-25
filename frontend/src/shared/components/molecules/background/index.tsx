@@ -7,8 +7,6 @@ export const Background = ({
 }: { className?: string } & React.HTMLAttributes<HTMLDivElement>) => {
   const { theme } = useTheme()
 
-  console.log('theme', theme)
-
   return (
     <div
       className={cn(
