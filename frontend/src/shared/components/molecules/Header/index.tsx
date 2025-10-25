@@ -13,7 +13,7 @@ export const Header: React.FC = () => {
   const { logout } = useAuth()
 
   return (
-    <header className="fixed left-0 right-0 top-0 z-20 flex justify-between border-b bg-[var(--mauve-100-50)] bg-opacity-80 p-4 backdrop-blur-sm">
+    <header className="fixed left-0 right-0 top-0 z-20 flex justify-between border-b border-b-white/20 bg-[var(--mauve-100-50)] bg-opacity-80 p-4 backdrop-blur-sm after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:bg-gradient-to-r after:from-transparent after:via-white/30 after:to-transparent after:blur-sm">
       <HeaderLogo />
       <HStack className="gap-2">
         <ThemeToggle />
