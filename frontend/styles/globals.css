@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -8,32 +9,33 @@
 @layer base {
   :root {
     /* Purple Scale */
-    --purple-100: #fefcfe;
-    --purple-200: #fbf7fe;
-    --purple-300: #f7edfe;
-    --purple-400: #f2e2fc;
-    --purple-500: #ead5f9;
-    --purple-600: #e0c4f4;
-    --purple-700: #d1afec;
-    --purple-800: #be93e4;
-    --purple-900: #8e4ec6;
-    --purple-1000: #8347b9;
-    --purple-1100: #8145b5;
-    --purple-1200: #402060;
+    --purple-100: hsl(300, 50%, 99%);
+    --purple-200: hsl(274, 78%, 98%);
+    --purple-300: hsl(275, 89%, 96%);
+    --purple-400: hsl(277, 81%, 94%);
+    --purple-500: hsl(275, 75%, 91%);
+    --purple-600: hsl(275, 69%, 86%);
+    --purple-700: hsl(273, 62%, 81%);
+    --purple-800: hsl(272, 60%, 74%);
+    --purple-900: hsl(272, 51%, 54%);
+    --purple-1000: hsl(272, 45%, 50%);
+    --purple-1100: hsl(272, 45%, 49%);
+    --purple-1200: hsl(270, 50%, 25%);
 
     /* Mauve Scale */
-    --mauve-100: #fdfcfd;
-    --mauve-200: #faf9fb;
-    --mauve-300: #f2eff3;
-    --mauve-400: #eae7ec;
-    --mauve-500: #e3dfe6;
-    --mauve-600: #dbd8e0;
-    --mauve-700: #d0cdd7;
-    --mauve-800: #bcbac7;
-    --mauve-900: #8e8c99;
-    --mauve-1000: #84828e;
-    --mauve-1100: #65636d;
-    --mauve-1200: #211f26;
+    --mauve-100: hsl(300, 20%, 99%);
+    --mauve-100-50: hsl(300, 20%, 99%, 0.5);
+    --mauve-200: hsl(270, 20%, 98%);
+    --mauve-300: hsl(285, 14%, 95%);
+    --mauve-400: hsl(276, 12%, 92%);
+    --mauve-500: hsl(274, 12%, 89%);
+    --mauve-600: hsl(263, 11%, 86%);
+    --mauve-700: hsl(258, 11%, 82%);
+    --mauve-800: hsl(249, 10%, 75%);
+    --mauve-900: hsl(249, 6%, 57%);
+    --mauve-1000: hsl(250, 5%, 53%);
+    --mauve-1100: hsl(252, 5%, 41%);
+    --mauve-1200: hsl(257, 10%, 14%);
 
     /* Semantic Colors */
     --background: var(--mauve-100);
@@ -50,8 +52,8 @@
     --muted-foreground: var(--mauve-900);
     --accent: var(--purple-200);
     --accent-foreground: var(--purple-1200);
-    --destructive: #ef4444;
-    --destructive-foreground: #ffffff;
+    --destructive: hsl(0, 84%, 60%);
+    --destructive-foreground: hsl(0, 0%, 100%);
     --border: var(--mauve-300);
     --input: var(--mauve-300);
     --ring: var(--purple-900);
@@ -60,32 +62,33 @@
 
   .dark {
     /* Purple Scale (Dark Theme) */
-    --purple-100: #18111b;
-    --purple-200: #1e1523;
-    --purple-300: #3d224e;
-    --purple-400: #3d224e;
-    --purple-500: #48295c;
-    --purple-600: #54346b;
-    --purple-700: #664282;
-    --purple-800: #8457aa;
-    --purple-900: #8e4ec6;
-    --purple-1000: #9a5cd0;
-    --purple-1100: #d19dff;
-    --purple-1200: #ecd9fa;
+    --purple-100: hsl(282, 23%, 9%);
+    --purple-200: hsl(279, 25%, 11%);
+    --purple-300: hsl(277, 39%, 22%);
+    --purple-400: hsl(277, 39%, 22%);
+    --purple-500: hsl(276, 38%, 26%);
+    --purple-600: hsl(275, 35%, 31%);
+    --purple-700: hsl(274, 33%, 38%);
+    --purple-800: hsl(273, 33%, 50%);
+    --purple-900: hsl(272, 51%, 54%);
+    --purple-1000: hsl(272, 55%, 59%);
+    --purple-1100: hsl(272, 100%, 81%);
+    --purple-1200: hsl(275, 77%, 92%);
 
     /* Mauve Scale (Dark Theme) */
-    --mauve-100: #121113;
-    --mauve-200: #1a191b;
-    --mauve-300: #232225;
-    --mauve-400: #2b292d;
-    --mauve-500: #323035;
-    --mauve-600: #3c393f;
-    --mauve-700: #49474e;
-    --mauve-800: #625f69;
-    --mauve-900: #6f6d78;
-    --mauve-1000: #7c7a85;
-    --mauve-1100: #b5b2bc;
-    --mauve-1200: #eeeef0;
+    --mauve-100: hsl(270, 6%, 7%);
+    --mauve-100-50: hsl(270, 6%, 7%, 0.5);
+    --mauve-200: hsl(270, 4%, 10%);
+    --mauve-300: hsl(260, 4%, 14%);
+    --mauve-400: hsl(270, 5%, 17%);
+    --mauve-500: hsl(264, 5%, 20%);
+    --mauve-600: hsl(270, 5%, 24%);
+    --mauve-700: hsl(257, 5%, 29%);
+    --mauve-800: hsl(258, 5%, 39%);
+    --mauve-900: hsl(251, 5%, 45%);
+    --mauve-1000: hsl(251, 4%, 50%);
+    --mauve-1100: hsl(258, 7%, 72%);
+    --mauve-1200: hsl(240, 6%, 94%);
 
     /* Semantic Colors for Dark Theme */
     --background: var(--mauve-100);
@@ -99,11 +102,11 @@
     --secondary: var(--mauve-200);
     --secondary-foreground: var(--mauve-1200);
     --muted: var(--mauve-200);
-    --muted-foreground: var(--mauve-1200);
+    --muted-foreground: var(--mauve-800);
     --accent: var(--purple-200);
     --accent-foreground: var(--purple-1200);
-    --destructive: #dc2626;
-    --destructive-foreground: #ffffff;
+    --destructive: hsl(0, 84%, 50%);
+    --destructive-foreground: hsl(0, 0%, 100%);
     --border: var(--mauve-300);
     --input: var(--mauve-300);
     --ring: var(--purple-900);

@@ -18,8 +18,9 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        display: ['Montserrat', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
+        montserrat: ['Montserrat', 'sans-serif'],
+        roboto: ['Roboto', 'sans-serif'],
       },
       colors: {
         border: 'var(--border)',
@@ -73,6 +74,7 @@ module.exports = {
         // Mauve Scale
         mauve: {
           100: 'var(--mauve-100)',
+          100_50: 'var(--mauve-100-50)',
           200: 'var(--mauve-200)',
           300: 'var(--mauve-300)',
           400: 'var(--mauve-400)',
@@ -90,6 +92,7 @@ module.exports = {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
+        xs: 'calc(var(--radius) - 6px)',
       },
       keyframes: {
         'accordion-down': {
