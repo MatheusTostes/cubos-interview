@@ -3,6 +3,7 @@ import { Container } from '@/shared/components/atoms/container'
 import { LoginForm } from './components'
 import { Button } from '@/shared/components/atoms/button'
 import { HStack } from '@/shared/components/atoms/hstack'
+import { VStack } from '@/shared/components/atoms/vstack'
 
 export default function Login() {
   return (
@@ -19,11 +20,17 @@ export default function Login() {
 
 const LoginActions = () => {
   return (
-    <HStack className="mt-2 flex-col-reverse justify-between gap-2 sm:mt-0 sm:flex-row">
-      <Button variant="link" className="p-[2px]">
-        Esqueci minha senha
+    <VStack className="gap-2">
+      <HStack className="mt-2 flex-col-reverse justify-between gap-2 sm:mt-0 sm:flex-row">
+        <Button variant="link" className="p-[2px]">
+          Esqueci minha senha
+        </Button>
+        <Button form="login-form">Entrar</Button>
+      </HStack>
+
+      <Button variant="ghost" className="p-[2px]">
+        Ainda não tenho uma conta
       </Button>
-      <Button form="login-form">Entrar</Button>
-    </HStack>
+    </VStack>
   )
 }
