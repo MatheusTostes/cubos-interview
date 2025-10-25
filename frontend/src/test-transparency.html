@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Transparência</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --purple-600: hsl(275, 69%, 86%);
+            --purple-600-90: hsl(275, 69%, 86%, 0.9);
+            --purple-600-80: hsl(275, 69%, 86%, 0.8);
+            --purple-600-70: hsl(275, 69%, 86%, 0.7);
+            --purple-600-50: hsl(275, 69%, 86%, 0.5);
+        }
+    </style>
+</head>
+<body class="p-8 bg-gray-100">
+    <h1 class="text-2xl font-bold mb-4">Teste de Transparência</h1>
+    
+    <div class="space-y-4">
+        <div class="p-4 bg-white rounded border">
+            <h3 class="font-semibold mb-2">Método 1: Tailwind com /90</h3>
+            <button class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-600/90 transition-colors">
+                Hover para ver transparência
+            </button>
+        </div>
+        
+        <div class="p-4 bg-white rounded border">
+            <h3 class="font-semibold mb-2">Método 2: CSS Custom com variáveis</h3>
+            <button class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-600/90 transition-colors" 
+                    style="--tw-bg-opacity: 0.9;">
+                Hover para ver transparência
+            </button>
+        </div>
+        
+        <div class="p-4 bg-white rounded border">
+            <h3 class="font-semibold mb-2">Método 3: HSL direto</h3>
+            <button class="text-white px-4 py-2 rounded transition-colors" 
+                    style="background-color: hsl(275, 69%, 86%);"
+                    onmouseover="this.style.backgroundColor='hsl(275, 69%, 86%, 0.9)'"
+                    onmouseout="this.style.backgroundColor='hsl(275, 69%, 86%)'">
+                Hover para ver transparência
+            </button>
+        </div>
+    </div>
+</body>
+</html>
