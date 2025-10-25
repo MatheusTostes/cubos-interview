@@ -1,0 +1,24 @@
+{
+  "name": "cubos-interview",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cubos Interview Project - Backend and Frontend",
+  "scripts": {
+    "prepare": "husky install",
+    "lint:frontend": "cd frontend && yarn lint",
+    "lint:backend": "cd backend && yarn lint",
+    "build:frontend": "cd frontend && yarn build",
+    "build:backend": "cd backend && yarn build",
+    "dev:frontend": "cd frontend && yarn dev",
+    "dev:backend": "cd backend && yarn dev"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^16.2.4",
+    "@commitlint/config-conventional": "^16.2.4",
+    "husky": "^7.0.0"
+  },
+  "workspaces": [
+    "frontend",
+    "backend"
+  ]
+}

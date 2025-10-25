@@ -1,0 +1,14 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Lint frontend if it exists
+if [ -d "frontend" ]; then
+  echo "Running frontend lint..."
+  cd frontend && yarn run lint && cd ..
+fi
+
+# Lint backend if it exists
+if [ -d "backend" ]; then
+  echo "Running backend lint..."
+  cd backend && yarn run lint && cd ..
+fi

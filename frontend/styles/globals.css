@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Purple Scale */
+    --purple-100: #fefcfe;
+    --purple-200: #fbf7fe;
+    --purple-300: #f7edfe;
+    --purple-400: #f2e2fc;
+    --purple-500: #ead5f9;
+    --purple-600: #e0c4f4;
+    --purple-700: #d1afec;
+    --purple-800: #be93e4;
+    --purple-900: #8e4ec6;
+    --purple-1000: #8347b9;
+    --purple-1100: #8145b5;
+    --purple-1200: #402060;
+
+    /* Mauve Scale */
+    --mauve-100: #fdfcfd;
+    --mauve-200: #faf9fb;
+    --mauve-300: #f2eff3;
+    --mauve-400: #eae7ec;
+    --mauve-500: #e3dfe6;
+    --mauve-600: #dbd8e0;
+    --mauve-700: #d0cdd7;
+    --mauve-800: #bcbac7;
+    --mauve-900: #8e8c99;
+    --mauve-1000: #84828e;
+    --mauve-1100: #65636d;
+    --mauve-1200: #211f26;
+
+    /* Semantic Colors */
+    --background: var(--mauve-100);
+    --foreground: var(--mauve-1200);
+    --card: var(--mauve-100);
+    --card-foreground: var(--mauve-1200);
+    --popover: var(--mauve-100);
+    --popover-foreground: var(--mauve-1200);
+    --primary: var(--purple-900);
+    --primary-foreground: var(--mauve-100);
+    --secondary: var(--mauve-200);
+    --secondary-foreground: var(--mauve-1200);
+    --muted: var(--mauve-200);
+    --muted-foreground: var(--mauve-900);
+    --accent: var(--purple-200);
+    --accent-foreground: var(--purple-1200);
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+    --border: var(--mauve-300);
+    --input: var(--mauve-300);
+    --ring: var(--purple-900);
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    /* Purple Scale (Dark Theme) */
+    --purple-100: #18111b;
+    --purple-200: #1e1523;
+    --purple-300: #3d224e;
+    --purple-400: #3d224e;
+    --purple-500: #48295c;
+    --purple-600: #54346b;
+    --purple-700: #664282;
+    --purple-800: #8457aa;
+    --purple-900: #8e4ec6;
+    --purple-1000: #9a5cd0;
+    --purple-1100: #d19dff;
+    --purple-1200: #ecd9fa;
+
+    /* Mauve Scale (Dark Theme) */
+    --mauve-100: #121113;
+    --mauve-200: #1a191b;
+    --mauve-300: #232225;
+    --mauve-400: #2b292d;
+    --mauve-500: #323035;
+    --mauve-600: #3c393f;
+    --mauve-700: #49474e;
+    --mauve-800: #625f69;
+    --mauve-900: #6f6d78;
+    --mauve-1000: #7c7a85;
+    --mauve-1100: #b5b2bc;
+    --mauve-1200: #eeeef0;
+
+    /* Semantic Colors for Dark Theme */
+    --background: var(--mauve-100);
+    --foreground: var(--mauve-1200);
+    --card: var(--mauve-100);
+    --card-foreground: var(--mauve-1200);
+    --popover: var(--mauve-200);
+    --popover-foreground: var(--mauve-1200);
+    --primary: var(--purple-400);
+    --primary-foreground: var(--mauve-1200);
+    --secondary: var(--mauve-200);
+    --secondary-foreground: var(--mauve-1200);
+    --muted: var(--mauve-200);
+    --muted-foreground: var(--mauve-1200);
+    --accent: var(--purple-200);
+    --accent-foreground: var(--purple-1200);
+    --destructive: #dc2626;
+    --destructive-foreground: #ffffff;
+    --border: var(--mauve-300);
+    --input: var(--mauve-300);
+    --ring: var(--purple-900);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
