@@ -3,36 +3,50 @@ import { Button } from '@/shared/components/atoms/button'
 import { Moon, Sun } from 'lucide-react'
 import { useTheme } from '@/shared/hooks/useTheme'
 import { Typography } from '@/shared/components/atoms/typography'
-import { Container } from '@/shared/components/atoms/container'
+import { HStack } from '../../atoms/hstack'
+import { useNavigate } from 'react-router-dom'
+import { ROUTES } from '@/shared/constants'
 
-export interface IHeader {
-  title?: string
+export const Header: React.FC = () => {
+  return (
+    <header className="fixed left-0 right-0 top-0 z-10 flex justify-between border-b bg-[var(--mauve-100-50)] bg-opacity-80 p-4">
+      <HeaderLogo />
+      <HStack className="gap-2">
+        <ThemeToggle />
+        <Button className="px-4 md:px-5">Logout</Button>
+      </HStack>
+    </header>
+  )
 }
 
-export const Header: React.FC<IHeader> = ({ title = 'Cubos Interview' }) => {
+const HeaderLogo = () => {
+  const navigate = useNavigate()
+
+  const handleClick = () => {
+    navigate(ROUTES.HOME)
+  }
+
+  return (
+    <HStack className="cursor-pointer items-center gap-3" onClick={handleClick}>
+      <HStack className="w-10 overflow-hidden md:w-[160px]">
+        <img src="/cubos-logo.svg" alt="Logo" className="min-w-[160px]" />
+      </HStack>
+      <Typography variant="h3">Movies</Typography>
+    </HStack>
+  )
+}
+
+const ThemeToggle = () => {
   const { theme, toggleTheme } = useTheme()
 
   return (
-    <header className="border-b bg-background">
-      <Container className="bg-mauve-100 flex items-center justify-between">
-        <Typography font="display" variant="h1">
-          {title}
-        </Typography>
-
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={toggleTheme}
-          className="h-9 w-9"
-        >
-          {theme === 'dark' ? (
-            <Sun className="h-4 w-4" />
-          ) : (
-            <Moon className="h-4 w-4" />
-          )}
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </Container>
-    </header>
+    <Button variant="outline" className="px-4 md:px-5" onClick={toggleTheme}>
+      {theme === 'dark' ? (
+        <Sun className="size-4 md:size-5" />
+      ) : (
+        <Moon className="size-4 md:size-5" />
+      )}
+      <span className="sr-only">Toggle theme</span>
+    </Button>
   )
 }

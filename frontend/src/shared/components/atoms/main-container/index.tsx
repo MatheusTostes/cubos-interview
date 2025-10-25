@@ -1,6 +1,6 @@
-import * as React from "react"
+import * as React from 'react'
 
-import { cn } from "@/shared/utils/utils"
+import { cn } from '@/shared/utils/utils'
 
 export const MainContainer = React.forwardRef<
   HTMLElement,
@@ -9,10 +9,10 @@ export const MainContainer = React.forwardRef<
   <main
     ref={ref}
     className={cn(
-      "flex-1",
+      'flex h-full w-full flex-1 items-center justify-center',
       className
     )}
     {...props}
   />
 ))
-MainContainer.displayName = "MainContainer"
+MainContainer.displayName = 'MainContainer'
