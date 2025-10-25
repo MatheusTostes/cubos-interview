@@ -1,32 +1,29 @@
-import { Button } from "@/shared/components/atoms/button";
-import { Card } from "@/shared/components/atoms/card";
+import { Card } from '@/shared/components/atoms/card'
+import { Container } from '@/shared/components/atoms/container'
+import { LoginForm } from './components'
+import { Button } from '@/shared/components/atoms/button'
+import { HStack } from '@/shared/components/atoms/hstack'
 
 export default function Login() {
   return (
-    <div className="container mx-auto py-8">
-      <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold mb-4">Cubos Interview Frontend</h1>
-        <p className="text-muted-foreground text-lg">
-          Built with React, Vite, Tailwind CSS, and shadcn/ui
-        </p>
-      </div>
+    <Container className="flex h-full items-center justify-center bg-red-600 p-0">
+      <Card.Root className="bg-mauve-300 z-10 w-[90%] max-w-[412px] rounded-sm">
+        <Card.Content className="flex flex-col gap-4 p-4">
+          <LoginForm />
+          <LoginActions />
+        </Card.Content>
+      </Card.Root>
+    </Container>
+  )
+}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <Card.Root>
-          <Card.Header>
-            <Card.Title>React + Vite</Card.Title>
-            <Card.Description>
-              Modern React setup with Vite for fast development
-            </Card.Description>
-          </Card.Header>
-          <Card.Content>
-            <Button  variant="outline" className="w-full">
-              Learn More
-            </Button>
-          </Card.Content>
-        </Card.Root>
-
-      </div>
-    </div>
+const LoginActions = () => {
+  return (
+    <HStack className="mt-2 flex-col-reverse justify-between gap-2 sm:mt-0 sm:flex-row">
+      <Button variant="link" className="p-[2px]">
+        Esqueci minha senha
+      </Button>
+      <Button form="login-form">Entrar</Button>
+    </HStack>
   )
 }
