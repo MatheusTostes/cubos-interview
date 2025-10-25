@@ -7,14 +7,19 @@ import { HStack } from '../../atoms/hstack'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/shared/constants'
 import { cn } from '@/shared/utils'
+import { useAuth } from '@/shared/hooks/useAuth'
 
 export const Header: React.FC = () => {
+  const { logout } = useAuth()
+
   return (
-    <header className="fixed left-0 right-0 top-0 z-10 flex justify-between border-b bg-[var(--mauve-100-50)] bg-opacity-80 p-4">
+    <header className="fixed left-0 right-0 top-0 z-20 flex justify-between border-b bg-[var(--mauve-100-50)] bg-opacity-80 p-4 backdrop-blur-sm">
       <HeaderLogo />
       <HStack className="gap-2">
         <ThemeToggle />
-        <Button className="px-4 md:px-5">Logout</Button>
+        <Button className="px-4 md:px-5" onClick={logout}>
+          Logout
+        </Button>
       </HStack>
     </header>
   )

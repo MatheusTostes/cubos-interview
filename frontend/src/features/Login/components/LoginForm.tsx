@@ -2,24 +2,21 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '@/shared/components/atoms/input'
 import { loginSchema, type LoginFormData } from '../schemas/login.schema'
+import { useAuth } from '@/shared/hooks/useAuth'
 
 export const LoginForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   })
 
+  const { login } = useAuth()
+
   const onSubmit = async (data: LoginFormData) => {
-    try {
-      console.log('Login data:', data)
-      // Aqui você implementaria a lógica de login
-      await new Promise((resolve) => setTimeout(resolve, 1000)) // Simula API call
-    } catch (error) {
-      console.error('Login error:', error)
-    }
+    await login(data)
   }
 
   return (
