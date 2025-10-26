@@ -34,7 +34,7 @@ const HeaderLogo = () => {
   const { theme } = useTheme()
 
   const handleClick = () => {
-    navigate(ROUTES.HOME)
+    navigate(ROUTES.PROTECTED.MOVIES.LIST)
   }
 
   return (
