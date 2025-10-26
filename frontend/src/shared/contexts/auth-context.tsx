@@ -4,6 +4,8 @@ import React, {
   useState,
   useCallback,
   useMemo,
+  useRef,
+  useEffect,
   ReactNode,
 } from 'react'
 import { RegisterFormData } from '@/features/register/schemas/register.schema'
@@ -45,6 +47,12 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const navigate = useNavigate()
+  const navigateRef = useRef(navigate)
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    navigateRef.current = navigate
+  }, [])
 
   const [authState, setAuthState] = useState<AuthState>({
     user: null,
@@ -52,44 +60,41 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     isLoading: false,
   })
 
-  const login = useCallback(
-    async (credentials: LoginCredentials) => {
-      setAuthState((prev) => ({ ...prev, isLoading: true }))
+  const login = useCallback(async (credentials: LoginCredentials) => {
+    setAuthState((prev) => ({ ...prev, isLoading: true }))
 
-      try {
-        // Simula chamada para API de login
-        await new Promise((resolve) => setTimeout(resolve, 5000))
+    try {
+      // Simula chamada para API de login
+      await new Promise((resolve) => setTimeout(resolve, 5000))
 
-        // Mock de usuário logado (substitua pela lógica real)
-        const mockUser: User = {
-          id: '1',
-          name: 'Usuário Teste',
-          email: credentials.nameOrEmail.includes('@')
-            ? credentials.nameOrEmail
-            : 'usuario@teste.com',
-        }
-
-        setAuthState({
-          user: mockUser,
-          isAuthenticated: true,
-          isLoading: false,
-        })
-
-        // Salva no localStorage (opcional)
-        localStorage.setItem('user', JSON.stringify(mockUser))
-        localStorage.setItem('isAuthenticated', 'true')
-
-        navigate('/movies')
-
-        return { success: true, user: mockUser }
-      } catch (error) {
-        setAuthState((prev) => ({ ...prev, isLoading: false }))
-        console.error('Login error:', error)
-        return { success: false, error: 'Erro ao fazer login' }
+      // Mock de usuário logado (substitua pela lógica real)
+      const mockUser: User = {
+        id: '1',
+        name: 'Usuário Teste',
+        email: credentials.nameOrEmail.includes('@')
+          ? credentials.nameOrEmail
+          : 'usuario@teste.com',
       }
-    },
-    [navigate]
-  )
+
+      setAuthState({
+        user: mockUser,
+        isAuthenticated: true,
+        isLoading: false,
+      })
+
+      // Salva no localStorage (opcional)
+      localStorage.setItem('user', JSON.stringify(mockUser))
+      localStorage.setItem('isAuthenticated', 'true')
+
+      navigateRef.current('/movies')
+
+      return { success: true, user: mockUser }
+    } catch (error) {
+      setAuthState((prev) => ({ ...prev, isLoading: false }))
+      console.error('Login error:', error)
+      return { success: false, error: 'Erro ao fazer login' }
+    }
+  }, [])
 
   const logout = useCallback(() => {
     setAuthState({
@@ -102,8 +107,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem('user')
     localStorage.removeItem('isAuthenticated')
 
-    navigate('/login')
-  }, [navigate])
+    navigateRef.current('/login')
+  }, [])
 
   const checkAuth = useCallback(() => {
     const storedUser = localStorage.getItem('user')
@@ -139,15 +144,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const value = useMemo(
     () => ({
-      ...authState,
+      user: authState.user,
+      isAuthenticated: authState.isAuthenticated,
+      isLoading: authState.isLoading,
       login,
       logout,
       register,
       checkAuth,
     }),
-    [authState, login, logout, register, checkAuth]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [authState.user?.id, authState.isAuthenticated, authState.isLoading]
   )
-
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 

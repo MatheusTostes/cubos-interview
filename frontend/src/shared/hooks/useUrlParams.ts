@@ -1,4 +1,4 @@
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useLocation } from 'react-router-dom'
 import { useCallback, useMemo } from 'react'
 
 interface UrlParams {
@@ -12,47 +12,50 @@ interface UrlParams {
 }
 
 export const useUrlParams = () => {
-  const [searchParams, setSearchParams] = useSearchParams()
+  const location = useLocation()
+  const [, setSearchParams] = useSearchParams()
 
   const params = useMemo(() => {
-    const genresParam = searchParams.get('genres')
+    const searchParamsObj = new URLSearchParams(location.search)
     return {
-      search: searchParams.get('search') || undefined,
-      page: searchParams.get('page') || undefined,
-      genres: genresParam || undefined,
-      durationMin: searchParams.get('durationMin') || undefined,
-      durationMax: searchParams.get('durationMax') || undefined,
-      releaseDateStart: searchParams.get('releaseDateStart') || undefined,
-      releaseDateEnd: searchParams.get('releaseDateEnd') || undefined,
+      search: searchParamsObj.get('search') || undefined,
+      page: searchParamsObj.get('page') || undefined,
+      genres: searchParamsObj.get('genres') || undefined,
+      durationMin: searchParamsObj.get('durationMin') || undefined,
+      durationMax: searchParamsObj.get('durationMax') || undefined,
+      releaseDateStart: searchParamsObj.get('releaseDateStart') || undefined,
+      releaseDateEnd: searchParamsObj.get('releaseDateEnd') || undefined,
     }
-  }, [searchParams])
+  }, [location.search])
 
   const updateParams = useCallback(
     (updates: Partial<UrlParams>) => {
-      const newParams = new URLSearchParams(searchParams)
+      setSearchParams((prev) => {
+        const newParams = new URLSearchParams(prev)
 
-      Object.entries(updates).forEach(([key, value]) => {
-        if (value === undefined || value === null || value === '') {
-          newParams.delete(key)
-        } else {
-          newParams.set(key, value)
+        Object.entries(updates).forEach(([key, value]) => {
+          if (value === undefined || value === null || value === '') {
+            newParams.delete(key)
+          } else {
+            newParams.set(key, value)
+          }
+        })
+
+        // Manually handle commas for genres to avoid encoding
+        if (updates.genres) {
+          const genresValue = updates.genres.replace(',', '%2C')
+          newParams.set('genres', genresValue)
         }
+
+        return newParams
       })
-
-      // Manually handle commas for genres to avoid encoding
-      if (updates.genres) {
-        const genresValue = updates.genres.replace(',', '%2C')
-        newParams.set('genres', genresValue)
-      }
-
-      setSearchParams(newParams, { replace: true })
     },
-    [searchParams, setSearchParams]
+    [] // Remove setSearchParams from dependencies to stabilize
   )
 
   const clearParams = useCallback(() => {
     setSearchParams(new URLSearchParams(), { replace: true })
-  }, [setSearchParams])
+  }, []) // Remove setSearchParams from dependencies to stabilize
 
   return {
     params,
