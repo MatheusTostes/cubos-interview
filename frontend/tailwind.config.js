@@ -82,7 +82,6 @@ module.exports = {
         // Mauve Scale
         mauve: {
           100: 'rgb(from var(--mauve-100) r g b / <alpha-value>)',
-          100_50: 'var(--mauve-100-50)', // Esta já tem transparência definida
           200: 'rgb(from var(--mauve-200) r g b / <alpha-value>)',
           300: 'rgb(from var(--mauve-300) r g b / <alpha-value>)',
           400: 'rgb(from var(--mauve-400) r g b / <alpha-value>)',
@@ -94,6 +93,13 @@ module.exports = {
           1000: 'rgb(from var(--mauve-1000) r g b / <alpha-value>)',
           1100: 'rgb(from var(--mauve-1100) r g b / <alpha-value>)',
           1200: 'rgb(from var(--mauve-1200) r g b / <alpha-value>)',
+        },
+        chart: {
+          1: 'hsl(var(--chart-1))',
+          2: 'hsl(var(--chart-2))',
+          3: 'hsl(var(--chart-3))',
+          4: 'hsl(var(--chart-4))',
+          5: 'hsl(var(--chart-5))',
         },
       },
       borderRadius: {
