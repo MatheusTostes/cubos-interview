@@ -12,7 +12,7 @@ export interface IMainLayout {
 export const MainLayout: React.FC<IMainLayout> = ({ children }) => {
   return (
     <>
-      <VStack className="z-10 min-h-screen">
+      <VStack className="z-10 h-screen">
         <Header />
 
         <MainContainer>{children}</MainContainer>

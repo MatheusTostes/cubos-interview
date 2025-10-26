@@ -8,10 +8,7 @@ export const MainContainer = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <main
     ref={ref}
-    className={cn(
-      'z-10 mt-20 flex h-full w-full flex-1 items-center justify-center',
-      className
-    )}
+    className={cn('z-10 mt-20 flex h-full w-full flex-1', className)}
     {...props}
   />
 ))
