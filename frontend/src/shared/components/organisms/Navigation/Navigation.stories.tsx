@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { BrowserRouter } from 'react-router-dom'
-import { Navigation } from '@/shared/components/organisms/Navigation'
+import { Navigation } from '@/shared/components/organisms/navigation'
 
 const meta: Meta<typeof Navigation> = {
   title: 'Components/Organisms/Navigation',
