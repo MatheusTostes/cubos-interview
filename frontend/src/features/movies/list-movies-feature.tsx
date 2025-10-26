@@ -7,7 +7,7 @@ import { Typography } from '@/shared/components/atoms/typography'
 import { FiltersDialog } from './components/filters-dialog'
 import { DebounceInput } from '@/shared/components/molecules/debounce-input'
 import { useUrlParams } from '@/shared/hooks'
-import { Pagination } from '@/shared/components/molecules/pagination'
+import { MoviesPagination } from './components/movies-pagination'
 
 export default function ListMoviesFeature() {
   const { params, updateParams } = useUrlParams()
@@ -15,7 +15,11 @@ export default function ListMoviesFeature() {
   const searchValue = params.search || ''
 
   const handleSearchChange = (value: string) => {
-    updateParams({ search: value })
+    // When changing search, remove the page param to reset to page 1
+    // Only update if there's an actual search value or if we need to clear an existing search
+    if (value || params.search) {
+      updateParams({ search: value || undefined }, { removePage: true })
+    }
   }
 
   return (
@@ -51,52 +55,7 @@ export default function ListMoviesFeature() {
         ))}
       </Container>
 
-      <MoviesPagination totalPages={5} />
+      <MoviesPagination totalPages={20} />
     </>
-  )
-}
-
-type MoviesPaginationProps = {
-  totalPages: number
-}
-
-const MoviesPagination = ({ totalPages }: MoviesPaginationProps) => {
-  const { params, updateParams } = useUrlParams()
-
-  // Get page number from URL, default to 1
-  const pageNumber = params?.page
-    ? Math.max(1, Math.min(totalPages, Number(params.page)))
-    : 1
-
-  const handlePageChange = (page: number) => {
-    if (page >= 1 && page <= totalPages) {
-      updateParams({ page: page.toString() })
-    }
-  }
-
-  return (
-    <Pagination.Root>
-      <Pagination.PreviousButton
-        onClick={() => handlePageChange(Math.max(1, pageNumber - 1))}
-        disabled={pageNumber <= 1}
-      />
-      {Array.from({ length: totalPages }, (_, index) => {
-        const pageNum = index + 1
-        const isActive = pageNum === pageNumber
-
-        return (
-          <Pagination.PageButton
-            key={index}
-            pageNumber={pageNum}
-            isActive={isActive}
-            onClick={() => handlePageChange(pageNum)}
-          />
-        )
-      })}
-      <Pagination.NextButton
-        onClick={() => handlePageChange(Math.min(totalPages, pageNumber + 1))}
-        disabled={pageNumber >= totalPages}
-      />
-    </Pagination.Root>
   )
 }

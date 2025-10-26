@@ -29,28 +29,30 @@ export const useUrlParams = () => {
   }, [location.search])
 
   const updateParams = useCallback(
-    (updates: Partial<UrlParams>) => {
-      setSearchParams((prev) => {
-        const newParams = new URLSearchParams(prev)
+    (updates: Partial<UrlParams>, options?: { removePage?: boolean }) => {
+      // Read current params directly from location to ensure we have the latest state
+      const currentParams = new URLSearchParams(location.search)
 
-        Object.entries(updates).forEach(([key, value]) => {
-          if (value === undefined || value === null || value === '') {
-            newParams.delete(key)
-          } else {
-            newParams.set(key, value)
-          }
-        })
+      // Create a new URLSearchParams that preserves all existing params
+      const newParams = new URLSearchParams(currentParams)
 
-        // Manually handle commas for genres to avoid encoding
-        if (updates.genres) {
-          const genresValue = updates.genres.replace(',', '%2C')
-          newParams.set('genres', genresValue)
+      // If removePage option is set (e.g., when applying filters), remove page param
+      if (options?.removePage) {
+        newParams.delete('page')
+      }
+
+      // Apply updates - only update the specified params
+      Object.entries(updates).forEach(([key, value]) => {
+        if (value === undefined || value === null || value === '') {
+          newParams.delete(key)
+        } else {
+          newParams.set(key, value)
         }
-
-        return newParams
       })
+
+      setSearchParams(newParams)
     },
-    [] // Remove setSearchParams from dependencies to stabilize
+    [location.search] // Include location.search in dependencies
   )
 
   const clearParams = useCallback(() => {

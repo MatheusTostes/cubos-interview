@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { Dialog } from '@/shared/components/atoms/dialog'
 import { Button } from '@/shared/components/atoms/button'
@@ -9,7 +9,7 @@ import { ReleaseIntervalDateInput } from './release-interval-date-input'
 import { GenreTagsSelect } from './genre-tags-select'
 import { DateRange } from 'react-day-picker'
 import { useUrlParams } from '@/shared/hooks'
-import { type Genre } from '../types/genre'
+import { type Genre, GENRES } from '../types/genre'
 
 interface FiltersDialogProps {
   children: React.ReactNode
@@ -26,7 +26,7 @@ interface FiltersFormData {
 
 export function FiltersDialog({ children }: FiltersDialogProps) {
   const [open, setOpen] = useState(false)
-  const { updateParams, clearParams } = useUrlParams()
+  const { params, updateParams, clearParams } = useUrlParams()
 
   const { handleSubmit, setValue, watch, reset } = useForm<FiltersFormData>({
     defaultValues: {
@@ -41,6 +41,46 @@ export function FiltersDialog({ children }: FiltersDialogProps) {
   const genres = watch('genres')
 
   const isFormValid = true
+
+  // Initialize form values from URL params
+  useEffect(() => {
+    const initialValues: FiltersFormData = {
+      genres: [],
+      durationRange: { min: 0, max: 10 },
+      dateRange: undefined,
+    }
+
+    // Parse genres from URL
+    if (params.genres) {
+      const genreIds = params.genres.split(',').map((id) => id.trim())
+      const selectedGenres = GENRES.filter((genre) =>
+        genreIds.includes(genre.id)
+      )
+      initialValues.genres = selectedGenres
+    }
+
+    // Parse duration from URL
+    if (params.durationMin && params.durationMax) {
+      const minMinutes = Number(params.durationMin)
+      const maxMinutes = Number(params.durationMax)
+      initialValues.durationRange = {
+        min: Math.floor(minMinutes / 30),
+        max: Math.floor(maxMinutes / 30),
+      }
+    }
+
+    // Parse date range from URL
+    if (params.releaseDateStart && params.releaseDateEnd) {
+      const from = new Date(params.releaseDateStart)
+      const to = new Date(params.releaseDateEnd)
+      if (!isNaN(from.getTime()) && !isNaN(to.getTime())) {
+        initialValues.dateRange = { from, to }
+      }
+    }
+
+    // Reset form with initial values
+    reset(initialValues)
+  }, [params, reset])
 
   const handleDurationRangeChange = useCallback(
     (range: { min: number; max: number }) => {
@@ -83,7 +123,8 @@ export function FiltersDialog({ children }: FiltersDialogProps) {
       paramsToUpdate.releaseDateEnd = data.dateRange.to.toISOString()
     }
 
-    updateParams(paramsToUpdate)
+    // When applying filters, remove the page param to reset to page 1
+    updateParams(paramsToUpdate, { removePage: true })
     setOpen(false)
   }
 

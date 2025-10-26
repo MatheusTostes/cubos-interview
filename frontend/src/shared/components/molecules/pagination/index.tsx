@@ -51,6 +51,7 @@ const PageButton = React.forwardRef<
       isActive ? 'bg-mauve-200/80 text-mauve-1200' : 'bg-purple-600 text-white',
       className
     )}
+    disabled={isActive}
     {...props}
   >
     <Typography font="roboto" variant="p">
