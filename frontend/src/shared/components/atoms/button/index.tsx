@@ -4,7 +4,6 @@ import { cva, type VariantProps } from 'class-variance-authority'
 
 import { cn } from '@/shared/utils/utils'
 import { Loader2 } from 'lucide-react'
-import { HStack } from '../hstack'
 
 const buttonVariants = cva(
   'inline-flex items-center justify-center whitespace-nowrap rounded-xs text-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 font-roboto relative',
@@ -18,7 +17,7 @@ const buttonVariants = cva(
         outline:
           'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
         secondary:
-          'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+          'bg-secondary/40 text-secondary-foreground hover:bg-secondary',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-purple-600-foreground dark:text-purple-700 underline-offset-4 underline underline-offset-2',
       },

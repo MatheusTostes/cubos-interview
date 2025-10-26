@@ -96,10 +96,10 @@
     --popover-foreground: var(--mauve-1200);
     --primary: var(--purple-400);
     --primary-foreground: var(--mauve-1200);
-    --secondary: var(--mauve-200);
+    --secondary: var(--purple-600);
     --secondary-foreground: var(--mauve-1200);
     --muted: var(--mauve-200);
-    --muted-foreground: var(--mauve-1000);
+    --muted-foreground: var(--mauve-800);
     --accent: var(--purple-200);
     --accent-foreground: var(--purple-1200);
     --destructive: hsl(0, 84%, 50%);

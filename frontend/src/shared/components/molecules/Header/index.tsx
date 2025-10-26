@@ -18,8 +18,11 @@ export const Header: React.FC = () => {
       <HeaderLogo />
       <HStack className="gap-2">
         <ThemeToggle />
+
         <Button className="px-4 md:px-5" onClick={logout}>
-          Logout
+          <Typography font="roboto" weight="medium" variant="p">
+            Logout
+          </Typography>
         </Button>
       </HStack>
     </header>
@@ -53,7 +56,7 @@ const ThemeToggle = () => {
 
   return (
     <Button
-      variant="outline"
+      variant="secondary"
       className="px-4 py-0 md:px-5"
       onClick={toggleTheme}
     >
