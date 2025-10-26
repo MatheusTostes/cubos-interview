@@ -6,8 +6,8 @@ import React, {
   useMemo,
   ReactNode,
 } from 'react'
-import { useNavigation } from '@/shared/hooks/useNavigation'
 import { RegisterFormData } from '@/features/register/schemas/register.schema'
+import { useNavigate } from 'react-router-dom'
 
 export interface User {
   id: string
@@ -44,7 +44,7 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const { goToLogin, goToMovies } = useNavigation()
+  const navigate = useNavigate()
 
   const [authState, setAuthState] = useState<AuthState>({
     user: null,
@@ -79,7 +79,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         localStorage.setItem('user', JSON.stringify(mockUser))
         localStorage.setItem('isAuthenticated', 'true')
 
-        goToMovies()
+        navigate('/movies')
 
         return { success: true, user: mockUser }
       } catch (error) {
@@ -88,7 +88,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         return { success: false, error: 'Erro ao fazer login' }
       }
     },
-    [goToMovies]
+    [navigate]
   )
 
   const logout = useCallback(() => {
@@ -102,8 +102,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem('user')
     localStorage.removeItem('isAuthenticated')
 
-    goToLogin()
-  }, [goToLogin])
+    navigate('/login')
+  }, [navigate])
 
   const checkAuth = useCallback(() => {
     const storedUser = localStorage.getItem('user')
@@ -119,15 +119,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         })
       } catch (error) {
         console.error('Error parsing stored user:', error)
-        logout()
       }
     }
-  }, [logout])
+  }, [])
 
-  const register = useCallback(async (credentials: RegisterFormData) => {
+  const register = useCallback(async (_credentials: RegisterFormData) => {
     setAuthState((prev) => ({ ...prev, isLoading: true }))
-
-    console.log('credentials', credentials)
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 5000))
@@ -140,8 +137,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, [])
 
-  const prevValueRef = React.useRef<AuthContextType>()
-
   const value = useMemo(
     () => ({
       ...authState,
@@ -150,25 +145,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       register,
       checkAuth,
     }),
-    [
-      authState.user?.id,
-      authState.isAuthenticated,
-      authState.isLoading,
-      login,
-      logout,
-      register,
-      checkAuth,
-    ]
+    [authState, login, logout, register, checkAuth]
   )
-
-  // Check if value actually changed
-  const valueChanged = prevValueRef.current !== value
-  if (valueChanged) {
-    console.log(
-      '[AuthProvider] value reference changed - check login/logout/register/checkAuth'
-    )
-    prevValueRef.current = value
-  }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
