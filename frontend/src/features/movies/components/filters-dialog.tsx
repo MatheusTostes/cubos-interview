@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { Dialog } from '@/shared/components/atoms/dialog'
 import { Button } from '@/shared/components/atoms/button'
@@ -9,7 +9,7 @@ import { ReleaseIntervalDateInput } from './release-interval-date-input'
 import { GenreTagsSelect } from './genre-tags-select'
 import { DateRange } from 'react-day-picker'
 import { useUrlParams } from '@/shared/hooks'
-import { GENRES, type Genre } from '../types/genre'
+import { type Genre } from '../types/genre'
 
 interface FiltersDialogProps {
   children: React.ReactNode
@@ -26,50 +26,35 @@ interface FiltersFormData {
 
 export function FiltersDialog({ children }: FiltersDialogProps) {
   const [open, setOpen] = useState(false)
-  const { params, updateParams, clearParams } = useUrlParams()
-
-  // Parse default values from URL
-  const getDefaultGenres = (): Genre[] => {
-    const genreIds = params.genres?.split(',') || []
-    return GENRES.filter((g) => genreIds.includes(g.id))
-  }
-
-  const getDefaultDuration = () => {
-    const min = params.durationMin ? parseInt(params.durationMin) / 30 : 0
-    const max = params.durationMax ? parseInt(params.durationMax) / 30 : 10
-    return { min, max }
-  }
-
-  const getDefaultDateRange = (): DateRange | undefined => {
-    if (params.releaseDateStart && params.releaseDateEnd) {
-      return {
-        from: new Date(params.releaseDateStart),
-        to: new Date(params.releaseDateEnd),
-      }
-    }
-    return undefined
-  }
+  const { updateParams, clearParams } = useUrlParams()
 
   const { handleSubmit, setValue, watch, reset } = useForm<FiltersFormData>({
     defaultValues: {
-      genres: getDefaultGenres(),
-      durationRange: getDefaultDuration(),
-      dateRange: getDefaultDateRange(),
+      genres: [],
+      durationRange: { min: 0, max: 10 },
+      dateRange: undefined,
     },
   })
-
-  // Sync form with URL params on mount
-  useEffect(() => {
-    setValue('genres', getDefaultGenres())
-    setValue('durationRange', getDefaultDuration())
-    setValue('dateRange', getDefaultDateRange())
-  }, [setValue])
 
   const durationRange = watch('durationRange')
   const dateRange = watch('dateRange')
   const genres = watch('genres')
 
   const isFormValid = true
+
+  const handleDurationRangeChange = useCallback(
+    (range: { min: number; max: number }) => {
+      setValue('durationRange', range)
+    },
+    [setValue]
+  )
+
+  const handleDateRangeChange = useCallback(
+    (range: DateRange | undefined) => {
+      setValue('dateRange', range)
+    },
+    [setValue]
+  )
 
   const handleToggleGenre = (genre: Genre) => {
     const currentGenres = genres || []
@@ -137,14 +122,14 @@ export function FiltersDialog({ children }: FiltersDialogProps) {
           <VStack className="gap-4 py-4">
             <DurationInputSlider
               durationRange={durationRange}
-              setDurationRange={(range) => setValue('durationRange', range)}
+              setDurationRange={handleDurationRangeChange}
             />
 
             <ReleaseIntervalDateInput
               dateRange={
                 dateRange ?? ({ from: undefined, to: undefined } as DateRange)
               }
-              setDateRange={(range) => setValue('dateRange', range)}
+              setDateRange={handleDateRangeChange}
             />
 
             <GenreTagsSelect
@@ -159,11 +144,7 @@ export function FiltersDialog({ children }: FiltersDialogProps) {
               variant="secondary"
               onClick={handleClearFilters}
             >
-              <Typography
-                onClick={handleClearFilters}
-                variant="p"
-                font="roboto"
-              >
+              <Typography variant="p" font="roboto">
                 Limpar
               </Typography>
             </Button>

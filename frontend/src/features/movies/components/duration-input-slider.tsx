@@ -21,7 +21,7 @@ export const DurationInputSlider = ({
     <Input.Root>
       <VStack className="gap-2">
         <HStack className="justify-between">
-          <Input.Label>Duração*</Input.Label>
+          <Input.Label>Duração</Input.Label>
 
           <span className="font-medium">
             {formatDuration(durationRange.min * 30)} -{' '}

@@ -30,7 +30,8 @@ export const DebounceInput = ({
     }, debounceMs)
 
     return () => clearTimeout(timer)
-  }, [value, debounceMs, onValueChange])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value, debounceMs])
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value)
