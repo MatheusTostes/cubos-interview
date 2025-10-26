@@ -10,12 +10,12 @@ export const ROUTES = {
   REGISTER: '/register',
   FORGOT_PASSWORD: '/forgot-password',
   RESET_PASSWORD: '/reset-password',
-  
+
   // Protected routes
   DASHBOARD: '/dashboard',
   PROFILE: '/profile',
   SETTINGS: '/settings',
-  
+
   // Feature routes
   USERS: {
     LIST: '/users',
@@ -23,14 +23,14 @@ export const ROUTES = {
     EDIT: '/users/:id/edit',
     VIEW: '/users/:id',
   },
-  
+
   PROJECTS: {
     LIST: '/projects',
     CREATE: '/projects/create',
     EDIT: '/projects/:id/edit',
     VIEW: '/projects/:id',
   },
-  
+
   // API routes
   API: {
     AUTH: {
@@ -52,17 +52,17 @@ export const routeHelpers = {
    * Generate user edit route with ID
    */
   userEdit: (id: string) => ROUTES.USERS.EDIT.replace(':id', id),
-  
+
   /**
    * Generate user view route with ID
    */
   userView: (id: string) => ROUTES.USERS.VIEW.replace(':id', id),
-  
+
   /**
    * Generate project edit route with ID
    */
   projectEdit: (id: string) => ROUTES.PROJECTS.EDIT.replace(':id', id),
-  
+
   /**
    * Generate project view route with ID
    */
@@ -91,6 +91,11 @@ export const ROUTE_METADATA = {
   [ROUTES.LOGIN]: {
     title: 'Login',
     description: 'Sign in to your account',
+    requiresAuth: false,
+  },
+  [ROUTES.REGISTER]: {
+    title: 'Register',
+    description: 'Create a new account',
     requiresAuth: false,
   },
   [ROUTES.DASHBOARD]: {

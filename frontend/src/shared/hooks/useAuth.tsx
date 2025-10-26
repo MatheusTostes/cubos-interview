@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
 import { useNavigation } from './useNavigation'
+import { RegisterFormData } from '@/features/Register/schemas/register.schema'
 
 export interface User {
   id: string
@@ -99,9 +100,21 @@ export const useAuth = () => {
     }
   }, [logout])
 
+  const register = useCallback(async (credentials: RegisterFormData) => {
+    setAuthState((prev) => ({ ...prev, isLoading: true }))
+
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+    } catch (error) {
+      console.error('Register error:', error)
+      return { success: false, error: 'Erro ao fazer registro' }
+    }
+  }, [])
+
   return {
     ...authState,
     login,
+    register,
     logout,
     checkAuth,
   }
