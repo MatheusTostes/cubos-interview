@@ -99,7 +99,7 @@
     --secondary: var(--mauve-200);
     --secondary-foreground: var(--mauve-1200);
     --muted: var(--mauve-200);
-    --muted-foreground: var(--mauve-1200);
+    --muted-foreground: var(--mauve-1000);
     --accent: var(--purple-200);
     --accent-foreground: var(--purple-1200);
     --destructive: hsl(0, 84%, 50%);
