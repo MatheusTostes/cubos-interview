@@ -1,10 +1,11 @@
 import { HStack } from '@/shared/components/atoms/hstack'
 import { Typography } from '@/shared/components/atoms/typography'
 import { Button } from '@/shared/components/atoms/button'
-import { useNavigation } from '@/shared/hooks'
+import { useAuth, useNavigation } from '@/shared/hooks'
 
 export const RegisterActions = () => {
   const { goToLogin } = useNavigation()
+  const { isLoading } = useAuth()
 
   return (
     <>
@@ -15,6 +16,7 @@ export const RegisterActions = () => {
             variant="link"
             onClick={goToLogin}
             className="h-auto p-0 font-normal"
+            disabled={isLoading}
           >
             Faça login
           </Button>
@@ -24,6 +26,7 @@ export const RegisterActions = () => {
           type="submit"
           form="register-form"
           className="w-full sm:ml-auto sm:w-auto"
+          isLoading={isLoading}
         >
           Cadastrar
         </Button>

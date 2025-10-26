@@ -6,29 +6,33 @@
 export const ROUTES = {
   // Public routes
   HOME: '/',
-  LOGIN: '/login',
-  REGISTER: '/register',
-  FORGOT_PASSWORD: '/forgot-password',
-  RESET_PASSWORD: '/reset-password',
 
-  // Protected routes
-  DASHBOARD: '/dashboard',
-  PROFILE: '/profile',
-  SETTINGS: '/settings',
-
-  // Feature routes
-  USERS: {
-    LIST: '/users',
-    CREATE: '/users/create',
-    EDIT: '/users/:id/edit',
-    VIEW: '/users/:id',
+  AUTH: {
+    LOGIN: '/login',
+    REGISTER: '/register',
+    FORGOT_PASSWORD: '/forgot-password',
+    RESET_PASSWORD: '/reset-password',
   },
 
-  PROJECTS: {
-    LIST: '/projects',
-    CREATE: '/projects/create',
-    EDIT: '/projects/:id/edit',
-    VIEW: '/projects/:id',
+  PROTECTED: {
+    DASHBOARD: '/dashboard',
+    PROFILE: '/profile',
+    SETTINGS: '/settings',
+
+    // Feature routes
+    USERS: {
+      LIST: '/users',
+      CREATE: '/users/create',
+      EDIT: '/users/:id/edit',
+      VIEW: '/users/:id',
+    },
+
+    MOVIES: {
+      LIST: '/movies',
+      CREATE: '/movies/create',
+      EDIT: '/movies/:id/edit',
+      VIEW: '/movies/:id',
+    },
   },
 
   // API routes
@@ -40,7 +44,6 @@ export const ROUTES = {
       REGISTER: '/api/auth/register',
     },
     USERS: '/api/users',
-    PROJECTS: '/api/projects',
   },
 } as const
 
@@ -48,35 +51,28 @@ export const ROUTES = {
  * Route helper functions
  */
 export const routeHelpers = {
-  /**
-   * Generate user edit route with ID
-   */
-  userEdit: (id: string) => ROUTES.USERS.EDIT.replace(':id', id),
+  userView: (id: string) => ROUTES.PROTECTED.USERS.VIEW.replace(':id', id),
+  userEdit: (id: string) => ROUTES.PROTECTED.USERS.EDIT.replace(':id', id),
 
-  /**
-   * Generate user view route with ID
-   */
-  userView: (id: string) => ROUTES.USERS.VIEW.replace(':id', id),
-
-  /**
-   * Generate project edit route with ID
-   */
-  projectEdit: (id: string) => ROUTES.PROJECTS.EDIT.replace(':id', id),
-
-  /**
-   * Generate project view route with ID
-   */
-  projectView: (id: string) => ROUTES.PROJECTS.VIEW.replace(':id', id),
+  movieView: (id: string) => ROUTES.PROTECTED.MOVIES.VIEW.replace(':id', id),
+  movieEdit: (id: string) => ROUTES.PROTECTED.MOVIES.EDIT.replace(':id', id),
 }
 
 /**
  * Route groups for navigation
  */
 export const ROUTE_GROUPS = {
-  PUBLIC: [ROUTES.HOME, ROUTES.LOGIN, ROUTES.REGISTER],
-  PROTECTED: [ROUTES.DASHBOARD, ROUTES.PROFILE, ROUTES.SETTINGS],
-  USER_MANAGEMENT: [ROUTES.USERS.LIST, ROUTES.USERS.CREATE],
-  PROJECT_MANAGEMENT: [ROUTES.PROJECTS.LIST, ROUTES.PROJECTS.CREATE],
+  PUBLIC: [ROUTES.HOME, ROUTES.AUTH.LOGIN, ROUTES.AUTH.REGISTER],
+  PROTECTED: [
+    ROUTES.PROTECTED.DASHBOARD,
+    ROUTES.PROTECTED.PROFILE,
+    ROUTES.PROTECTED.SETTINGS,
+  ],
+  USER_MANAGEMENT: [ROUTES.PROTECTED.USERS.LIST, ROUTES.PROTECTED.USERS.CREATE],
+  MOVIES_MANAGEMENT: [
+    ROUTES.PROTECTED.MOVIES.LIST,
+    ROUTES.PROTECTED.MOVIES.CREATE,
+  ],
 } as const
 
 /**
@@ -85,32 +81,32 @@ export const ROUTE_GROUPS = {
 export const ROUTE_METADATA = {
   [ROUTES.HOME]: {
     title: 'Home',
-    description: 'Welcome to the application',
+    description: 'Seja bem-vindo ao Cubos Movies',
     requiresAuth: false,
   },
-  [ROUTES.LOGIN]: {
+  [ROUTES.AUTH.LOGIN]: {
     title: 'Login',
-    description: 'Sign in to your account',
+    description: 'Faça login para acessar o Cubos Movies',
     requiresAuth: false,
   },
-  [ROUTES.REGISTER]: {
+  [ROUTES.AUTH.REGISTER]: {
     title: 'Register',
-    description: 'Create a new account',
+    description: 'Crie uma nova conta para acessar o Cubos Movies',
     requiresAuth: false,
   },
-  [ROUTES.DASHBOARD]: {
+  [ROUTES.PROTECTED.DASHBOARD]: {
     title: 'Dashboard',
-    description: 'Your personal dashboard',
+    description: 'Seu painel de controle',
     requiresAuth: true,
   },
-  [ROUTES.USERS.LIST]: {
+  [ROUTES.PROTECTED.USERS.LIST]: {
     title: 'Users',
-    description: 'Manage users',
+    description: 'Gerencie os usuários',
     requiresAuth: true,
   },
-  [ROUTES.PROJECTS.LIST]: {
-    title: 'Projects',
-    description: 'Manage projects',
+  [ROUTES.PROTECTED.MOVIES.LIST]: {
+    title: 'Movies',
+    description: 'Gerencie os filmes',
     requiresAuth: true,
   },
 } as const
