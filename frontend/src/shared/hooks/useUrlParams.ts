@@ -3,6 +3,7 @@ import { useCallback, useMemo } from 'react'
 
 interface UrlParams {
   search?: string
+  page?: string
   genres?: string // Comma-separated genre IDs
   durationMin?: string
   durationMax?: string
@@ -17,6 +18,7 @@ export const useUrlParams = () => {
     const genresParam = searchParams.get('genres')
     return {
       search: searchParams.get('search') || undefined,
+      page: searchParams.get('page') || undefined,
       genres: genresParam || undefined,
       durationMin: searchParams.get('durationMin') || undefined,
       durationMax: searchParams.get('durationMax') || undefined,
@@ -37,15 +39,13 @@ export const useUrlParams = () => {
         }
       })
 
-      // Convert to string and manually replace encoded commas for genres
-      let urlString = newParams.toString()
+      // Manually handle commas for genres to avoid encoding
       if (updates.genres) {
-        urlString = urlString.replace(/genres=([^&]*)/, (match, value) => {
-          return `genres=${value.replace(/%2C/g, ',')}`
-        })
+        const genresValue = updates.genres.replace(',', '%2C')
+        newParams.set('genres', genresValue)
       }
 
-      setSearchParams(urlString, { replace: true })
+      setSearchParams(newParams, { replace: true })
     },
     [searchParams, setSearchParams]
   )

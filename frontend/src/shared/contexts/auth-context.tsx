@@ -3,6 +3,7 @@ import React, {
   useContext,
   useState,
   useCallback,
+  useMemo,
   ReactNode,
 } from 'react'
 import { useNavigation } from '@/shared/hooks/useNavigation'
@@ -50,8 +51,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     isAuthenticated: false,
     isLoading: false,
   })
-
-  console.log('authState', authState)
 
   const login = useCallback(
     async (credentials: LoginCredentials) => {
@@ -141,12 +140,34 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, [])
 
-  const value: AuthContextType = {
-    ...authState,
-    login,
-    logout,
-    register,
-    checkAuth,
+  const prevValueRef = React.useRef<AuthContextType>()
+
+  const value = useMemo(
+    () => ({
+      ...authState,
+      login,
+      logout,
+      register,
+      checkAuth,
+    }),
+    [
+      authState.user?.id,
+      authState.isAuthenticated,
+      authState.isLoading,
+      login,
+      logout,
+      register,
+      checkAuth,
+    ]
+  )
+
+  // Check if value actually changed
+  const valueChanged = prevValueRef.current !== value
+  if (valueChanged) {
+    console.log(
+      '[AuthProvider] value reference changed - check login/logout/register/checkAuth'
+    )
+    prevValueRef.current = value
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
