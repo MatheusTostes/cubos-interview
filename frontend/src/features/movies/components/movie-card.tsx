@@ -41,14 +41,14 @@ export const MovieCard = ({ movie }: { movie: Movie }) => {
         />
       </Card.Content>
 
-      <Card.Footer className="absolute bottom-0 left-0 right-0 flex flex-col items-start gap-2 bg-gradient-to-t from-white to-transparent  p-4 pt-20 dark:from-black dark:to-transparent">
+      <Card.Footer className="absolute bottom-0 left-0 right-0 flex flex-col items-start gap-2 bg-gradient-to-t from-white to-transparent p-4 pt-40 dark:from-black dark:to-transparent">
         <Typography
           variant="h5"
           className={cn(
             'font-semibold transition-all duration-300 ease-in-out',
             isHovered
               ? 'translate-y-0 opacity-100'
-              : 'pointer-events-none translate-y-2'
+              : 'pointer-events-none translate-y-8'
           )}
           font="montserrat"
         >

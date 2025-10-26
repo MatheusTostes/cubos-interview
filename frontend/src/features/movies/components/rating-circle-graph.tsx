@@ -40,7 +40,7 @@ export const RatingCircleGraph = ({ rating }: { rating: number }) => {
         >
           {calculateRatingPercentage(rating).toFixed(0)}
         </Typography>
-        <Typography variant="span" className="mt-2 text-xs">
+        <Typography variant="span" className="mt-2 text-xs text-white">
           %
         </Typography>
       </div>
