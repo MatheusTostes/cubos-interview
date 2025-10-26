@@ -1,4 +1,4 @@
-import { Movie, MoviesResponse } from '../types/movie-types'
+import { Movie } from '../types/movie-types'
 
 export const movieMocks: Movie[] = [
   {
@@ -541,9 +541,22 @@ export const movieMocks: Movie[] = [
   },
 ]
 
-export const moviesResponseMock: MoviesResponse = {
-  titles: movieMocks,
-  totalCount: 2368904,
-  nextPageToken:
-    'eyJlc1Rva2VuIjpbIjUwIiwiNTAiLCJ0dDMxOTIzMDY5Il0sImZpbHRlciI6IntcImNvbnN0cmFpbnRzXCI6e1widGl0bGVUeXBlQ29uc3RyYWludFwiOntcImFueVRpdGxlVHlwZUlkc1wiOltcIm1vdmllXCIsXCJ0dlNlcmllc1wiLFwidHZNaW5pU2VyaWVzXCIsXCJ0dk1vdmllXCIsXCJ0dlNwZWNpYWxcIixcInNob3J0XCIsXCJ0dlNwZWNpYWxcIl19fSxcImxhbmd1YWdlXCI6XCJlbi1VU1wiLFwic29ydFwiOntcInNvcnRCeVwiOlwiUE9QVUxBUklUWVwiLFwic29ydE9yZGVyXCI6XCJBU0NcIn0sXCJyZXN1bHRJbmRleFwiOjQ5fSJ9',
+export const movieMock: Movie = {
+  id: 'tt32549601',
+  type: 'movie',
+  primaryTitle: 'Caramelo',
+  originalTitle: 'Caramelo',
+  primaryImage: {
+    url: 'https://m.media-amazon.com/images/M/MV5BNTRlMzI4MDItZDJiNS00YmNmLWE1MmQtNjZjYTVhNDdmYjQ1XkEyXkFqcGc@._V1_.jpg',
+    width: 1080,
+    height: 1350,
+  },
+  startYear: 2025,
+  runtimeSeconds: 6060,
+  genres: ['Comedy', 'Drama', 'Family'],
+  rating: {
+    aggregateRating: 7.2,
+    voteCount: 4613,
+  },
+  plot: 'After a life-changing diagnosis, a promising chef finds hope and humor with the help of a fur-midable dog friend.',
 }
