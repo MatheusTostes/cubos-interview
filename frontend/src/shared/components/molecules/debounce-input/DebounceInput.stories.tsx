@@ -3,17 +3,13 @@ import { DebounceInput } from './index'
 import { useState } from 'react'
 
 const meta: Meta<typeof DebounceInput> = {
-  title: 'Molecules/DebounceInput',
+  title: 'Components/Molecules/DebounceInput',
   component: DebounceInput,
   parameters: {
     layout: 'centered',
   },
   tags: ['autodocs'],
   argTypes: {
-    label: {
-      control: 'text',
-      description: 'Label do input',
-    },
     placeholder: {
       control: 'text',
       description: 'Placeholder do input',
@@ -38,7 +34,6 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
-    label: 'Buscar',
     placeholder: 'Digite para pesquisar...',
     debounceMs: 1000,
     defaultValue: '',
@@ -47,7 +42,6 @@ export const Default: Story = {
 
 export const WithDefaultValue: Story = {
   args: {
-    label: 'Buscar',
     placeholder: 'Digite para pesquisar...',
     debounceMs: 1000,
     defaultValue: 'Filme de ação',
@@ -56,7 +50,6 @@ export const WithDefaultValue: Story = {
 
 export const FastDebounce: Story = {
   args: {
-    label: 'Buscar',
     placeholder: 'Digite para pesquisar...',
     debounceMs: 300,
     defaultValue: '',
@@ -65,7 +58,6 @@ export const FastDebounce: Story = {
 
 export const SlowDebounce: Story = {
   args: {
-    label: 'Buscar',
     placeholder: 'Digite para pesquisar...',
     debounceMs: 2000,
     defaultValue: '',
@@ -74,7 +66,6 @@ export const SlowDebounce: Story = {
 
 export const WithoutLabel: Story = {
   args: {
-    label: '',
     placeholder: 'Pesquisar por filmes',
     debounceMs: 1000,
     defaultValue: '',
@@ -94,7 +85,6 @@ export const Interactive: Story = {
     return (
       <div className="space-y-4">
         <DebounceInput
-          label="Buscar Filmes"
           placeholder="Digite o nome do filme..."
           debounceMs={1000}
           defaultValue=""
@@ -144,7 +134,6 @@ export const SearchExample: Story = {
     return (
       <div className="w-96 space-y-4">
         <DebounceInput
-          label=""
           placeholder="Buscar filmes..."
           debounceMs={500}
           defaultValue=""
@@ -191,7 +180,6 @@ export const URLParamsExample: Story = {
     return (
       <div className="w-96 space-y-4">
         <DebounceInput
-          label="Buscar"
           placeholder="Digite para ver na URL..."
           debounceMs={1000}
           defaultValue=""

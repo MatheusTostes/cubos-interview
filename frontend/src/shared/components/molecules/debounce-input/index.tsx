@@ -4,7 +4,6 @@ import { VStack } from '@/shared/components/atoms/vstack'
 import { SearchIcon } from '@/shared/icons/SearchIcon'
 
 export type DebounceInputProps = {
-  label: string
   placeholder?: string
   debounceMs?: number
   onValueChange: (value: string) => void
@@ -12,7 +11,6 @@ export type DebounceInputProps = {
 }
 
 export const DebounceInput = ({
-  label,
   placeholder,
   debounceMs = 1000,
   onValueChange,
@@ -46,6 +44,7 @@ export const DebounceInput = ({
           placeholder={placeholder}
           value={value}
           onChange={handleChange}
+          className="pr-10"
         />
         <SearchIcon className="absolute right-5 top-1/2 size-6 -translate-y-1/2 text-gray-400" />
       </VStack>
