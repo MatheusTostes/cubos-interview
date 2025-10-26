@@ -1,6 +1,6 @@
 import { Button } from '@/shared/components/atoms/button'
 import { Card } from '@/shared/components/atoms/card'
-import { ColorPalette } from '@/shared/components/design-system/ColorPalette'
+import { ColorPalette } from '@/shared/components/design-system/color-palette'
 import { Icons } from '@/shared/components/design-system/Icons'
 import { useNavigation } from '@/shared/hooks'
 

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { MemoryRouter } from 'react-router-dom'
-import { ThemeProvider } from '@/shared/contexts/ThemeContext'
-import { MainLayout } from '@/shared/components/organisms/MainLayout'
+import { ThemeProvider } from '@/shared/contexts/theme-context'
+import { MainLayout } from '@/shared/components/organisms/main-layout'
 
 const meta: Meta<typeof MainLayout> = {
   title: 'Components/Organisms/MainLayout',

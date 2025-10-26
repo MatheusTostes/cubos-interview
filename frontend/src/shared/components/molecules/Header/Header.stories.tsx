@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { MemoryRouter } from 'react-router-dom'
-import { ThemeProvider } from '@/shared/contexts/ThemeContext'
-import { Header } from '@/shared/components/molecules/Header'
+import { ThemeProvider } from '@/shared/contexts/theme-context'
+import { Header } from '@/shared/components/molecules/header'
 
 const meta: Meta<typeof Header> = {
   title: 'Components/Molecules/Header',

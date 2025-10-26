@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { ColorPalette } from '@/shared/components/design-system/ColorPalette'
+import { ColorPalette } from '@/shared/components/design-system/color-palette'
 
 const meta: Meta<typeof ColorPalette> = {
   title: 'Design System/Color Palette',

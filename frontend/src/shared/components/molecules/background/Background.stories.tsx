@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { ThemeProvider } from '@/shared/contexts/ThemeContext'
+import { ThemeProvider } from '@/shared/contexts/theme-context'
 import { Background } from './index'
 
 const meta: Meta<typeof Background> = {
