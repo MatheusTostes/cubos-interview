@@ -1,1 +1,2 @@
-export { RegisterForm } from './RegisterForm'
+export { RegisterForm } from './register-form'
+export { RegisterActions } from './register-actions'

@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import { useNavigation } from './useNavigation'
-import { RegisterFormData } from '@/features/Register/schemas/register.schema'
+import { RegisterFormData } from '@/features/register/schemas/register.schema'
 
 export interface User {
   id: string

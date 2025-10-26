@@ -4,7 +4,7 @@ import { ColorPalette } from '@/shared/components/design-system/ColorPalette'
 import { Icons } from '@/shared/components/design-system/Icons'
 import { useNavigation } from '@/shared/hooks'
 
-export default function Home() {
+export default function HomeFeature() {
   const { goToLogin, goToDashboard, goToUsers, goToProjects } = useNavigation()
 
   return (
