@@ -18,18 +18,18 @@ export const useNavigation = () => {
     // Route helpers
     goToUser: (id: string) => navigate(routeHelpers.userView(id)),
     goToUserEdit: (id: string) => navigate(routeHelpers.userEdit(id)),
-    goToProject: (id: string) => navigate(routeHelpers.projectView(id)),
-    goToProjectEdit: (id: string) => navigate(routeHelpers.projectEdit(id)),
+    goToMovie: (id: string) => navigate(routeHelpers.movieView(id)),
+    goToMovieEdit: (id: string) => navigate(routeHelpers.movieEdit(id)),
 
     // Predefined routes
     goToHome: () => navigate(ROUTES.HOME),
-    goToLogin: () => navigate(ROUTES.LOGIN),
-    goToRegister: () => navigate(ROUTES.REGISTER),
-    goToDashboard: () => navigate(ROUTES.DASHBOARD),
-    goToProfile: () => navigate(ROUTES.PROFILE),
-    goToSettings: () => navigate(ROUTES.SETTINGS),
-    goToUsers: () => navigate(ROUTES.USERS.LIST),
-    goToProjects: () => navigate(ROUTES.PROJECTS.LIST),
+    goToLogin: () => navigate(ROUTES.AUTH.LOGIN),
+    goToRegister: () => navigate(ROUTES.AUTH.REGISTER),
+    goToDashboard: () => navigate(ROUTES.PROTECTED.DASHBOARD),
+    goToProfile: () => navigate(ROUTES.PROTECTED.PROFILE),
+    goToSettings: () => navigate(ROUTES.PROTECTED.SETTINGS),
+    goToUsers: () => navigate(ROUTES.PROTECTED.USERS.LIST),
+    goToMovies: () => navigate(ROUTES.PROTECTED.MOVIES.LIST),
 
     // Current location info
     currentPath: location.pathname,
