@@ -6,11 +6,11 @@ Quando rodar o backend no Docker, você precisará dessas variáveis:
 
 ```env
 # Cloudflare R2
-R2_PUBLIC_URL="https://pub-9ebfed913b894a9480d9ad399ae4d639.r2.dev"
-R2_ADDRESS="https://0b56a0b0443bced3627f43e926640543.r2.cloudflarestorage.com"
+R2_PUBLIC_URL="https://pub-xxxxxxxxxxx.r2.dev"
+R2_ADDRESS="https://xxxxxxxxxxx.r2.cloudflarestorage.com"
 R2_BUCKET_NAME="cubos-movies"
-R2_ACCESS_KEY_ID="05361bd721110f6eed645bd7519e9a3d"
-R2_SECRET_ACCESS_KEY="b0386da21046c73a4da310eb2f68bc58f237e6ec350740b0b93057141924e1fe"
+R2_ACCESS_KEY_ID="xxxxxxxxxxx"
+R2_SECRET_ACCESS_KEY="xxxxxxxxxxx"
 ```
 
 ## Adicionando ao docker-compose.yml
@@ -23,8 +23,8 @@ Copie o serviço `backend` do arquivo `docker-compose.example.yml` e ajuste as v
 backend:
   build: ./backend
   environment:
-    R2_PUBLIC_URL: 'https://pub-9ebfed913b894a9480d9ad399ae4d639.r2.dev'
-    R2_ADDRESS: 'https://0b56a0b0443bced3627f43e926640543.r2.cloudflarestorage.com'
+    R2_PUBLIC_URL: 'https://pub-xxxxxxxxxxx.r2.dev'
+    R2_ADDRESS: 'https://xxxxxxxxxxx.r2.cloudflarestorage.com'
     R2_BUCKET_NAME: 'cubos-movies'
     R2_ACCESS_KEY_ID: 'sua-access-key'
     R2_SECRET_ACCESS_KEY: 'sua-secret-key'

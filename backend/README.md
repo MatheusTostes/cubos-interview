@@ -111,7 +111,7 @@ yarn start:prod
 Acesse a documentação completa da API em:
 
 ```
-http://localhost:3000/api/docs
+http://localhost:8080/api/docs
 ```
 
 ## 🔐 Autenticação
@@ -120,7 +120,7 @@ O sistema usa **JWT** para autenticação. Para acessar rotas protegidas:
 
 ### Via Swagger
 
-1. Acesse `http://localhost:3000/api/docs`
+1. Acesse `http://localhost:8080/api/docs`
 2. Faça login em `POST /api/auth/login`
 3. Copie o `access_token` retornado
 4. Clique em "Authorize" (🔓 no topo da página)
@@ -138,14 +138,14 @@ Authorization: Bearer <seu-token-jwt>
 **Exemplo com curl:**
 
 ```bash
-curl -X GET http://localhost:3000/api/users/me \
+curl -X GET http://localhost:8080/api/users/me \
   -H "Authorization: Bearer seu-token-aqui"
 ```
 
 ### Criando um usuário de teste
 
 ```bash
-curl -X POST http://localhost:3000/api/auth/register \
+curl -X POST http://localhost:8080/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{"email":"teste@example.com","name":"Teste","password":"123456"}'
 ```
@@ -366,7 +366,7 @@ docker-compose up -d
 yarn prisma:migrate
 ```
 
-### Porta 3000 já está em uso
+### Porta 8080 já está em uso
 
 Altere a porta em `.env`:
 

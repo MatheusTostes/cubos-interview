@@ -1,0 +1,144 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relações
+  watchedMovies UserMovie[]
+
+  @@map("users")
+}
+
+model Movie {
+  id                String          @id @default(uuid())
+  primaryTitle      String
+  originalTitle     String
+  primaryImageUrl   String
+  secondaryImageUrl String
+  plot              String
+  subTitle          String
+  releaseDate       DateTime
+  runtimeSeconds    Int            // em segundos
+  trailerUrl        String
+  budget            Float
+  revenue           Float
+  profit            Float          // calculado: revenue - budget
+  aggregateRating   Float          @default(0) // Nota média (0 a 10)
+  voteCount         Int            @default(0) // Número de votos
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  // Relações
+  genres           MovieGenre[]
+  languages        MovieLanguage[]
+  classificationId String
+  classification   Classification  @relation(fields: [classificationId], references: [id])
+  situationId      String
+  situation        Situation       @relation(fields: [situationId], references: [id])
+  watchedBy        UserMovie[]
+
+  @@map("movies")
+}
+
+model Genre {
+  id        String       @id @default(uuid())
+  name      String       @unique
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  // Relações
+  movies MovieGenre[]
+
+  @@map("genres")
+}
+
+model Language {
+  id        String   @id @default(uuid())
+  code      String   @unique // ISO 639-1 code (pt, en, es)
+  name      String   // Português, English, Español
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relações
+  movies MovieLanguage[]
+
+  @@map("languages")
+}
+
+model Classification {
+  id        String   @id @default(uuid())
+  name      String   @unique // "Livre", "10+", "12+", "14+", "16+", "18+"
+  age       Int      // Idade mínima
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relações
+  movies Movie[]
+
+  @@map("classifications")
+}
+
+model Situation {
+  id        String   @id @default(uuid())
+  name      String   @unique // "Lançado", "Em Breve", "Em Produção", etc.
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relações
+  movies Movie[]
+
+  @@map("situations")
+}
+
+model MovieGenre {
+  movieId String
+  movie   Movie  @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  genreId String
+  genre   Genre  @relation(fields: [genreId], references: [id], onDelete: Cascade)
+
+  @@id([movieId, genreId])
+  @@map("movie_genres")
+}
+
+model MovieLanguage {
+  movieId    String
+  movie      Movie    @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  languageId String
+  language   Language @relation(fields: [languageId], references: [id], onDelete: Cascade)
+
+  @@id([movieId, languageId])
+  @@map("movie_languages")
+}
+
+
+model UserMovie {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  movieId   String
+  movie     Movie    @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  watched   Boolean  @default(false)
+  watchedAt DateTime?
+  rating    Float?   // 0 a 10 (avaliação do usuário)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, movieId])
+  @@map("user_movies")
+}
+
