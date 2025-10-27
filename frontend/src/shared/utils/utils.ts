@@ -1,6 +1,42 @@
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { type ClassValue, clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
+}
+
+export function runtimeSecondsToHours(runtimeSeconds: number) {
+  // expected fomat 3:30
+  const hours = Math.floor(runtimeSeconds / 3600)
+  const minutes = runtimeSeconds % 3600
+  return `${hours}h ${Math.floor(minutes / 30)
+    .toString()
+    .padStart(2, '0')}m`
+}
+
+export function formatCurrency(amount: number) {
+  // format but dont convert, all the values will saved and mantained as USA Dólar
+  // we need keep only 5 numbers on view, check this example $332.99M
+  const absAmount = Math.abs(amount)
+
+  // Billions: $XXX.XXB
+  if (absAmount >= 1_000_000_000) {
+    const billions = amount / 1_000_000_000
+    return `$${billions.toFixed(2)}B`
+  }
+
+  // Millions: $XXX.XXM (example: $332.99M which shows 5 digits: 33299)
+  if (absAmount >= 1_000_000) {
+    const millions = amount / 1_000_000
+    return `$${millions.toFixed(2)}M`
+  }
+
+  // Thousands: $XXX.XXK
+  if (absAmount >= 1_000) {
+    const thousands = amount / 1_000
+    return `$${thousands.toFixed(2)}K`
+  }
+
+  // Regular format: $XXXX.XX
+  return `$${amount.toFixed(2)}`
 }
