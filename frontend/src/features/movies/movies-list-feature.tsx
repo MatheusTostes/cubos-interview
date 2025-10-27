@@ -9,7 +9,7 @@ import { DebounceInput } from '@/shared/components/molecules/debounce-input'
 import { useUrlParams } from '@/shared/hooks'
 import { MoviesPagination } from './components/movies-pagination'
 
-export default function ListMoviesFeature() {
+export default function MoviesListFeature() {
   const { params, updateParams } = useUrlParams()
 
   const searchValue = params.search || ''

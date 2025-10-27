@@ -5,9 +5,12 @@ import { useState } from 'react'
 import { cn } from '@/shared/utils'
 import { VStack } from '@/shared/components/atoms/vstack'
 import { RatingCircleGraph } from './rating-circle-graph'
+import { useNavigate } from 'react-router-dom'
+import { routeHelpers } from '@/shared/constants'
 
 export const MovieCard = ({ movie }: { movie: Movie }) => {
   const [isHovered, setIsHovered] = useState(false)
+  const navigate = useNavigate()
 
   const handleMouseEnter = () => {
     setIsHovered(true)
@@ -17,12 +20,17 @@ export const MovieCard = ({ movie }: { movie: Movie }) => {
     setIsHovered(false)
   }
 
+  const handleClick = () => {
+    navigate(routeHelpers.movieView(movie.id))
+  }
+
   return (
     <Card.Root
       key={movie.id}
       className="relative h-[281px] w-full cursor-pointer  overflow-hidden rounded-md p-0 shadow-[0_0px_5px_rgba(0,0,0,0.2)] sm:h-[355px]"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
     >
       <VStack
         className={cn(
@@ -30,7 +38,9 @@ export const MovieCard = ({ movie }: { movie: Movie }) => {
           isHovered ? 'opacity-100' : 'opacity-0'
         )}
       >
-        <RatingCircleGraph rating={movie.rating.aggregateRating} />
+        <VStack className="absolute left-[50%] top-[40%] h-32 w-32 translate-x-[-50%] translate-y-[-50%] rounded-full bg-black bg-opacity-40 backdrop-blur-sm">
+          <RatingCircleGraph rating={movie.rating.aggregateRating} />
+        </VStack>
       </VStack>
 
       <Card.Content className="h-full w-full p-0">

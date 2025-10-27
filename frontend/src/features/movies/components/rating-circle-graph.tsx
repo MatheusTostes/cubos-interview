@@ -1,7 +1,16 @@
 import { VStack } from '@/shared/components/atoms/vstack'
 import { Typography } from '@/shared/components/atoms/typography'
+import { cn } from '@/shared/utils/utils'
 
-export const RatingCircleGraph = ({ rating }: { rating: number }) => {
+export type RatingCircleGraphProps = {
+  rating: number
+  className?: string
+}
+
+export const RatingCircleGraph = ({
+  rating,
+  className,
+}: RatingCircleGraphProps) => {
   const percentage = (rating / 10) * 100
   const radius = 50
   const circumference = 2 * Math.PI * radius
@@ -11,7 +20,7 @@ export const RatingCircleGraph = ({ rating }: { rating: number }) => {
   }
 
   return (
-    <VStack className="absolute left-[50%] top-[40%] h-32 w-32 translate-x-[-50%] translate-y-[-50%] rounded-full bg-black bg-opacity-40 backdrop-blur-sm">
+    <VStack className={cn('relative scale-125', className)}>
       <svg width="128" height="128" className="-rotate-90 transform">
         <circle
           cx="64"
@@ -25,7 +34,7 @@ export const RatingCircleGraph = ({ rating }: { rating: number }) => {
           cx="64"
           cy="64"
           r={radius}
-          stroke="yellow"
+          stroke="#FFD700"
           strokeWidth="8"
           fill="none"
           strokeDasharray={`${(percentage / 100) * circumference}, ${circumference}`}

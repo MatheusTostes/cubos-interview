@@ -4,6 +4,7 @@ import HomePage from '@/pages/home-page'
 import LoginPage from '@/pages/auth/login-page'
 import RegisterPage from '@/pages/auth/register-page'
 import MoviesPage from './pages/movies/movies-page'
+import MoviePage from './pages/movies/[id]'
 
 export function AppRoutes() {
   return (
@@ -14,6 +15,7 @@ export function AppRoutes() {
       <Route path={ROUTES.AUTH.REGISTER} element={<RegisterPage />} />
 
       <Route path={ROUTES.PROTECTED.MOVIES.LIST} element={<MoviesPage />} />
+      <Route path={ROUTES.PROTECTED.MOVIES.VIEW} element={<MoviePage />} />
     </Routes>
   )
 }

@@ -19,8 +19,47 @@ export type Movie = {
   plot: string
 }
 
-export type MoviesResponse = {
-  titles: Movie[]
-  totalCount: number
-  nextPageToken: string
+export type MovieDetails = {
+  id: string
+  primaryTitle: string
+  originalTitle: string
+  primaryImage: {
+    url: string
+  }
+  secondaryImage: {
+    url: string
+  }
+  plot: string
+  effectPhrase: string
+  releaseDate: string
+  runtimeSeconds: number
+  classification: string
+  situation:
+    | 'Released'
+    | 'Upcoming'
+    | 'In Production'
+    | 'Post Production'
+    | 'Cancelled'
+    | 'Paused'
+    | 'Completed'
+  language: Language
+  genres: Genre[]
+  rating: {
+    aggregateRating: number
+    voteCount: number
+  }
+  budget: number
+  revenue: number
+  profit: number
+}
+
+export type Language = {
+  id: number
+  code: string
+  name: string
+}
+
+export type Genre = {
+  id: number
+  name: string
 }

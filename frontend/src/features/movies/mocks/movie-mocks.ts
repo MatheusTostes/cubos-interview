@@ -1,4 +1,4 @@
-import { Movie } from '../types/movie-types'
+import { Movie, MovieDetails } from '../types/movie-types'
 
 export const movieMocks: Movie[] = [
   {
@@ -541,22 +541,37 @@ export const movieMocks: Movie[] = [
   },
 ]
 
-export const movieMock: Movie = {
+export const movieMock: MovieDetails = {
   id: 'tt32549601',
-  type: 'movie',
   primaryTitle: 'Caramelo',
   originalTitle: 'Caramelo',
   primaryImage: {
     url: 'https://m.media-amazon.com/images/M/MV5BNTRlMzI4MDItZDJiNS00YmNmLWE1MmQtNjZjYTVhNDdmYjQ1XkEyXkFqcGc@._V1_.jpg',
-    width: 1080,
-    height: 1350,
   },
-  startYear: 2025,
-  runtimeSeconds: 6060,
-  genres: ['Comedy', 'Drama', 'Family'],
-  rating: {
-    aggregateRating: 7.2,
-    voteCount: 4613,
+  secondaryImage: {
+    url: 'https://m.media-amazon.com/images/M/MV5BNTRlMzI4MDItZDJiNS00YmNmLWE1MmQtNjZjYTVhNDdmYjQ1XkEyXkFqcGc@._V1_.jpg',
   },
   plot: 'After a life-changing diagnosis, a promising chef finds hope and humor with the help of a fur-midable dog friend.',
+  effectPhrase: 'A promise of hope and humor',
+  releaseDate: '2025-10-26',
+  classification: '13',
+  situation: 'Released',
+  language: {
+    id: 1,
+    code: 'PT',
+    name: 'Português',
+  },
+  runtimeSeconds: 6060,
+  genres: [
+    { id: 1, name: 'Comedy' },
+    { id: 2, name: 'Drama' },
+    { id: 3, name: 'Family' },
+  ],
+  rating: {
+    aggregateRating: 7.2,
+    voteCount: 4671,
+  },
+  budget: 122234223.0,
+  revenue: 2123.0,
+  profit: 56454556465.0,
 }
