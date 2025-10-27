@@ -9,7 +9,7 @@ import { ReleaseIntervalDateInput } from './release-interval-date-input'
 import { GenreTagsSelect } from './genre-tags-select'
 import { DateRange } from 'react-day-picker'
 import { useUrlParams } from '@/shared/hooks'
-import { type Genre, GENRES } from '../types/genre'
+import { type Genre, GENRES } from '../../types/genre'
 
 interface FiltersDialogProps {
   children: React.ReactNode

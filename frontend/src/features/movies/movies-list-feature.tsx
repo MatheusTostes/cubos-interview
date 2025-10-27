@@ -1,13 +1,13 @@
 import { Container } from '@/shared/components/atoms/container'
 import { movieMocks } from './mocks/movie-mocks'
-import { MovieCard } from './components/movie-card'
 import { HStack } from '@/shared/components/atoms/hstack'
 import { Button } from '@/shared/components/atoms/button'
 import { Typography } from '@/shared/components/atoms/typography'
-import { FiltersDialog } from './components/filters-dialog'
+import { FiltersDialog } from './components/movies-filter/filters-dialog'
 import { DebounceInput } from '@/shared/components/molecules/debounce-input'
 import { useUrlParams } from '@/shared/hooks'
-import { MoviesPagination } from './components/movies-pagination'
+import { MoviesPagination } from './components/movies-list/movies-pagination'
+import { MovieCard } from './components/movies-list/movie-card'
 
 export default function MoviesListFeature() {
   const { params, updateParams } = useUrlParams()

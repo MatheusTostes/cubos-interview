@@ -1,34 +1,20 @@
 export type Movie = {
   id: string
-  type: string
   primaryTitle: string
-  originalTitle: string
-  primaryImage: {
-    url: string
-    width: number
-    height: number
-  }
-  startYear: number
-  endYear?: number
-  runtimeSeconds?: number
+  primaryImageUrl: string
   genres: string[]
   rating: {
     aggregateRating: number
     voteCount: number
   }
-  plot: string
 }
 
 export type MovieDetails = {
   id: string
   primaryTitle: string
   originalTitle: string
-  primaryImage: {
-    url: string
-  }
-  secondaryImage: {
-    url: string
-  }
+  primaryImageUrl: string
+  secondaryImageUrl: string
   plot: string
   effectPhrase: string
   releaseDate: string
@@ -51,6 +37,7 @@ export type MovieDetails = {
   budget: number
   revenue: number
   profit: number
+  trailerUrl: string
 }
 
 export type Language = {

@@ -1,10 +1,10 @@
 import { Card } from '@/shared/components/atoms/card'
-import { Movie } from '../types/movie-types'
+import { Movie } from '../../types/movie-types'
 import { Typography } from '@/shared/components/atoms/typography'
 import { useState } from 'react'
 import { cn } from '@/shared/utils'
 import { VStack } from '@/shared/components/atoms/vstack'
-import { RatingCircleGraph } from './rating-circle-graph'
+import { RatingCircleGraph } from '../rating-circle-graph'
 import { useNavigate } from 'react-router-dom'
 import { routeHelpers } from '@/shared/constants'
 
@@ -45,7 +45,7 @@ export const MovieCard = ({ movie }: { movie: Movie }) => {
 
       <Card.Content className="h-full w-full p-0">
         <img
-          src={movie.primaryImage?.url ?? ''}
+          src={movie.primaryImageUrl ?? ''}
           alt={movie.primaryTitle}
           className="h-full w-full object-cover"
         />

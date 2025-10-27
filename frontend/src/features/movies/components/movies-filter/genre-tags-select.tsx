@@ -2,7 +2,7 @@ import { Button } from '@/shared/components/atoms/button'
 import { Input } from '@/shared/components/atoms/input'
 import { Typography } from '@/shared/components/atoms/typography'
 import { VStack } from '@/shared/components/atoms/vstack'
-import { GENRES, type Genre } from '../types/genre'
+import { GENRES, type Genre } from '../../types/genre'
 
 export type GenreTagsSelectProps = {
   selectedGenres: Genre[]
