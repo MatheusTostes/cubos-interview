@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { APP_GUARD } from '@nestjs/core'
 import { LoggerModule } from 'nestjs-pino'
+import { BullModule } from '@nestjs/bullmq'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { PrismaModule } from './shared/prisma/prisma.module'
@@ -14,6 +15,7 @@ import { ClassificationsModule } from './features/classifications/classification
 import { SituationsModule } from './features/situations/situations.module'
 import { UploadModule } from './features/upload/upload.module'
 import { JwtAuthGuard } from './shared/guards/jwt-auth.guard'
+import { EmailModule } from './features/email/email.module'
 
 @Module({
   imports: [
@@ -35,6 +37,12 @@ import { JwtAuthGuard } from './shared/guards/jwt-auth.guard'
             : undefined,
       },
     }),
+    BullModule.forRoot({
+      connection: {
+        host: process.env.REDIS_HOST || 'localhost',
+        port: parseInt(process.env.REDIS_PORT || '6379'),
+      },
+    }),
     PrismaModule,
     AuthModule,
     UsersModule,
@@ -44,6 +52,7 @@ import { JwtAuthGuard } from './shared/guards/jwt-auth.guard'
     ClassificationsModule,
     SituationsModule,
     UploadModule,
+    EmailModule,
   ],
   controllers: [AppController],
   providers: [

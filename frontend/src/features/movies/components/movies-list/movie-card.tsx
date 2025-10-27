@@ -39,7 +39,7 @@ export const MovieCard = ({ movie }: { movie: Movie }) => {
           isHovered ? 'opacity-100' : 'opacity-0'
         )}
       >
-        <VStack className="absolute left-[50%] top-[40%] h-32 w-32 translate-x-[-50%] translate-y-[-50%] rounded-full bg-black bg-opacity-40 backdrop-blur-sm">
+        <VStack className="absolute left-[50%] top-[40%] z-20 h-32 w-32 translate-x-[-50%] translate-y-[-50%] rounded-full bg-black bg-opacity-40 backdrop-blur-sm">
           <RatingCircleGraph rating={movie.rating.aggregateRating} />
         </VStack>
       </VStack>

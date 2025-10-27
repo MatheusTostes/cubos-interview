@@ -178,4 +178,11 @@ export class MoviesController {
 
     return this.moviesService.remove(id)
   }
+
+  @Post(':id/test-notification')
+  @ApiOperation({ summary: 'Testar envio de notificação (DEV ONLY)' })
+  @ApiResponse({ status: 200, description: 'Notificação enviada' })
+  async testNotification(@Param('id') id: string) {
+    return this.moviesService.testNotification(id)
+  }
 }

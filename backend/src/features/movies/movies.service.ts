@@ -1,4 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
+import { InjectQueue } from '@nestjs/bull'
+import { Queue } from 'bullmq'
 import { PrismaService } from '../../shared/prisma/prisma.service'
 import { CreateMovieDto } from './dto/create-movie.dto'
 import { UpdateMovieDto } from './dto/update-movie.dto'
@@ -8,7 +10,9 @@ import { UploadService } from '../upload/upload.service'
 export class MoviesService {
   constructor(
     private prisma: PrismaService,
-    private uploadService: UploadService
+    private uploadService: UploadService,
+    @InjectQueue('movie-notifications')
+    private readonly notificationQueue: Queue
   ) {}
 
   async create(
@@ -87,7 +91,67 @@ export class MoviesService {
       },
     })
 
+    // Verificar se a data de lançamento é futura e agendar email
+    await this.scheduleReleaseNotificationIfFuture(movie)
+
     return movie
+  }
+
+  // Método auxiliar para agendar notificação de lançamento
+  private async scheduleReleaseNotificationIfFuture(movie: any) {
+    const releaseDate = new Date(movie.releaseDate)
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+
+    // Se a data de lançamento é no futuro, agendar email
+    if (releaseDate > today) {
+      const delay = releaseDate.getTime() - today.getTime()
+
+      await this.notificationQueue.add(
+        'send-release-notification',
+        {
+          movieId: movie.id,
+          userId: movie.userId,
+          releaseDate: movie.releaseDate,
+          movieTitle: movie.primaryTitle,
+        },
+        {
+          delay,
+          jobId: `movie-${movie.id}`,
+          removeOnComplete: true,
+        }
+      )
+
+      console.log(
+        `Scheduled email notification for movie ${movie.primaryTitle} on ${releaseDate.toLocaleDateString()}`
+      )
+    }
+  }
+
+  // Método temporário para testar envio de notificação imediatamente
+  async testNotification(movieId: string) {
+    const movie = await this.findOne(movieId)
+
+    // Envia job imediatamente (delay: 0)
+    await this.notificationQueue.add(
+      'send-release-notification',
+      {
+        movieId: movie.id,
+        userId: movie.userId,
+        releaseDate: movie.releaseDate,
+        movieTitle: movie.primaryTitle,
+      },
+      {
+        delay: 0, // Processa imediatamente
+        jobId: `test-movie-${movie.id}-${Date.now()}`,
+        removeOnComplete: true,
+      }
+    )
+
+    return {
+      message: 'Notification queued for immediate processing',
+      movie: movie.primaryTitle,
+    }
   }
 
   async findAll(
