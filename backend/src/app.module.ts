@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { APP_GUARD } from '@nestjs/core'
+import { LoggerModule } from 'nestjs-pino'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { PrismaModule } from './shared/prisma/prisma.module'
@@ -19,6 +20,20 @@ import { JwtAuthGuard } from './shared/guards/jwt-auth.guard'
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
+    }),
+    LoggerModule.forRoot({
+      pinoHttp: {
+        transport:
+          process.env.NODE_ENV === 'development'
+            ? {
+                target: 'pino-pretty',
+                options: {
+                  singleLine: false,
+                  colorize: true,
+                },
+              }
+            : undefined,
+      },
     }),
     PrismaModule,
     AuthModule,

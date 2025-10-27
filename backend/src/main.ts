@@ -2,9 +2,11 @@ import { NestFactory } from '@nestjs/core'
 import { ValidationPipe } from '@nestjs/common'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 import { AppModule } from './app.module'
+import { Logger } from 'nestjs-pino'
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule)
+  const app = await NestFactory.create(AppModule, { bufferLogs: true })
+  app.useLogger(app.get(Logger))
 
   // Global prefix
   app.setGlobalPrefix('api')
@@ -46,9 +48,12 @@ async function bootstrap() {
   SwaggerModule.setup('api/docs', app, document)
 
   const port = process.env.PORT || 3000
+  const logger = app.get(Logger)
+
   await app.listen(port)
-  console.log(`Application is running on: http://localhost:${port}`)
-  console.log(`Swagger documentation: http://localhost:${port}/api/docs`)
+
+  logger.log(`Application is running on: http://localhost:${port}`)
+  logger.log(`Swagger documentation: http://localhost:${port}/api/docs`)
 }
 
 bootstrap()
