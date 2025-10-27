@@ -20,7 +20,7 @@ export const DetailsDataSectionContent = ({
         <HStack className="min-w-0 flex-col-reverse items-center gap-4 min-[1145px]:flex-row">
           <VStack className="w-full items-center p-0 min-[1145px]:w-1/2 min-[1145px]:items-start min-[1145px]:p-4">
             <Typography variant="p" font="montserrat" className="italic">
-              {movie.effectPhrase}
+              {movie.subTitle}
             </Typography>
           </VStack>
 

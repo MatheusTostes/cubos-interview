@@ -356,10 +356,10 @@ export const movieMock: MovieDetails = {
   secondaryImageUrl:
     'https://m.media-amazon.com/images/M/MV5BNTRlMzI4MDItZDJiNS00YmNmLWE1MmQtNjZjYTVhNDdmYjQ1XkEyXkFqcGc@._V1_.jpg',
   plot: 'After a life-changing diagnosis, a promising chef finds hope and humor with the help of a fur-midable dog friend.',
-  effectPhrase: 'A promise of hope and humor',
+  subTitle: 'A promise of hope and humor',
   releaseDate: '2025-10-26',
-  classification: '13',
-  situation: 'Released',
+  classification: '16',
+  situation: 'Lançado',
   language: {
     id: 1,
     code: 'PT',

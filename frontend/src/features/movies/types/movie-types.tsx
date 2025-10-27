@@ -16,18 +16,18 @@ export type MovieDetails = {
   primaryImageUrl: string
   secondaryImageUrl: string
   plot: string
-  effectPhrase: string
+  subTitle: string
   releaseDate: string
   runtimeSeconds: number
   classification: string
   situation:
-    | 'Released'
-    | 'Upcoming'
-    | 'In Production'
-    | 'Post Production'
-    | 'Cancelled'
-    | 'Paused'
-    | 'Completed'
+    | 'Lançado'
+    | 'Em Breve'
+    | 'Em Produção'
+    | 'Pós-Produção'
+    | 'Cancelado'
+    | 'Pausado'
+    | 'Completo'
   language: Language
   genres: Genre[]
   rating: {

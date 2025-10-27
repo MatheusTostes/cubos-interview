@@ -4,6 +4,20 @@ import { DetailsMovieImage } from './details-movie-image'
 import { DetailsDataSectionHeader } from './details-data-section-header'
 import { DetailsDataSectionContent } from './details-data-section-content'
 
+// Mapear situação do tipo MovieDetails para o valor do formulário
+const mapSituationToForm = (situation: MovieDetails['situation']): string => {
+  const mapping: Record<string, string> = {
+    Lançado: 'Lançado',
+    'Em Breve': 'Em Breve',
+    'Em Produção': 'Em Produção',
+    'Pós-Produção': 'Em Produção',
+    Cancelado: 'Cancelado',
+    Pausado: 'Cancelado',
+    Completo: 'Lançado',
+  }
+  return mapping[situation] || 'Lançado'
+}
+
 export type MovieDetailsDataSectionProps = {
   movie: MovieDetails
 }
@@ -32,8 +46,25 @@ export const MovieDetailsDataSection = ({
         />
 
         <DetailsDataSectionHeader
-          title={movie.primaryTitle}
-          originalTitle={movie.primaryTitle}
+          movie={{
+            id: movie.id,
+            primaryTitle: movie.primaryTitle,
+            originalTitle: movie.originalTitle,
+            primaryImageUrl: movie.primaryImageUrl,
+            secondaryImageUrl: movie.secondaryImageUrl,
+            plot: movie.plot,
+            subTitle: movie.subTitle,
+            releaseDate: movie.releaseDate,
+            runtimeSeconds: movie.runtimeSeconds,
+            classification: movie.classification,
+            situation: movie.situation,
+            genres: movie.genres.map((g) => g.id.toString()),
+            aggregateRating: movie.rating.aggregateRating,
+            voteCount: movie.rating.voteCount,
+            budget: movie.budget,
+            revenue: movie.revenue,
+            trailerUrl: movie.trailerUrl,
+          }}
         />
 
         <DetailsDataSectionContent movie={movie} />
