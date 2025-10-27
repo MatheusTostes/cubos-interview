@@ -8,12 +8,14 @@ import * as bcrypt from 'bcryptjs'
 import { PrismaService } from '../../shared/prisma/prisma.service'
 import { RegisterDto } from './dto/register.dto'
 import { LoginDto } from './dto/login.dto'
+import { EmailService } from '../email/email.service'
 
 @Injectable()
 export class AuthService {
   constructor(
     private prisma: PrismaService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private emailService: EmailService
   ) {}
 
   async register(registerDto: RegisterDto) {
@@ -57,6 +59,17 @@ export class AuthService {
 
     // Gera os tokens JWT
     const tokens = await this.generateTokens(user.id, user.email)
+
+    // Envia email de boas-vindas (não bloqueia o registro se falhar)
+    try {
+      await this.emailService.sendWelcomeEmail({
+        to: user.email,
+        userName: user.name,
+      })
+    } catch (error) {
+      // Log erro mas não interrompe o registro
+      console.error('Failed to send welcome email:', error)
+    }
 
     return {
       user,

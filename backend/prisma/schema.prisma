@@ -54,7 +54,7 @@ model Movie {
   languageId       String
   language         Language        @relation(fields: [languageId], references: [id])
   watchedBy        UserMovie[]
-  owner            User            @relation("MovieOwner", fields: [userId], references: [id])
+  owner            User            @relation("MovieOwner", fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("movies")
 }
