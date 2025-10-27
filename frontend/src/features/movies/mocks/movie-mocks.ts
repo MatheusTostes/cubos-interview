@@ -371,10 +371,8 @@ export const movieMock: MovieDetails = {
     { id: 2, name: 'Drama' },
     { id: 3, name: 'Family' },
   ],
-  rating: {
-    aggregateRating: 7.2,
-    voteCount: 4671,
-  },
+  aggregateRating: 7.2,
+  voteCount: 4671,
   budget: 122234223.0,
   revenue: 2123.0,
   profit: 56454556465.0,

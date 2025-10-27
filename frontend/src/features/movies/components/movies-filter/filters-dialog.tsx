@@ -9,7 +9,7 @@ import { ReleaseIntervalDateInput } from './release-interval-date-input'
 import { GenreTagsSelect } from './genre-tags-select'
 import { DateRange } from 'react-day-picker'
 import { useUrlParams } from '@/shared/hooks'
-import { type Genre, GENRES } from '../../types/genre'
+import { type Genre, useGenres } from '@/features/genres'
 
 interface FiltersDialogProps {
   children: React.ReactNode
@@ -27,6 +27,7 @@ interface FiltersFormData {
 export function FiltersDialog({ children }: FiltersDialogProps) {
   const [open, setOpen] = useState(false)
   const { params, updateParams, clearParams } = useUrlParams()
+  const { data: genresData, isLoading: isLoadingGenres } = useGenres()
 
   const { handleSubmit, setValue, watch, reset } = useForm<FiltersFormData>({
     defaultValues: {
@@ -44,6 +45,9 @@ export function FiltersDialog({ children }: FiltersDialogProps) {
 
   // Initialize form values from URL params
   useEffect(() => {
+    // Wait for genres to load
+    if (!genresData) return
+
     const initialValues: FiltersFormData = {
       genres: [],
       durationRange: { min: 0, max: 10 },
@@ -51,10 +55,9 @@ export function FiltersDialog({ children }: FiltersDialogProps) {
     }
 
     // Parse genres from URL
-    if (params.genres) {
-      const genreIds = params.genres.split(',').map((id) => id.trim())
-      const selectedGenres = GENRES.filter((genre) =>
-        genreIds.includes(genre.id)
+    if (params.genres && params.genres.length > 0) {
+      const selectedGenres = genresData.filter((genre) =>
+        params.genres!.includes(genre.id)
       )
       initialValues.genres = selectedGenres
     }
@@ -80,7 +83,7 @@ export function FiltersDialog({ children }: FiltersDialogProps) {
 
     // Reset form with initial values
     reset(initialValues)
-  }, [params, reset])
+  }, [params, reset, genresData])
 
   const handleDurationRangeChange = useCallback(
     (range: { min: number; max: number }) => {
@@ -106,21 +109,30 @@ export function FiltersDialog({ children }: FiltersDialogProps) {
   }
 
   const onSubmit = (data: FiltersFormData) => {
-    // Update URL params - only include non-empty values
+    // Update URL params - always include all params to properly clear them when empty
     const paramsToUpdate: any = {}
 
-    if (data.genres.length > 0) {
-      paramsToUpdate.genres = data.genres.map((g) => g.id).join(',')
-    }
+    // Always include genres (even if empty array) to clear from URL when needed
+    paramsToUpdate.genres = data.genres.map((g) => g.id)
 
+    // Duration filter
     if (data.durationRange.min !== data.durationRange.max) {
       paramsToUpdate.durationMin = (data.durationRange.min * 30).toString()
       paramsToUpdate.durationMax = (data.durationRange.max * 30).toString()
+    } else {
+      // Clear duration filters if range is reset
+      paramsToUpdate.durationMin = undefined
+      paramsToUpdate.durationMax = undefined
     }
 
+    // Date range filter
     if (data.dateRange?.from && data.dateRange?.to) {
       paramsToUpdate.releaseDateStart = data.dateRange.from.toISOString()
       paramsToUpdate.releaseDateEnd = data.dateRange.to.toISOString()
+    } else {
+      // Clear date filters if not selected
+      paramsToUpdate.releaseDateStart = undefined
+      paramsToUpdate.releaseDateEnd = undefined
     }
 
     // When applying filters, remove the page param to reset to page 1
@@ -174,8 +186,10 @@ export function FiltersDialog({ children }: FiltersDialogProps) {
             />
 
             <GenreTagsSelect
+              genres={genresData || []}
               selectedGenres={genres}
               handleToggleGenre={handleToggleGenre}
+              isLoading={isLoadingGenres}
             />
           </VStack>
 

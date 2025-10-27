@@ -7,11 +7,35 @@ import { useUrlParams } from '@/shared/hooks'
 import { MoviesPagination } from './components/movies-list/movies-pagination'
 import { MovieList } from './components/movies-list'
 import { AddMovieDrawer } from './components/movies-list/add-movie-drawer'
+import { useMovies } from './hooks/useMovies'
+import { useMemo } from 'react'
+
+const ITEMS_PER_PAGE = 10
 
 export default function MoviesListFeature() {
   const { params, updateParams } = useUrlParams()
 
   const searchValue = params.search || ''
+  const currentPage = parseInt(params.page as string) || 1
+
+  // Calcular skip baseado na página atual
+  const skip = useMemo(() => (currentPage - 1) * ITEMS_PER_PAGE, [currentPage])
+
+  // Buscar filmes da API
+  const { data, isLoading, isError } = useMovies({
+    skip,
+    take: ITEMS_PER_PAGE,
+    search: searchValue || undefined,
+    genres: params.genres as string[] | undefined,
+    classifications: params.classifications as string[] | undefined,
+    situations: params.situations as string[] | undefined,
+  })
+
+  // Calcular total de páginas
+  const totalPages = useMemo(() => {
+    if (!data) return 0
+    return Math.ceil(data.total / ITEMS_PER_PAGE)
+  }, [data])
 
   const handleSearchChange = (value: string) => {
     // When changing search, remove the page param to reset to page 1
@@ -46,9 +70,13 @@ export default function MoviesListFeature() {
         </HStack>
       </HStack>
 
-      <MovieList />
+      <MovieList
+        movies={data?.data || []}
+        isLoading={isLoading}
+        isError={isError}
+      />
 
-      <MoviesPagination totalPages={20} />
+      {totalPages > 0 && <MoviesPagination totalPages={totalPages} />}
     </>
   )
 }

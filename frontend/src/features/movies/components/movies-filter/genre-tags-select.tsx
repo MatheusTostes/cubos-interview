@@ -2,16 +2,20 @@ import { Button } from '@/shared/components/atoms/button'
 import { Input } from '@/shared/components/atoms/input'
 import { Typography } from '@/shared/components/atoms/typography'
 import { VStack } from '@/shared/components/atoms/vstack'
-import { GENRES, type Genre } from '../../types/genre'
+import { type Genre } from '@/features/genres'
 
 export type GenreTagsSelectProps = {
+  genres: Genre[]
   selectedGenres: Genre[]
   handleToggleGenre: (genre: Genre) => void
+  isLoading?: boolean
 }
 
 export const GenreTagsSelect = ({
+  genres,
   selectedGenres,
   handleToggleGenre,
+  isLoading,
 }: GenreTagsSelectProps) => {
   return (
     <Input.Root>
@@ -41,22 +45,28 @@ export const GenreTagsSelect = ({
         </div>
 
         <div className="grid h-[120px] grid-cols-2 gap-2 overflow-y-auto">
-          {GENRES.map((genre) => {
-            const isSelected = selectedGenres.some((g) => g.id === genre.id)
-            return (
-              <Button
-                key={genre.id}
-                type="button"
-                variant={isSelected ? 'default' : 'outline'}
-                onClick={() => handleToggleGenre(genre)}
-                className="justify-start"
-              >
-                <Typography variant="small" font="roboto">
-                  {genre.name}
-                </Typography>
-              </Button>
-            )
-          })}
+          {isLoading ? (
+            <Typography variant="small" className="text-muted-foreground">
+              Carregando gêneros...
+            </Typography>
+          ) : (
+            genres.map((genre) => {
+              const isSelected = selectedGenres.some((g) => g.id === genre.id)
+              return (
+                <Button
+                  key={genre.id}
+                  type="button"
+                  variant={isSelected ? 'default' : 'outline'}
+                  onClick={() => handleToggleGenre(genre)}
+                  className="justify-start"
+                >
+                  <Typography variant="small" font="roboto">
+                    {genre.name}
+                  </Typography>
+                </Button>
+              )
+            })
+          )}
         </div>
       </VStack>
     </Input.Root>

@@ -2,21 +2,31 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '@/shared/components/atoms/input'
 import { loginSchema, type LoginFormData } from '../schemas/login.schema'
-import { useAuth } from '@/shared/hooks/useAuth'
+import { useLogin } from '../hooks/useLogin'
 
 export const LoginForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   })
 
-  const { login } = useAuth()
+  const loginMutation = useLogin()
 
   const onSubmit = async (data: LoginFormData) => {
-    await login(data)
+    try {
+      await loginMutation.mutateAsync({
+        identifier: data.nameOrEmail,
+        password: data.password,
+      })
+    } catch (error: any) {
+      setError('root', {
+        message: error.message || 'Erro ao fazer login',
+      })
+    }
   }
 
   return (
@@ -31,6 +41,7 @@ export const LoginForm = () => {
           type="text"
           placeholder="Digite seu nome/E-mail"
           {...register('nameOrEmail')}
+          disabled={loginMutation.isPending}
         />
       </Input.Root>
 
@@ -40,8 +51,13 @@ export const LoginForm = () => {
           type="password"
           placeholder="Digite sua senha"
           {...register('password')}
+          disabled={loginMutation.isPending}
         />
       </Input.Root>
+
+      {errors.root && (
+        <p className="text-sm text-red-500">{errors.root.message}</p>
+      )}
     </form>
   )
 }

@@ -5,21 +5,32 @@ import {
   registerSchema,
   type RegisterFormData,
 } from '../schemas/register.schema'
-import { useAuth } from '@/shared/hooks/useAuth'
+import { useRegister } from '../hooks/useRegister'
 
 export const RegisterForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
   })
 
-  const { register: registerUser } = useAuth()
+  const registerMutation = useRegister()
 
   const onSubmit = async (data: RegisterFormData) => {
-    await registerUser(data)
+    try {
+      await registerMutation.mutateAsync({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      })
+    } catch (error: any) {
+      setError('root', {
+        message: error.message || 'Erro ao registrar',
+      })
+    }
   }
 
   return (
@@ -34,6 +45,7 @@ export const RegisterForm = () => {
           type="text"
           placeholder="Digite seu nome"
           {...register('name')}
+          disabled={registerMutation.isPending}
         />
       </Input.Root>
 
@@ -43,6 +55,7 @@ export const RegisterForm = () => {
           type="email"
           placeholder="Digite seu e-mail"
           {...register('email')}
+          disabled={registerMutation.isPending}
         />
       </Input.Root>
 
@@ -52,6 +65,7 @@ export const RegisterForm = () => {
           type="password"
           placeholder="Digite sua senha"
           {...register('password')}
+          disabled={registerMutation.isPending}
         />
       </Input.Root>
 
@@ -61,8 +75,13 @@ export const RegisterForm = () => {
           type="password"
           placeholder="Digite sua senha novamente"
           {...register('confirmPassword')}
+          disabled={registerMutation.isPending}
         />
       </Input.Root>
+
+      {errors.root && (
+        <p className="text-sm text-red-500">{errors.root.message}</p>
+      )}
     </form>
   )
 }

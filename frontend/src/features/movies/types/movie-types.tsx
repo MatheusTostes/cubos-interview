@@ -30,10 +30,8 @@ export type MovieDetails = {
     | 'Completo'
   language: Language
   genres: Genre[]
-  rating: {
-    aggregateRating: number
-    voteCount: number
-  }
+  aggregateRating: number
+  voteCount: number
   budget: number
   revenue: number
   profit: number

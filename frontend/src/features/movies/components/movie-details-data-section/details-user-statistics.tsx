@@ -4,6 +4,7 @@ import { HStack } from '@/shared/components/atoms/hstack'
 import { InfoCard } from './info-card'
 import { VStack } from '@/shared/components/atoms/vstack'
 import { RatingCircleGraph } from '../rating-circle-graph'
+import { formatNumberBR } from '@/shared/utils'
 
 export type DetailsUserStatisticsProps = {
   movie: MovieDetails
@@ -24,12 +25,12 @@ export const DetailsUserStatistics = ({
         <InfoCard
           className="min-w-20 flex-shrink min-[540px]:w-full min-[1361px]:w-auto"
           title="Votos"
-          value={movie.rating.voteCount.toString()}
+          value={formatNumberBR(movie.voteCount)}
         />
       </HStack>
 
       <VStack className="-ml-7 flex-shrink-0 scale-[0.6] rounded-full bg-black/20 backdrop-blur-sm min-[540px]:-ml-3 min-[1145px]:scale-75">
-        <RatingCircleGraph rating={movie.rating.aggregateRating} />
+        <RatingCircleGraph rating={movie.aggregateRating} />
       </VStack>
     </HStack>
   )

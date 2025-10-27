@@ -19,7 +19,7 @@ import {
   addMovieSchema,
   type AddMovieFormData,
 } from '../../schemas/add-movie.schema'
-import { GENRES } from '../../types/genre'
+import { useGenres } from '@/features/genres'
 
 export type AddMovieDrawerProps = {
   initialData?: any
@@ -30,6 +30,7 @@ export const AddMovieDrawer = ({
   initialData,
   mode = 'create',
 }: AddMovieDrawerProps) => {
+  const { data: genresData = [] } = useGenres()
   const [date, setDate] = useState<Date | undefined>(
     initialData?.releaseDate ? new Date(initialData.releaseDate) : undefined
   )
@@ -304,7 +305,7 @@ export const AddMovieDrawer = ({
                   {selectedGenres.length > 0 ? (
                     <div className="flex flex-wrap gap-2">
                       {selectedGenres.map((genreId: string) => {
-                        const genre = GENRES.find((g) => g.id === genreId)
+                        const genre = genresData.find((g) => g.id === genreId)
                         return (
                           <button
                             key={genreId}
@@ -331,7 +332,7 @@ export const AddMovieDrawer = ({
                 </div>
 
                 <div className="grid h-[120px] grid-cols-2 gap-2 overflow-y-auto">
-                  {GENRES.map((genre) => {
+                  {genresData.map((genre) => {
                     const isSelected = selectedGenres.includes(genre.id)
                     return (
                       <Button
