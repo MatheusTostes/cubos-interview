@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { HStack } from '@/shared/components/atoms/hstack'
 import { Button } from '@/shared/components/atoms/button'
 import { Typography } from '@/shared/components/atoms/typography'
@@ -8,7 +9,6 @@ import { MoviesPagination } from './components/movies-list/movies-pagination'
 import { MovieList } from './components/movies-list'
 import { AddMovieDrawer } from './components/movies-list/add-movie-drawer'
 import { useMovies } from './hooks/useMovies'
-import { useMemo } from 'react'
 
 const ITEMS_PER_PAGE = 10
 

@@ -2,11 +2,14 @@ import { Button } from '@/shared/components/atoms/button'
 import { HStack } from '@/shared/components/atoms/hstack'
 import { VStack } from '@/shared/components/atoms/vstack'
 import { Typography } from '@/shared/components/atoms/typography'
-import { useAuth, useNavigation } from '@/shared/hooks'
+import { useNavigation } from '@/shared/hooks'
 
-export const LoginActions = () => {
+interface LoginActionsProps {
+  isLoading?: boolean
+}
+
+export const LoginActions = ({ isLoading = false }: LoginActionsProps) => {
   const { goToRegister } = useNavigation()
-  const { isLoading } = useAuth()
 
   return (
     <VStack className="gap-2">

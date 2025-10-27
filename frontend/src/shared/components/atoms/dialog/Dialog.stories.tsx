@@ -62,7 +62,6 @@ export const WithForm: Story = {
     const [password, setPassword] = useState('')
 
     const handleSubmit = () => {
-      console.log({ email, password })
       setOpen(false)
     }
 
@@ -134,7 +133,6 @@ export const FiltersDialog: Story = {
     const [year, setYear] = useState('')
 
     const handleApplyFilters = () => {
-      console.log('Aplicar filtros:', { genre, rating, year })
       setOpen(false)
     }
 
@@ -224,7 +222,6 @@ export const ConfirmationDialog: Story = {
     const [open, setOpen] = useState(false)
 
     const handleConfirm = () => {
-      console.log('Action confirmed')
       setOpen(false)
     }
 

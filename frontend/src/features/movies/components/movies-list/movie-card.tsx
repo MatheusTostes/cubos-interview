@@ -7,6 +7,7 @@ import { VStack } from '@/shared/components/atoms/vstack'
 import { RatingCircleGraph } from '../rating-circle-graph'
 import { useNavigate } from 'react-router-dom'
 import { routeHelpers } from '@/shared/constants'
+import { ProgressiveImage } from '@/shared/components/atoms/progressive-image'
 
 export const MovieCard = ({ movie }: { movie: Movie }) => {
   const [isHovered, setIsHovered] = useState(false)
@@ -44,10 +45,10 @@ export const MovieCard = ({ movie }: { movie: Movie }) => {
       </VStack>
 
       <Card.Content className="h-full w-full p-0">
-        <img
+        <ProgressiveImage
           src={movie.primaryImageUrl ?? ''}
           alt={movie.primaryTitle}
-          className="h-full w-full object-cover"
+          className="h-full w-full"
         />
       </Card.Content>
 

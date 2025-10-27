@@ -46,13 +46,11 @@ export interface MovieFromAPI {
       name: string
     }
   }[]
-  languages: {
-    language: {
-      id: string
-      code: string
-      name: string
-    }
-  }[]
+  language: {
+    id: string
+    code: string
+    name: string
+  }
   classification: {
     id: string
     name: string
@@ -78,8 +76,6 @@ export const moviesService = {
       releaseDateStart,
       releaseDateEnd,
     } = params
-
-    console.log('🎬 [Movies Service] Fetching movies with params:', params)
 
     const queryParams = new URLSearchParams()
     queryParams.append('skip', skip.toString())
@@ -122,19 +118,9 @@ export const moviesService = {
     }
 
     const url = `/movies?${queryParams.toString()}`
-    console.log('🔗 [Movies Service] Request URL:', url)
 
-    try {
-      const response = await api.get<MoviesListResponse>(url)
-      console.log('✅ [Movies Service] Response:', response.data)
-      return response.data
-    } catch (error) {
-      console.error('❌ [Movies Service] Error:', error)
-      if (error instanceof Error) {
-        console.error('Error message:', error.message)
-      }
-      throw error
-    }
+    const response = await api.get<MoviesListResponse>(url)
+    return response.data
   },
 
   async getMovie(id: string): Promise<MovieFromAPI> {

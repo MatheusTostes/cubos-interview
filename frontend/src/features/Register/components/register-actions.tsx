@@ -1,11 +1,16 @@
 import { HStack } from '@/shared/components/atoms/hstack'
 import { Typography } from '@/shared/components/atoms/typography'
 import { Button } from '@/shared/components/atoms/button'
-import { useAuth, useNavigation } from '@/shared/hooks'
+import { useNavigation } from '@/shared/hooks'
 
-export const RegisterActions = () => {
+interface RegisterActionsProps {
+  isLoading?: boolean
+}
+
+export const RegisterActions = ({
+  isLoading = false,
+}: RegisterActionsProps) => {
   const { goToLogin } = useNavigation()
-  const { isLoading } = useAuth()
 
   return (
     <>

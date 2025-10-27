@@ -20,6 +20,8 @@ export type MovieDetails = {
   releaseDate: string
   runtimeSeconds: number
   classification: string
+  classificationId?: string
+  classificationObj?: { id: string; name: string }
   situation:
     | 'Lançado'
     | 'Em Breve'
@@ -28,8 +30,14 @@ export type MovieDetails = {
     | 'Cancelado'
     | 'Pausado'
     | 'Completo'
+  situationId?: string
+  situationObj?: { id: string; name: string }
   language: Language
+  languageId?: string
+  languageObj?: { id: string; code: string; name: string }
   genres: Genre[]
+  genreIds?: string[]
+  genresObj?: Array<{ genre: { id: string; name: string } }>
   aggregateRating: number
   voteCount: number
   budget: number
@@ -39,12 +47,12 @@ export type MovieDetails = {
 }
 
 export type Language = {
-  id: number
+  id: string
   code: string
   name: string
 }
 
 export type Genre = {
-  id: number
+  id: string
   name: string
 }

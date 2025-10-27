@@ -1,12 +1,15 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
+import { toast } from 'react-toastify'
 import { Button } from '@/shared/components/atoms/button'
 import { Drawer } from '@/shared/components/atoms/drawer'
 import { HStack } from '@/shared/components/atoms/hstack'
 import { Typography } from '@/shared/components/atoms/typography'
 import { VStack } from '@/shared/components/atoms/vstack'
 import { Input } from '@/shared/components/atoms/input'
+import { MediaUpload } from '@/shared/components/molecules'
 import { X, Calendar as CalendarIcon } from 'lucide-react'
 import { cn } from '@/shared/utils'
 import {
@@ -20,6 +23,9 @@ import {
   type AddMovieFormData,
 } from '../../schemas/add-movie.schema'
 import { useGenres } from '@/features/genres'
+import { useClassifications } from '@/features/classifications'
+import { useSituations } from '@/features/situations'
+import { useLanguages } from '@/features/languages'
 
 export type AddMovieDrawerProps = {
   initialData?: any
@@ -30,7 +36,13 @@ export const AddMovieDrawer = ({
   initialData,
   mode = 'create',
 }: AddMovieDrawerProps) => {
+  const queryClient = useQueryClient()
   const { data: genresData = [] } = useGenres()
+  const { data: classificationsData = [] } = useClassifications()
+  const { data: situationsData = [] } = useSituations()
+  const { data: languagesData = [] } = useLanguages()
+  const [open, setOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [date, setDate] = useState<Date | undefined>(
     initialData?.releaseDate ? new Date(initialData.releaseDate) : undefined
   )
@@ -45,10 +57,70 @@ export const AddMovieDrawer = ({
     resolver: zodResolver(addMovieSchema),
     defaultValues: initialData || {
       genreIds: [],
+      languageId: '',
     },
   })
 
   const selectedGenres = watch('genreIds') || []
+
+  // Popular o formulário quando initialData for fornecido (modo edit)
+  useEffect(() => {
+    if (initialData && mode === 'edit') {
+      // Calcular horas e minutos a partir de runtimeSeconds
+      const runtimeSeconds = initialData.runtimeSeconds || 0
+      const hours = Math.floor(runtimeSeconds / 3600)
+      const minutes = Math.floor((runtimeSeconds % 3600) / 60)
+
+      // Reset form with all values
+      reset({
+        primaryTitle: initialData.primaryTitle,
+        originalTitle: initialData.originalTitle,
+        primaryImageUrl: initialData.primaryImageUrl,
+        secondaryImageUrl: initialData.secondaryImageUrl,
+        plot: initialData.plot,
+        subTitle: initialData.subTitle,
+        releaseDate: initialData.releaseDate,
+        runtimeHours: hours.toString(),
+        runtimeMinutes: minutes.toString(),
+        classificationId:
+          initialData.classification?.id ||
+          initialData.classificationObj?.id ||
+          initialData.classificationId ||
+          '',
+        situationId:
+          (initialData.situation as any)?.id ||
+          initialData.situationObj?.id ||
+          initialData.situationId ||
+          '',
+        genreIds: Array.isArray(initialData.genres)
+          ? initialData.genres.map((g: any) => g.genre?.id || g.id || g)
+          : initialData.genreIds || [],
+        languageId:
+          (initialData.language as any)?.id ||
+          initialData.languageObj?.id ||
+          initialData.languageId ||
+          '',
+        aggregateRating: initialData.aggregateRating?.toString() || '0',
+        voteCount: initialData.voteCount?.toString() || '0',
+        budget:
+          initialData.budget?.toLocaleString('pt-BR', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          }) || '0,00',
+        revenue:
+          initialData.revenue?.toLocaleString('pt-BR', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          }) || '0,00',
+        trailerUrl: initialData.trailerUrl,
+      })
+
+      // Atualizar data do calendário
+      if (initialData.releaseDate) {
+        setDate(new Date(initialData.releaseDate))
+      }
+    }
+  }, [initialData, mode, reset])
 
   // Atualizar o campo hidden quando a data mudar
   const handleDateSelect = (selectedDate: Date | undefined) => {
@@ -105,42 +177,89 @@ export const AddMovieDrawer = ({
   }
 
   const onSubmit = async (data: any) => {
-    // Converter horas e minutos para segundos
-    const hoursInSeconds = Number(data.runtimeHours) * 3600
-    const minutesInSeconds = Number(data.runtimeMinutes) * 60
-    const totalSeconds = hoursInSeconds + minutesInSeconds
+    setIsLoading(true)
+    try {
+      // Converter horas e minutos para segundos
+      const hoursInSeconds = Number(data.runtimeHours) * 3600
+      const minutesInSeconds = Number(data.runtimeMinutes) * 60
+      const totalSeconds = hoursInSeconds + minutesInSeconds
 
-    // Mapeamento de situação para ID
-    const situationIdMap: Record<string, number> = {
-      Lançado: 1,
-      'Em Breve': 2,
-      'Em Produção': 3,
-      Cancelado: 4,
+      // Criar FormData para enviar arquivos
+      const formData = new FormData()
+
+      // Adicionar as imagens
+      const primaryImageFile = watch('primaryImageFile')
+      const secondaryImageFile = watch('secondaryImageFile')
+
+      if (primaryImageFile) {
+        formData.append('images', primaryImageFile)
+      }
+      if (secondaryImageFile) {
+        formData.append('images', secondaryImageFile)
+      }
+
+      // Adicionar os dados do filme como strings JSON
+      formData.append('primaryTitle', data.primaryTitle)
+      formData.append('originalTitle', data.originalTitle)
+      formData.append('primaryImageUrl', '') // Placeholder, será substituído
+      formData.append('secondaryImageUrl', '') // Placeholder, será substituído
+      formData.append('plot', data.plot)
+      formData.append('subTitle', data.subTitle)
+      formData.append('releaseDate', data.releaseDate)
+      formData.append('runtimeSeconds', totalSeconds.toString())
+      formData.append('trailerUrl', data.trailerUrl)
+      formData.append('budget', parseCurrency(data.budget).toString())
+      formData.append('revenue', parseCurrency(data.revenue).toString())
+      formData.append('classificationId', data.classificationId)
+      formData.append('situationId', data.situationId)
+      formData.append('genreIds', JSON.stringify(data.genreIds))
+      formData.append('languageId', data.languageId)
+      formData.append('aggregateRating', data.aggregateRating)
+      formData.append('voteCount', data.voteCount)
+
+      const { api } = await import('@/shared/services/api')
+
+      if (mode === 'edit' && initialData?.id) {
+        // Atualizar filme existente
+        await api.patch(`/movies/${initialData.id}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+
+        toast.success('Filme atualizado com sucesso!')
+
+        // Invalidar queries de detalhes e listagem
+        queryClient.invalidateQueries({ queryKey: ['movies'] })
+        queryClient.invalidateQueries({ queryKey: ['movie', initialData.id] })
+      } else {
+        // Criar novo filme
+        await api.post('/movies', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+
+        toast.success('Filme criado com sucesso!')
+
+        // Invalidar queries de listagem
+        queryClient.invalidateQueries({ queryKey: ['movies'] })
+      }
+
+      // Resetar form e fechar drawer
+      reset()
+      setOpen(false)
+    } catch (error: any) {
+      const message = error.response?.data?.message || 'Erro ao salvar o filme'
+      toast.error(message)
+      console.error('Error saving movie:', error)
+    } finally {
+      setIsLoading(false)
     }
-
-    // Transformar os campos de número de string para number
-    const movieData: AddMovieFormData = {
-      ...data,
-      runtimeSeconds: totalSeconds,
-      aggregateRating: Number(data.aggregateRating),
-      voteCount: Number(data.voteCount),
-      budget: parseCurrency(data.budget),
-      revenue: parseCurrency(data.revenue),
-      classificationId: Number(data.classificationId),
-      situationId: situationIdMap[data.situationId] || 1,
-      genreIds: data.genreIds.map((id: string) => Number(id)),
-    }
-
-    console.log(
-      mode === 'edit' ? 'Updating movie:' : 'Creating movie:',
-      movieData
-    )
-    // TODO: Implementar chamada à API
-    reset()
   }
 
   return (
-    <Drawer.Root direction="right">
+    <Drawer.Root direction="right" open={open} onOpenChange={setOpen}>
       <Drawer.Trigger asChild>
         <Button>
           <Typography font="roboto" variant="p">
@@ -184,23 +303,21 @@ export const AddMovieDrawer = ({
               />
             </Input.Root>
 
-            <Input.Root error={errors.primaryImageUrl?.message as string}>
-              <Input.Label required>URL da Imagem Principal</Input.Label>
-              <Input.Field
-                type="url"
-                placeholder="https://example.com/image.jpg"
-                {...register('primaryImageUrl')}
-              />
-            </Input.Root>
+            <MediaUpload
+              label="Imagem Principal"
+              accept="image/*"
+              error={errors.primaryImageUrl?.message as string}
+              initialUrl={watch('primaryImageUrl')}
+              onFileSelect={(file) => setValue('primaryImageFile', file)}
+            />
 
-            <Input.Root error={errors.secondaryImageUrl?.message as string}>
-              <Input.Label required>URL da Imagem Secundária</Input.Label>
-              <Input.Field
-                type="url"
-                placeholder="https://example.com/image2.jpg"
-                {...register('secondaryImageUrl')}
-              />
-            </Input.Root>
+            <MediaUpload
+              label="Imagem Secundária"
+              accept="image/*"
+              error={errors.secondaryImageUrl?.message as string}
+              initialUrl={watch('secondaryImageUrl')}
+              onFileSelect={(file) => setValue('secondaryImageFile', file)}
+            />
 
             <Input.Root error={errors.plot?.message as string}>
               <Input.Label required>Enredo</Input.Label>
@@ -244,6 +361,9 @@ export const AddMovieDrawer = ({
                     mode="single"
                     selected={date}
                     onSelect={handleDateSelect}
+                    captionLayout="dropdown"
+                    fromYear={1900}
+                    toYear={new Date().getFullYear() + 10}
                     initialFocus
                   />
                 </PopoverContent>
@@ -278,12 +398,11 @@ export const AddMovieDrawer = ({
               <Input.Label required>Classificação</Input.Label>
               <Input.Select {...register('classificationId')}>
                 <option value="">Selecione</option>
-                <option value="L">Livre</option>
-                <option value="10">10 anos</option>
-                <option value="12">12 anos</option>
-                <option value="14">14 anos</option>
-                <option value="16">16 anos</option>
-                <option value="18">18 anos</option>
+                {classificationsData.map((classification) => (
+                  <option key={classification.id} value={classification.id}>
+                    {classification.name}
+                  </option>
+                ))}
               </Input.Select>
             </Input.Root>
 
@@ -291,10 +410,11 @@ export const AddMovieDrawer = ({
               <Input.Label required>Situação</Input.Label>
               <Input.Select {...register('situationId')}>
                 <option value="">Selecione</option>
-                <option value="Lançado">Lançado</option>
-                <option value="Em Breve">Em Breve</option>
-                <option value="Em Produção">Em Produção</option>
-                <option value="Cancelado">Cancelado</option>
+                {situationsData.map((situation) => (
+                  <option key={situation.id} value={situation.id}>
+                    {situation.name}
+                  </option>
+                ))}
               </Input.Select>
             </Input.Root>
 
@@ -350,6 +470,18 @@ export const AddMovieDrawer = ({
                   })}
                 </div>
               </VStack>
+            </Input.Root>
+
+            <Input.Root error={errors.languageId?.message as string}>
+              <Input.Label required>Idioma</Input.Label>
+              <Input.Select {...register('languageId')}>
+                <option value="">Selecione</option>
+                {languagesData.map((language) => (
+                  <option key={language.id} value={language.id}>
+                    {language.name}
+                  </option>
+                ))}
+              </Input.Select>
             </Input.Root>
 
             <HStack className="gap-4">
@@ -424,13 +556,13 @@ export const AddMovieDrawer = ({
           <Drawer.Footer className="mt-auto">
             <HStack className="w-full justify-end gap-2">
               <Drawer.Close asChild>
-                <Button type="button" variant="secondary">
+                <Button type="button" variant="secondary" disabled={isLoading}>
                   <Typography font="roboto" variant="p">
                     Cancelar
                   </Typography>
                 </Button>
               </Drawer.Close>
-              <Button type="submit">
+              <Button type="submit" isLoading={isLoading}>
                 <Typography font="roboto" variant="p">
                   {mode === 'edit' ? 'Salvar Alterações' : 'Adicionar Filme'}
                 </Typography>

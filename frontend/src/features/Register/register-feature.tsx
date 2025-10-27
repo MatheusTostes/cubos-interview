@@ -1,6 +1,6 @@
 import { Card } from '@/shared/components/atoms/card'
 import { Typography } from '@/shared/components/atoms/typography'
-import { RegisterActions, RegisterForm } from './components'
+import { RegisterForm } from './components'
 
 export default function RegisterFeature() {
   return (
@@ -17,10 +17,6 @@ export default function RegisterFeature() {
       <Card.Content>
         <RegisterForm />
       </Card.Content>
-
-      <Card.Footer className="flex flex-col space-y-4">
-        <RegisterActions />
-      </Card.Footer>
     </Card.Root>
   )
 }

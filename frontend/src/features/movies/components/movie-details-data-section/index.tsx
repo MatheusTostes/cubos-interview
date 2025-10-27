@@ -45,27 +45,7 @@ export const MovieDetailsDataSection = ({
           className="block w-full min-[940px]:hidden"
         />
 
-        <DetailsDataSectionHeader
-          movie={{
-            id: movie.id,
-            primaryTitle: movie.primaryTitle,
-            originalTitle: movie.originalTitle,
-            primaryImageUrl: movie.primaryImageUrl,
-            secondaryImageUrl: movie.secondaryImageUrl,
-            plot: movie.plot,
-            subTitle: movie.subTitle,
-            releaseDate: movie.releaseDate,
-            runtimeSeconds: movie.runtimeSeconds,
-            classification: movie.classification,
-            situation: movie.situation,
-            genres: movie.genres.map((g) => g.id.toString()),
-            aggregateRating: movie.aggregateRating,
-            voteCount: movie.voteCount,
-            budget: movie.budget,
-            revenue: movie.revenue,
-            trailerUrl: movie.trailerUrl,
-          }}
-        />
+        <DetailsDataSectionHeader movie={movie} />
 
         <DetailsDataSectionContent movie={movie} />
       </Container>

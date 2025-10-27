@@ -1,4 +1,5 @@
 import { MovieCard } from './movie-card'
+import { MovieCardSkeleton } from './movie-card-skeleton'
 import { Container } from '@/shared/components/atoms/container'
 import { Typography } from '@/shared/components/atoms/typography'
 import { type MovieFromAPI } from '@/shared/services/movies.service'
@@ -24,25 +25,20 @@ const transformMovieData = (apiMovie: MovieFromAPI): Movie => {
   }
 }
 
-export const MovieList = ({ movies, isLoading, isError }: MovieListProps) => {
-  console.log('🎬 [MovieList] Render state:', {
-    moviesCount: movies.length,
-    isLoading,
-    isError,
-  })
+const SKELETON_COUNT = 10
 
+export const MovieList = ({ movies, isLoading, isError }: MovieListProps) => {
   if (isLoading) {
     return (
-      <Container className="flex items-center justify-center rounded-sm bg-white/10 p-8 backdrop-blur-[3px]">
-        <Typography variant="p" className="text-white">
-          Carregando filmes...
-        </Typography>
+      <Container className="grid grid-cols-1 gap-4 rounded-sm bg-white/10 p-4 backdrop-blur-[3px] xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+        {Array.from({ length: SKELETON_COUNT }).map((_, index) => (
+          <MovieCardSkeleton key={`skeleton-${index}`} />
+        ))}
       </Container>
     )
   }
 
   if (isError) {
-    console.error('❌ [MovieList] Error state detected')
     return (
       <Container className="flex items-center justify-center rounded-sm bg-white/10 p-8 backdrop-blur-[3px]">
         <Typography variant="p" className="text-red-400">

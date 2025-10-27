@@ -1,4 +1,5 @@
 import { MovieDetailsDataSection } from './components/movie-details-data-section'
+import { MovieDetailsDataSectionSkeleton } from './components/movie-details-data-section/movie-details-data-section-skeleton'
 import { MovieDetailsTrailerSection } from './components/movie-details-trailer-section'
 import { useMovieDetails } from './hooks/useMovieDetails'
 import { Container } from '@/shared/components/atoms/container'
@@ -12,7 +13,7 @@ export type MovieDetailsFeatureProps = {
 
 // Função para transformar MovieFromAPI para MovieDetails
 const transformMovieData = (apiMovie: MovieFromAPI): MovieDetails => {
-  return {
+  const transformed = {
     id: apiMovie.id,
     primaryTitle: apiMovie.primaryTitle,
     originalTitle: apiMovie.originalTitle,
@@ -23,18 +24,29 @@ const transformMovieData = (apiMovie: MovieFromAPI): MovieDetails => {
     releaseDate: apiMovie.releaseDate,
     runtimeSeconds: apiMovie.runtimeSeconds,
     classification: apiMovie.classification.name,
+    // Pass full classification object
+    classificationObj: apiMovie.classification,
+    classificationId: apiMovie.classificationId,
     situation: apiMovie.situation.name as MovieDetails['situation'],
-    language: apiMovie.languages[0]
+    // Pass full situation object
+    situationObj: apiMovie.situation,
+    situationId: apiMovie.situationId,
+    language: apiMovie.language
       ? {
-          id: parseInt(apiMovie.languages[0].language.id),
-          code: apiMovie.languages[0].language.code,
-          name: apiMovie.languages[0].language.name,
+          id: apiMovie.language.id,
+          code: apiMovie.language.code,
+          name: apiMovie.language.name,
         }
-      : { id: 1, code: 'pt', name: 'Português' },
+      : { id: 'default', code: 'pt', name: 'Português' },
+    // Pass full language object
+    languageObj: apiMovie.language,
+    languageId: apiMovie.languageId,
     genres: apiMovie.genres.map((g) => ({
-      id: parseInt(g.genre.id),
+      id: g.genre.id, // Keep as string
       name: g.genre.name,
     })),
+    // Pass genre IDs for select
+    genreIds: apiMovie.genres.map((g) => g.genre.id),
     aggregateRating: apiMovie.aggregateRating,
     voteCount: apiMovie.voteCount,
     budget: apiMovie.budget,
@@ -42,6 +54,8 @@ const transformMovieData = (apiMovie: MovieFromAPI): MovieDetails => {
     profit: apiMovie.profit,
     trailerUrl: apiMovie.trailerUrl,
   }
+
+  return transformed
 }
 
 export default function MovieDetailsFeature({
@@ -51,10 +65,17 @@ export default function MovieDetailsFeature({
 
   if (isLoading) {
     return (
-      <Container className="flex items-center justify-center p-8">
-        <Typography variant="p" className="text-white">
-          Carregando detalhes do filme...
-        </Typography>
+      <Container className="relative w-full overflow-hidden p-0 min-[540px]:p-6">
+        {/* Background skeleton */}
+        <Container className="absolute inset-0 hidden bg-mauve-700 min-[540px]:block" />
+
+        {/* Overlay gradient */}
+        <Container className="absolute inset-0 bg-gradient-to-r from-white/80 via-white/60 to-white/40 dark:from-black/100 dark:via-black/85 dark:to-black/40" />
+
+        {/* Content with skeleton */}
+        <Container className="relative gap-4 p-0 px-3 min-[540px]:p-3">
+          <MovieDetailsDataSectionSkeleton />
+        </Container>
       </Container>
     )
   }

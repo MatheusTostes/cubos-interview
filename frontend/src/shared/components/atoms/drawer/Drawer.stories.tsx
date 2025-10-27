@@ -74,7 +74,6 @@ export const WithForm: Story = {
     const [password, setPassword] = useState('')
 
     const handleSubmit = () => {
-      console.log({ email, password })
       setOpen(false)
     }
 
@@ -146,7 +145,6 @@ export const FiltersDrawer: Story = {
     const [year, setYear] = useState('')
 
     const handleApplyFilters = () => {
-      console.log('Aplicar filtros:', { genre, rating, year })
       setOpen(false)
     }
 

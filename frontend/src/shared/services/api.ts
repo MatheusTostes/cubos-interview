@@ -1,7 +1,9 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import { toast } from 'react-toastify'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
+const API_BASE_URL =
+  (import.meta as any).env.VITE_API_URL || 'http://localhost:3000'
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
@@ -80,6 +82,27 @@ api.interceptors.response.use(
         window.location.href = '/login'
         return Promise.reject(refreshError)
       }
+    }
+
+    // Tratamento de erros para operações destrutivas (POST, PATCH, DELETE)
+    // Apenas mostra toast se não for uma rota excluída
+    if (
+      originalRequest.method &&
+      ['post', 'patch', 'delete'].includes(
+        originalRequest.method.toLowerCase()
+      ) &&
+      !isExcludedRoute
+    ) {
+      // Se não houver resposta do servidor (erro de rede)
+      if (!error.response) {
+        toast.error('Erro de conexão. Verifique sua internet.')
+      }
+      // Erros 500+ são erros de servidor
+      else if (error.response.status >= 500) {
+        toast.error('Erro interno do servidor. Tente novamente mais tarde.')
+      }
+      // Para erros 4xx que não sejam 401 (já tratado acima), não mostramos toast
+      // pois são tratados especificamente em cada componente
     }
 
     return Promise.reject(error)
