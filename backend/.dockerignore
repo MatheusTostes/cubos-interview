@@ -1,0 +1,14 @@
+node_modules
+npm-debug.log
+dist
+coverage
+.git
+.env
+.env.test
+.env.production
+*.log
+prisma/dev.db
+prisma/dev.db-journal
+
+
+
