@@ -140,7 +140,7 @@ export const AddMovieDrawer = ({
 
   return (
     <Drawer.Root direction="right">
-      <Drawer.Trigger>
+      <Drawer.Trigger asChild>
         <Button>
           <Typography font="roboto" variant="p">
             {mode === 'edit' ? 'Editar' : 'Adicionar Filme'}
@@ -158,7 +158,7 @@ export const AddMovieDrawer = ({
               <Drawer.Title>
                 {mode === 'edit' ? 'Editar Filme' : 'Adicionar Filme'}
               </Drawer.Title>
-              <Drawer.Close>
+              <Drawer.Close asChild>
                 <Button type="button" variant="ghost" className="p-0">
                   <X className="h-4 w-4" />
                 </Button>
@@ -422,7 +422,7 @@ export const AddMovieDrawer = ({
 
           <Drawer.Footer className="mt-auto">
             <HStack className="w-full justify-end gap-2">
-              <Drawer.Close>
+              <Drawer.Close asChild>
                 <Button type="button" variant="secondary">
                   <Typography font="roboto" variant="p">
                     Cancelar
