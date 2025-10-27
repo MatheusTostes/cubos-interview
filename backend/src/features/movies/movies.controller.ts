@@ -10,6 +10,8 @@ import {
   UseGuards,
   UseInterceptors,
   UploadedFiles,
+  Request,
+  ForbiddenException,
 } from '@nestjs/common'
 import { FilesInterceptor } from '@nestjs/platform-express'
 import {
@@ -40,7 +42,8 @@ export class MoviesController {
   @ApiResponse({ status: 401, description: 'Não autorizado' })
   create(
     @UploadedFiles() files: Array<Express.Multer.File>,
-    @Body() body: any
+    @Body() body: any,
+    @Request() req: any
   ) {
     // Converter arrays stringificados de volta para arrays
     const createMovieDto = {
@@ -52,6 +55,7 @@ export class MoviesController {
       runtimeSeconds: parseInt(body.runtimeSeconds),
       aggregateRating: parseFloat(body.aggregateRating),
       voteCount: parseInt(body.voteCount),
+      userId: req.user.id, // Adiciona o userId do usuário logado
     }
 
     return this.moviesService.create(createMovieDto, files)
@@ -118,11 +122,24 @@ export class MoviesController {
   @ApiOperation({ summary: 'Atualizar um filme' })
   @ApiResponse({ status: 200, description: 'Filme atualizado' })
   @ApiResponse({ status: 404, description: 'Filme não encontrado' })
-  update(
+  @ApiResponse({
+    status: 403,
+    description: 'Sem permissão para editar este filme',
+  })
+  async update(
     @Param('id') id: string,
     @UploadedFiles() files: Array<Express.Multer.File>,
-    @Body() body: any
+    @Body() body: any,
+    @Request() req: any
   ) {
+    // Verifica se o usuário é o dono do filme
+    const movie = await this.moviesService.findOne(id)
+    if ((movie as any).userId !== req.user.id) {
+      throw new ForbiddenException(
+        'Você não tem permissão para editar este filme'
+      )
+    }
+
     // Converter arrays stringificados de volta para arrays
     const updateMovieDto = {
       ...body,
@@ -146,7 +163,19 @@ export class MoviesController {
   @ApiOperation({ summary: 'Deletar um filme' })
   @ApiResponse({ status: 200, description: 'Filme deletado' })
   @ApiResponse({ status: 404, description: 'Filme não encontrado' })
-  remove(@Param('id') id: string) {
+  @ApiResponse({
+    status: 403,
+    description: 'Sem permissão para deletar este filme',
+  })
+  async remove(@Param('id') id: string, @Request() req: any) {
+    // Verifica se o usuário é o dono do filme
+    const movie = await this.moviesService.findOne(id)
+    if ((movie as any).userId !== req.user.id) {
+      throw new ForbiddenException(
+        'Você não tem permissão para deletar este filme'
+      )
+    }
+
     return this.moviesService.remove(id)
   }
 }

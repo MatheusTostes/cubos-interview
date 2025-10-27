@@ -44,6 +44,12 @@ export type MovieDetails = {
   revenue: number
   profit: number
   trailerUrl: string
+  userId: string
+  owner?: {
+    id: string
+    name: string
+    email: string
+  }
 }
 
 export type Language = {

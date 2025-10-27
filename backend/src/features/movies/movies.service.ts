@@ -41,6 +41,7 @@ export class MoviesService {
       revenue,
       classificationId,
       situationId,
+      userId,
       ...rest
     } = createMovieDto
 
@@ -50,16 +51,24 @@ export class MoviesService {
     // Cria o filme com os gêneros e um único idioma
     const movie = await this.prisma.movie.create({
       data: {
-        ...rest,
+        primaryTitle: rest.primaryTitle,
+        originalTitle: rest.originalTitle,
         primaryImageUrl,
         secondaryImageUrl,
+        plot: rest.plot,
+        subTitle: rest.subTitle,
+        releaseDate: new Date(releaseDate),
+        runtimeSeconds: rest.runtimeSeconds,
+        trailerUrl: rest.trailerUrl,
         budget,
         revenue,
         profit,
-        releaseDate: new Date(releaseDate),
+        aggregateRating: rest.aggregateRating,
+        voteCount: rest.voteCount,
         classificationId,
         situationId,
         languageId,
+        userId,
         genres: {
           create: genreIds.map((genreId) => ({
             genre: { connect: { id: genreId } },

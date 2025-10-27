@@ -11,9 +11,13 @@ import type { MovieDetails } from '../../types/movie-types'
 
 export type DeleteMovieDialogProps = {
   movie: MovieDetails
+  disabled?: boolean
 }
 
-export const DeleteMovieDialog = ({ movie }: DeleteMovieDialogProps) => {
+export const DeleteMovieDialog = ({
+  movie,
+  disabled = false,
+}: DeleteMovieDialogProps) => {
   const [open, setOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const navigate = useNavigate()
@@ -45,7 +49,7 @@ export const DeleteMovieDialog = ({ movie }: DeleteMovieDialogProps) => {
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>
-        <Button variant="secondary">
+        <Button variant="secondary" disabled={disabled}>
           <Typography font="roboto" variant="p">
             Deletar
           </Typography>

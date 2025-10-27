@@ -53,6 +53,8 @@ const transformMovieData = (apiMovie: MovieFromAPI): MovieDetails => {
     revenue: apiMovie.revenue,
     profit: apiMovie.profit,
     trailerUrl: apiMovie.trailerUrl,
+    userId: apiMovie.userId,
+    owner: apiMovie.owner,
   }
 
   return transformed

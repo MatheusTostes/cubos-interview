@@ -38,6 +38,7 @@ export interface MovieFromAPI {
   voteCount: number
   classificationId: string
   situationId: string
+  userId: string
   createdAt: string
   updatedAt: string
   genres: {
@@ -59,6 +60,11 @@ export interface MovieFromAPI {
   situation: {
     id: string
     name: string
+  }
+  owner?: {
+    id: string
+    name: string
+    email: string
   }
 }
 

@@ -378,6 +378,7 @@ async function main() {
         ...movieInfo,
         profit,
         languageId: finalLanguageId,
+        userId: user.id,
         genres: {
           create: movieGenres.map((genreName) => {
             const genre = genres.find((g) => g.name === genreName)

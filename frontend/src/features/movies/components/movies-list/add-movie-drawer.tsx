@@ -30,11 +30,13 @@ import { useLanguages } from '@/features/languages'
 export type AddMovieDrawerProps = {
   initialData?: any
   mode?: 'create' | 'edit'
+  disabled?: boolean
 }
 
 export const AddMovieDrawer = ({
   initialData,
   mode = 'create',
+  disabled,
 }: AddMovieDrawerProps) => {
   const queryClient = useQueryClient()
   const { data: genresData = [] } = useGenres()
@@ -261,7 +263,7 @@ export const AddMovieDrawer = ({
   return (
     <Drawer.Root direction="right" open={open} onOpenChange={setOpen}>
       <Drawer.Trigger asChild>
-        <Button>
+        <Button disabled={disabled} className="w-full min-[540px]:w-auto">
           <Typography font="roboto" variant="p">
             {mode === 'edit' ? 'Editar' : 'Adicionar Filme'}
           </Typography>

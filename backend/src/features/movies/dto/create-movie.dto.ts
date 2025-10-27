@@ -130,4 +130,12 @@ export class CreateMovieDto {
   @IsString({ each: true })
   @IsNotEmpty()
   genreIds: string[]
+
+  @ApiProperty({
+    example: 'user-id',
+    description: 'ID do usuário que criou o filme',
+  })
+  @IsString()
+  @IsNotEmpty()
+  userId: string
 }
