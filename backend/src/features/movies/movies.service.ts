@@ -70,6 +70,10 @@ export class MoviesService {
       genres?: string[]
       classifications?: string[]
       situations?: string[]
+      durationMin?: number
+      durationMax?: number
+      releaseDateStart?: string
+      releaseDateEnd?: string
     } = {}
   ) {
     const {
@@ -79,6 +83,10 @@ export class MoviesService {
       genres,
       classifications,
       situations,
+      durationMin,
+      durationMax,
+      releaseDateStart,
+      releaseDateEnd,
     } = options
 
     console.log('🎬 [Movies Service] findAll called with options:', options)
@@ -115,6 +123,28 @@ export class MoviesService {
     // Filtro por situações (agora aceita IDs)
     if (situations && situations.length > 0) {
       where.situationId = { in: situations }
+    }
+
+    // Filtro por duração (em minutos, mas o banco armazena em segundos)
+    if (durationMin !== undefined || durationMax !== undefined) {
+      where.runtimeSeconds = {}
+      if (durationMin !== undefined) {
+        where.runtimeSeconds.gte = durationMin * 60
+      }
+      if (durationMax !== undefined) {
+        where.runtimeSeconds.lte = durationMax * 60
+      }
+    }
+
+    // Filtro por data de lançamento
+    if (releaseDateStart || releaseDateEnd) {
+      where.releaseDate = {}
+      if (releaseDateStart) {
+        where.releaseDate.gte = new Date(releaseDateStart)
+      }
+      if (releaseDateEnd) {
+        where.releaseDate.lte = new Date(releaseDateEnd)
+      }
     }
 
     console.log(

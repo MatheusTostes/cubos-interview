@@ -7,6 +7,10 @@ export interface MoviesListParams {
   genres?: string[]
   classifications?: string[]
   situations?: string[]
+  durationMin?: number
+  durationMax?: number
+  releaseDateStart?: string
+  releaseDateEnd?: string
 }
 
 export interface MoviesListResponse {
@@ -69,6 +73,10 @@ export const moviesService = {
       genres,
       classifications,
       situations,
+      durationMin,
+      durationMax,
+      releaseDateStart,
+      releaseDateEnd,
     } = params
 
     console.log('🎬 [Movies Service] Fetching movies with params:', params)
@@ -95,6 +103,22 @@ export const moviesService = {
       situations.forEach((situation) =>
         queryParams.append('situations', situation)
       )
+    }
+
+    if (durationMin !== undefined) {
+      queryParams.append('durationMin', durationMin.toString())
+    }
+
+    if (durationMax !== undefined) {
+      queryParams.append('durationMax', durationMax.toString())
+    }
+
+    if (releaseDateStart) {
+      queryParams.append('releaseDateStart', releaseDateStart)
+    }
+
+    if (releaseDateEnd) {
+      queryParams.append('releaseDateEnd', releaseDateEnd)
     }
 
     const url = `/movies?${queryParams.toString()}`

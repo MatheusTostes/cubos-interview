@@ -6,12 +6,10 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function runtimeSecondsToHours(runtimeSeconds: number) {
-  // expected fomat 3:30
+  // expected format 3h 30m
   const hours = Math.floor(runtimeSeconds / 3600)
-  const minutes = runtimeSeconds % 3600
-  return `${hours}h ${Math.floor(minutes / 30)
-    .toString()
-    .padStart(2, '0')}m`
+  const minutes = Math.floor((runtimeSeconds % 3600) / 60)
+  return `${hours}h ${minutes.toString().padStart(2, '0')}m`
 }
 
 export function formatCurrency(amount: number) {

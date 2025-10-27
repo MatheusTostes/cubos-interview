@@ -29,6 +29,14 @@ export default function MoviesListFeature() {
     genres: params.genres as string[] | undefined,
     classifications: params.classifications as string[] | undefined,
     situations: params.situations as string[] | undefined,
+    durationMin: params.durationMin
+      ? parseInt(params.durationMin as string)
+      : undefined,
+    durationMax: params.durationMax
+      ? parseInt(params.durationMax as string)
+      : undefined,
+    releaseDateStart: params.releaseDateStart as string | undefined,
+    releaseDateEnd: params.releaseDateEnd as string | undefined,
   })
 
   // Calcular total de páginas

@@ -24,6 +24,7 @@ export const ReleaseIntervalDateInput = ({
     <Input.Root>
       <VStack className="gap-2">
         <Input.Label>Data de Lançamento</Input.Label>
+
         <Popover>
           <PopoverTrigger asChild>
             <Button
@@ -37,8 +38,8 @@ export const ReleaseIntervalDateInput = ({
               <span className="truncate">
                 {dateRange?.from
                   ? dateRange?.to
-                    ? `${dateRange.from.toLocaleDateString()} - ${dateRange.to.toLocaleDateString()}`
-                    : dateRange.from.toLocaleDateString()
+                    ? `${dateRange.from.toLocaleDateString('pt-BR')} - ${dateRange.to.toLocaleDateString('pt-BR')}`
+                    : dateRange.from.toLocaleDateString('pt-BR')
                   : 'Selecione o período'}
               </span>
             </Button>
@@ -48,6 +49,9 @@ export const ReleaseIntervalDateInput = ({
               mode="range"
               selected={dateRange}
               onSelect={setDateRange}
+              captionLayout="dropdown"
+              fromYear={1900}
+              toYear={new Date().getFullYear() + 10}
               required
             />
           </PopoverContent>

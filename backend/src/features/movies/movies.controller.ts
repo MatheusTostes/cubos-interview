@@ -44,6 +44,10 @@ export class MoviesController {
   @ApiQuery({ name: 'genres', required: false, type: [String] })
   @ApiQuery({ name: 'classifications', required: false, type: [String] })
   @ApiQuery({ name: 'situations', required: false, type: [String] })
+  @ApiQuery({ name: 'durationMin', required: false, type: Number })
+  @ApiQuery({ name: 'durationMax', required: false, type: Number })
+  @ApiQuery({ name: 'releaseDateStart', required: false, type: String })
+  @ApiQuery({ name: 'releaseDateEnd', required: false, type: String })
   @ApiResponse({ status: 200, description: 'Lista de filmes' })
   findAll(
     @Query('skip') skip?: string,
@@ -51,7 +55,11 @@ export class MoviesController {
     @Query('search') search?: string,
     @Query('genres') genres?: string | string[],
     @Query('classifications') classifications?: string | string[],
-    @Query('situations') situations?: string | string[]
+    @Query('situations') situations?: string | string[],
+    @Query('durationMin') durationMin?: string,
+    @Query('durationMax') durationMax?: string,
+    @Query('releaseDateStart') releaseDateStart?: string,
+    @Query('releaseDateEnd') releaseDateEnd?: string
   ) {
     return this.moviesService.findAll({
       skip: skip ? parseInt(skip) : 0,
@@ -68,6 +76,10 @@ export class MoviesController {
         : situations
           ? [situations]
           : undefined,
+      durationMin: durationMin ? parseInt(durationMin) : undefined,
+      durationMax: durationMax ? parseInt(durationMax) : undefined,
+      releaseDateStart,
+      releaseDateEnd,
     })
   }
 
