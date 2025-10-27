@@ -18,14 +18,10 @@ export class LanguagesService {
       where: { id },
       include: {
         movies: {
-          include: {
-            movie: {
-              select: {
-                id: true,
-                primaryTitle: true,
-                primaryImageUrl: true,
-              },
-            },
+          select: {
+            id: true,
+            primaryTitle: true,
+            primaryImageUrl: true,
           },
         },
       },

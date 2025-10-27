@@ -5,21 +5,19 @@ import { CreateMovieDto } from './create-movie.dto'
 
 export class UpdateMovieDto extends PartialType(
   OmitType(CreateMovieDto, [
-    'languageIds',
     'genreIds',
     'classificationId',
     'situationId',
   ] as const)
 ) {
   @ApiProperty({
-    example: ['lang-id-1', 'lang-id-2'],
-    description: 'IDs dos idiomas',
+    example: 'lang-id-1',
+    description: 'ID do idioma',
     required: false,
   })
-  @IsArray()
-  @IsString({ each: true })
+  @IsString()
   @IsOptional()
-  languageIds?: string[]
+  languageId?: string
 
   @ApiProperty({
     example: ['genre-id-1', 'genre-id-2'],

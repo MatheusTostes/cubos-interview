@@ -2,15 +2,40 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { PrismaService } from '../../shared/prisma/prisma.service'
 import { CreateMovieDto } from './dto/create-movie.dto'
 import { UpdateMovieDto } from './dto/update-movie.dto'
+import { UploadService } from '../upload/upload.service'
 
 @Injectable()
 export class MoviesService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private uploadService: UploadService
+  ) {}
 
-  async create(createMovieDto: CreateMovieDto) {
+  async create(
+    createMovieDto: CreateMovieDto,
+    files?: Array<Express.Multer.File>
+  ) {
+    let primaryImageUrl = createMovieDto.primaryImageUrl
+    let secondaryImageUrl = createMovieDto.secondaryImageUrl
+
+    // Se há arquivos, fazer upload
+    if (files && files.length > 0) {
+      const uploadResults = await this.uploadService.uploadMultipleImages(files)
+
+      // Primeira imagem: primaryImageUrl
+      if (uploadResults[0]) {
+        primaryImageUrl = uploadResults[0].url
+      }
+
+      // Segunda imagem: secondaryImageUrl
+      if (uploadResults[1]) {
+        secondaryImageUrl = uploadResults[1].url
+      }
+    }
+
     const {
       genreIds,
-      languageIds,
+      languageId,
       releaseDate,
       budget,
       revenue,
@@ -22,24 +47,22 @@ export class MoviesService {
     // Calcula profit automaticamente
     const profit = revenue - budget
 
-    // Cria o filme com os gêneros e idiomas
+    // Cria o filme com os gêneros e um único idioma
     const movie = await this.prisma.movie.create({
       data: {
         ...rest,
+        primaryImageUrl,
+        secondaryImageUrl,
         budget,
         revenue,
         profit,
         releaseDate: new Date(releaseDate),
         classificationId,
         situationId,
+        languageId,
         genres: {
           create: genreIds.map((genreId) => ({
             genre: { connect: { id: genreId } },
-          })),
-        },
-        languages: {
-          create: languageIds.map((languageId) => ({
-            language: { connect: { id: languageId } },
           })),
         },
       },
@@ -49,11 +72,7 @@ export class MoviesService {
             genre: true,
           },
         },
-        languages: {
-          include: {
-            language: true,
-          },
-        },
+        language: true,
         classification: true,
         situation: true,
       },
@@ -88,8 +107,6 @@ export class MoviesService {
       releaseDateStart,
       releaseDateEnd,
     } = options
-
-    console.log('🎬 [Movies Service] findAll called with options:', options)
 
     // Construir filtros
     const where: any = {}
@@ -147,11 +164,6 @@ export class MoviesService {
       }
     }
 
-    console.log(
-      '🔍 [Movies Service] Prisma where clause:',
-      JSON.stringify(where, null, 2)
-    )
-
     const [movies, total] = await Promise.all([
       this.prisma.movie.findMany({
         skip,
@@ -163,11 +175,7 @@ export class MoviesService {
               genre: true,
             },
           },
-          languages: {
-            include: {
-              language: true,
-            },
-          },
+          language: true,
           classification: true,
           situation: true,
         },
@@ -177,10 +185,6 @@ export class MoviesService {
       }),
       this.prisma.movie.count({ where }),
     ])
-
-    console.log(
-      `✅ [Movies Service] Found ${total} movies, returning ${movies.length}`
-    )
 
     return {
       data: movies,
@@ -199,11 +203,7 @@ export class MoviesService {
             genre: true,
           },
         },
-        languages: {
-          include: {
-            language: true,
-          },
-        },
+        language: true,
         classification: true,
         situation: true,
       },
@@ -216,12 +216,40 @@ export class MoviesService {
     return movie
   }
 
-  async update(id: string, updateMovieDto: UpdateMovieDto) {
-    const { genreIds, languageIds, releaseDate, budget, revenue, ...rest } =
-      updateMovieDto
+  async update(
+    id: string,
+    updateMovieDto: UpdateMovieDto,
+    files?: Array<Express.Multer.File>
+  ) {
+    const {
+      genreIds,
+      languageId,
+      releaseDate,
+      budget,
+      revenue,
+      aggregateRating,
+      voteCount,
+      ...rest
+    } = updateMovieDto
 
     // Verifica se o filme existe
-    await this.findOne(id)
+    const existingMovie = await this.findOne(id)
+
+    // Upload de imagens se houver arquivos
+    let primaryImageUrl = existingMovie.primaryImageUrl
+    let secondaryImageUrl = existingMovie.secondaryImageUrl
+
+    if (files && files.length > 0) {
+      const uploadResults = await this.uploadService.uploadMultipleImages(files)
+
+      // Primeira imagem é primary, segunda é secondary (se existir)
+      if (uploadResults[0]) {
+        primaryImageUrl = uploadResults[0].url
+      }
+      if (uploadResults[1]) {
+        secondaryImageUrl = uploadResults[1].url
+      }
+    }
 
     // Calcula profit se budget/revenue estiverem sendo atualizados
     const profit =
@@ -230,15 +258,8 @@ export class MoviesService {
         : undefined
 
     // Atualiza gêneros se foram enviados
-    if (genreIds) {
+    if (genreIds && genreIds.length > 0) {
       await this.prisma.movieGenre.deleteMany({
-        where: { movieId: id },
-      })
-    }
-
-    // Atualiza idiomas se foram enviados
-    if (languageIds) {
-      await this.prisma.movieLanguage.deleteMany({
         where: { movieId: id },
       })
     }
@@ -246,13 +267,18 @@ export class MoviesService {
     // Prepara dados para atualização
     const updateData: any = {
       ...rest,
+      ...(primaryImageUrl && { primaryImageUrl }),
+      ...(secondaryImageUrl && { secondaryImageUrl }),
       ...(budget !== undefined && { budget }),
       ...(revenue !== undefined && { revenue }),
       ...(profit !== undefined && { profit }),
       ...(releaseDate && { releaseDate: new Date(releaseDate) }),
+      ...(languageId && { languageId }),
+      ...(aggregateRating !== undefined && { aggregateRating }),
+      ...(voteCount !== undefined && { voteCount }),
     }
 
-    if (genreIds) {
+    if (genreIds && genreIds.length > 0) {
       updateData.genres = {
         create: genreIds.map((genreId) => ({
           genre: { connect: { id: genreId } },
@@ -260,16 +286,8 @@ export class MoviesService {
       }
     }
 
-    if (languageIds) {
-      updateData.languages = {
-        create: languageIds.map((languageId) => ({
-          language: { connect: { id: languageId } },
-        })),
-      }
-    }
-
     // Atualiza o filme
-    return this.prisma.movie.update({
+    const updatedMovie = await this.prisma.movie.update({
       where: { id },
       data: updateData,
       include: {
@@ -278,15 +296,13 @@ export class MoviesService {
             genre: true,
           },
         },
-        languages: {
-          include: {
-            language: true,
-          },
-        },
+        language: true,
         classification: true,
         situation: true,
       },
     })
+
+    return updatedMovie
   }
 
   async remove(id: string) {

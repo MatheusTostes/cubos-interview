@@ -8,13 +8,17 @@ import {
   Delete,
   Query,
   UseGuards,
+  UseInterceptors,
+  UploadedFiles,
 } from '@nestjs/common'
+import { FilesInterceptor } from '@nestjs/platform-express'
 import {
   ApiTags,
   ApiOperation,
   ApiResponse,
   ApiBearerAuth,
   ApiQuery,
+  ApiConsumes,
 } from '@nestjs/swagger'
 import { MoviesService } from './movies.service'
 import { CreateMovieDto } from './dto/create-movie.dto'
@@ -29,11 +33,28 @@ export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
   @Post()
+  @UseInterceptors(FilesInterceptor('images', 2))
+  @ApiConsumes('multipart/form-data')
   @ApiOperation({ summary: 'Criar um novo filme' })
   @ApiResponse({ status: 201, description: 'Filme criado com sucesso' })
   @ApiResponse({ status: 401, description: 'Não autorizado' })
-  create(@Body() createMovieDto: CreateMovieDto) {
-    return this.moviesService.create(createMovieDto)
+  create(
+    @UploadedFiles() files: Array<Express.Multer.File>,
+    @Body() body: any
+  ) {
+    // Converter arrays stringificados de volta para arrays
+    const createMovieDto = {
+      ...body,
+      genreIds: JSON.parse(body.genreIds || '[]'),
+      languageId: body.languageId,
+      budget: parseFloat(body.budget),
+      revenue: parseFloat(body.revenue),
+      runtimeSeconds: parseInt(body.runtimeSeconds),
+      aggregateRating: parseFloat(body.aggregateRating),
+      voteCount: parseInt(body.voteCount),
+    }
+
+    return this.moviesService.create(createMovieDto, files)
   }
 
   @Get()
@@ -92,11 +113,33 @@ export class MoviesController {
   }
 
   @Patch(':id')
+  @UseInterceptors(FilesInterceptor('images', 2))
+  @ApiConsumes('multipart/form-data')
   @ApiOperation({ summary: 'Atualizar um filme' })
   @ApiResponse({ status: 200, description: 'Filme atualizado' })
   @ApiResponse({ status: 404, description: 'Filme não encontrado' })
-  update(@Param('id') id: string, @Body() updateMovieDto: UpdateMovieDto) {
-    return this.moviesService.update(id, updateMovieDto)
+  update(
+    @Param('id') id: string,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+    @Body() body: any
+  ) {
+    // Converter arrays stringificados de volta para arrays
+    const updateMovieDto = {
+      ...body,
+      genreIds: JSON.parse(body.genreIds || '[]'),
+      languageId: body.languageId,
+      budget: body.budget ? parseFloat(body.budget) : undefined,
+      revenue: body.revenue ? parseFloat(body.revenue) : undefined,
+      runtimeSeconds: body.runtimeSeconds
+        ? parseInt(body.runtimeSeconds)
+        : undefined,
+      aggregateRating: body.aggregateRating
+        ? parseFloat(body.aggregateRating)
+        : undefined,
+      voteCount: body.voteCount ? parseInt(body.voteCount) : undefined,
+    }
+
+    return this.moviesService.update(id, updateMovieDto, files)
   }
 
   @Delete(':id')

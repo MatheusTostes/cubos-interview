@@ -45,11 +45,12 @@ model Movie {
 
   // Relações
   genres           MovieGenre[]
-  languages        MovieLanguage[]
   classificationId String
   classification   Classification  @relation(fields: [classificationId], references: [id])
   situationId      String
   situation        Situation       @relation(fields: [situationId], references: [id])
+  languageId       String
+  language         Language        @relation(fields: [languageId], references: [id])
   watchedBy        UserMovie[]
 
   @@map("movies")
@@ -75,7 +76,7 @@ model Language {
   updatedAt DateTime @updatedAt
 
   // Relações
-  movies MovieLanguage[]
+  movies Movie[]
 
   @@map("languages")
 }
@@ -113,16 +114,6 @@ model MovieGenre {
 
   @@id([movieId, genreId])
   @@map("movie_genres")
-}
-
-model MovieLanguage {
-  movieId    String
-  movie      Movie    @relation(fields: [movieId], references: [id], onDelete: Cascade)
-  languageId String
-  language   Language @relation(fields: [languageId], references: [id], onDelete: Cascade)
-
-  @@id([movieId, languageId])
-  @@map("movie_languages")
 }
 
 

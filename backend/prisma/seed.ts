@@ -19,8 +19,6 @@ async function main() {
     },
   })
 
-  console.log('Usuário criado:', user.email, '- Nome:', user.name)
-
   // Criar situações
   const situations = await Promise.all([
     prisma.situation.upsert({
@@ -54,11 +52,6 @@ async function main() {
       create: { name: 'Pausado' },
     }),
   ])
-
-  console.log(
-    'Situações criadas:',
-    situations.map((s) => s.name)
-  )
 
   // Criar classificações
   const classifications = await Promise.all([
@@ -94,11 +87,6 @@ async function main() {
     }),
   ])
 
-  console.log(
-    'Classificações criadas:',
-    classifications.map((c) => c.name)
-  )
-
   // Criar idiomas
   const languages = await Promise.all([
     prisma.language.upsert({
@@ -122,11 +110,6 @@ async function main() {
       create: { code: 'fr', name: 'Français' },
     }),
   ])
-
-  console.log(
-    'Idiomas criados:',
-    languages.map((l) => l.name)
-  )
 
   // Criar gêneros em lotes para evitar muitas conexões simultâneas
   const genreNames = [
@@ -157,11 +140,6 @@ async function main() {
     })
     genres.push(genre)
   }
-
-  console.log(
-    'Gêneros criados:',
-    genres.map((g) => g.name)
-  )
 
   const publicBucket = 'https://pub-9ebfed913b894a9480d9ad399ae4d639.r2.dev'
 
@@ -388,10 +366,18 @@ async function main() {
 
     const profit = movieInfo.revenue - movieInfo.budget
 
+    // Pegar o primeiro idioma da lista ou english por padrão
+    const defaultLanguage = languages.find((l) => l.code === 'en')!
+    const finalLanguageId =
+      movieLanguages && movieLanguages.length > 0
+        ? languages.find((l) => l.code === movieLanguages[0])!.id
+        : defaultLanguage.id
+
     const movie = await prisma.movie.create({
       data: {
         ...movieInfo,
         profit,
+        languageId: finalLanguageId,
         genres: {
           create: movieGenres.map((genreName) => {
             const genre = genres.find((g) => g.name === genreName)
@@ -400,21 +386,9 @@ async function main() {
             }
           }),
         },
-        languages: {
-          create: movieLanguages.map((langCode) => {
-            const language = languages.find((l) => l.code === langCode)
-            return {
-              language: { connect: { id: language!.id } },
-            }
-          }),
-        },
       },
     })
-
-    console.log(`Filme criado: ${movie.primaryTitle}`)
   }
-
-  console.log('Seed concluído!')
 }
 
 main()

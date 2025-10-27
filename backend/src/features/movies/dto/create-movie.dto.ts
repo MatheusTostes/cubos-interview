@@ -102,14 +102,25 @@ export class CreateMovieDto {
   @Min(0)
   revenue: number
 
-  @ApiProperty({
-    example: ['lang-id-1', 'lang-id-2'],
-    description: 'IDs dos idiomas',
-  })
-  @IsArray()
-  @IsString({ each: true })
+  @ApiProperty({ example: 8.5, description: 'Nota agregada (0-10)' })
+  @IsNumber()
   @IsNotEmpty()
-  languageIds: string[]
+  @Min(0)
+  aggregateRating: number
+
+  @ApiProperty({ example: 1000000, description: 'Contagem de votos' })
+  @IsInt()
+  @IsNotEmpty()
+  @Min(0)
+  voteCount: number
+
+  @ApiProperty({
+    example: 'lang-id-1',
+    description: 'ID do idioma',
+  })
+  @IsString()
+  @IsNotEmpty()
+  languageId: string
 
   @ApiProperty({
     example: ['genre-id-1', 'genre-id-2'],

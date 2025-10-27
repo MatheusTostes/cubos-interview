@@ -39,7 +39,7 @@ export class UploadService {
     })
   }
 
-  async uploadImage(file: Express.Multer.File, folder: string = 'movies') {
+  async uploadImage(file: Express.Multer.File) {
     if (!file) {
       throw new BadRequestException('Nenhum arquivo enviado')
     }
@@ -58,11 +58,11 @@ export class UploadService {
       throw new BadRequestException('Arquivo muito grande. Máximo: 5MB')
     }
 
-    // Gerar nome único para o arquivo
+    // Gerar nome único para o arquivo (sem pasta)
     const timestamp = Date.now()
     const randomString = Math.random().toString(36).substring(2, 15)
     const fileExtension = file.originalname.split('.').pop()
-    const fileName = `${folder}/${timestamp}-${randomString}.${fileExtension}`
+    const fileName = `${timestamp}-${randomString}.${fileExtension}`
 
     try {
       // Upload para R2
@@ -75,7 +75,7 @@ export class UploadService {
 
       await this.s3Client.send(command)
 
-      // Retornar URL pública
+      // Retornar URL pública (sem bucket name, apenas o filename)
       const imageUrl = `${this.publicUrl}/${fileName}`
 
       return {
@@ -89,15 +89,12 @@ export class UploadService {
     }
   }
 
-  async uploadMultipleImages(
-    files: Express.Multer.File[],
-    folder: string = 'movies'
-  ) {
+  async uploadMultipleImages(files: Express.Multer.File[]) {
     if (!files || files.length === 0) {
       throw new BadRequestException('Nenhum arquivo enviado')
     }
 
-    const uploadPromises = files.map((file) => this.uploadImage(file, folder))
+    const uploadPromises = files.map((file) => this.uploadImage(file))
 
     return Promise.all(uploadPromises)
   }
