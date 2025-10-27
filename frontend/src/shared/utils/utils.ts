@@ -38,3 +38,18 @@ export function formatCurrency(amount: number) {
   // Regular format: $XXXX.XX
   return `$${amount.toFixed(2)}`
 }
+
+export function getEmbedUrl(url: string): string {
+  try {
+    const urlObj = new URL(url)
+    const videoId = urlObj.searchParams.get('v')
+
+    if (videoId) {
+      return `https://www.youtube.com/embed/${videoId}`
+    }
+
+    return url
+  } catch {
+    return url
+  }
+}
