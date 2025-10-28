@@ -10,6 +10,8 @@ import { AuthService } from './auth.service'
 import { RegisterDto } from './dto/register.dto'
 import { LoginDto } from './dto/login.dto'
 import { RefreshTokenDto } from './dto/refresh-token.dto'
+import { ForgotPasswordDto } from './dto/forgot-password.dto'
+import { ResetPasswordDto } from './dto/reset-password.dto'
 import { Public } from '../../shared/decorators/public.decorator'
 import { JwtAuthGuard } from '../../shared/guards/jwt-auth.guard'
 import { CurrentUser } from '../../shared/decorators/current-user.decorator'
@@ -119,5 +121,35 @@ export class AuthController {
   })
   async logout() {
     return this.authService.logout()
+  }
+
+  @Public()
+  @Post('forgot-password')
+  @ApiOperation({ summary: 'Solicitar recuperação de senha' })
+  @ApiBody({ type: ForgotPasswordDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Email de recuperação enviado com sucesso',
+  })
+  @ApiResponse({ status: 404, description: 'Usuário não encontrado' })
+  async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
+    return this.authService.forgotPassword(forgotPasswordDto.identifier)
+  }
+
+  @Public()
+  @Post('reset-password')
+  @ApiOperation({ summary: 'Redefinir senha usando token' })
+  @ApiBody({ type: ResetPasswordDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Senha redefinida com sucesso',
+  })
+  @ApiResponse({ status: 401, description: 'Token inválido ou expirado' })
+  @ApiResponse({
+    status: 400,
+    description: 'As senhas não coincidem',
+  })
+  async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+    return this.authService.resetPassword(resetPasswordDto)
   }
 }

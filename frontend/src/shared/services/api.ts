@@ -36,7 +36,13 @@ api.interceptors.response.use(
     const originalRequest = error.config
 
     // Rotas que não devem tentar renovar o token
-    const excludedRoutes = ['/auth/login', '/auth/register', '/auth/refresh']
+    const excludedRoutes = [
+      '/auth/login',
+      '/auth/register',
+      '/auth/refresh',
+      '/auth/forgot-password',
+      '/auth/reset-password',
+    ]
     const isExcludedRoute = excludedRoutes.some((route) =>
       originalRequest.url?.includes(route)
     )

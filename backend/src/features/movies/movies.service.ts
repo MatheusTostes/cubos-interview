@@ -121,10 +121,6 @@ export class MoviesService {
           removeOnComplete: true,
         }
       )
-
-      console.log(
-        `Scheduled email notification for movie ${movie.primaryTitle} on ${releaseDate.toLocaleDateString()}`
-      )
     }
   }
 
@@ -394,16 +390,11 @@ export class MoviesService {
   }
 
   async remove(id: string) {
-    const movie = await this.findOne(id)
-
     // Remove o agendamento de email se existir
     try {
       const job = await this.notificationQueue.getJob(`movie-${id}`)
       if (job) {
         await job.remove()
-        console.log(
-          `Removed scheduled email notification for movie ${movie.primaryTitle}`
-        )
       }
     } catch (error) {
       console.error('Error removing scheduled email notification:', error)
@@ -421,7 +412,6 @@ export class MoviesService {
       const job = await this.notificationQueue.getJob(`movie-${movieId}`)
       if (job) {
         await job.remove()
-        console.log(`Removed scheduled email notification for movie ${movieId}`)
       }
     } catch (error) {
       console.error(

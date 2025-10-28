@@ -16,6 +16,7 @@ import { SituationsModule } from './features/situations/situations.module'
 import { UploadModule } from './features/upload/upload.module'
 import { JwtAuthGuard } from './shared/guards/jwt-auth.guard'
 import { EmailModule } from './features/email/email.module'
+import { RedisModule } from './shared/services/redis.module'
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { EmailModule } from './features/email/email.module'
     SituationsModule,
     UploadModule,
     EmailModule,
+    RedisModule,
   ],
   controllers: [AppController],
   providers: [

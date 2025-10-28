@@ -136,3 +136,4 @@ model UserMovie {
   @@map("user_movies")
 }
 
+

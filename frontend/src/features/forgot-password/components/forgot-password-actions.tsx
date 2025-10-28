@@ -2,19 +2,19 @@ import { Button } from '@/shared/components/atoms/button'
 import { HStack } from '@/shared/components/atoms/hstack'
 import { VStack } from '@/shared/components/atoms/vstack'
 import { Typography } from '@/shared/components/atoms/typography'
-import { useNavigation } from '@/shared/hooks'
 import { useNavigate } from 'react-router-dom'
 
-interface LoginActionsProps {
+interface ForgotPasswordActionsProps {
   isLoading?: boolean
 }
 
-export const LoginActions = ({ isLoading = false }: LoginActionsProps) => {
-  const { goToRegister } = useNavigation()
+export const ForgotPasswordActions = ({
+  isLoading = false,
+}: ForgotPasswordActionsProps) => {
   const navigate = useNavigate()
 
-  const goToForgotPassword = () => {
-    navigate('/forgot-password')
+  const goToLogin = () => {
+    navigate('/login')
   }
 
   return (
@@ -24,26 +24,26 @@ export const LoginActions = ({ isLoading = false }: LoginActionsProps) => {
           variant="link"
           className="p-[2px]"
           disabled={isLoading}
-          onClick={goToForgotPassword}
+          onClick={goToLogin}
         >
-          Esqueci minha senha
+          Voltar
         </Button>
-        <Button form="login-form" isLoading={isLoading}>
-          Entrar
+        <Button form="forgot-password-form" isLoading={isLoading}>
+          Enviar
         </Button>
       </HStack>
 
-      <HStack className="mx-auto items-center text-center">
+      <HStack className="mx-auto text-center">
         <Typography variant="p" className="text-sm text-muted-foreground">
-          Ainda não tem uma conta?
+          Lembrou sua senha?
         </Typography>
         <Button
           variant="link"
           className="p-[2px] text-sm"
-          onClick={goToRegister}
+          onClick={goToLogin}
           disabled={isLoading}
         >
-          Cadastre-se
+          Fazer login
         </Button>
       </HStack>
     </VStack>

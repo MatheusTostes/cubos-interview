@@ -130,4 +130,119 @@ export class EmailService {
       throw error
     }
   }
+
+  async sendPasswordResetEmail(data: {
+    to: string
+    userName: string
+    resetLink: string
+  }) {
+    try {
+      const verifiedDomain = process.env.RESEND_VERIFIED_DOMAIN
+      const fromEmail = verifiedDomain
+        ? `Movies <noreply@${verifiedDomain}>`
+        : 'Movies <onboarding@resend.dev'
+
+      this.logger.log(`Sending password reset email to ${data.to}`)
+
+      const response = await this.resend.emails.send({
+        from: fromEmail,
+        to: data.to,
+        subject: '🔐 Redefina sua senha - Cubos Movies',
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h1 style="color: #8b5cf6;">Olá, ${data.userName}! 👋</h1>
+            
+            <p>Recebemos uma solicitação para redefinir sua senha no Cubos Movies.</p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="${data.resetLink}" 
+                 style="display: inline-block; padding: 12px 30px; background-color: #8b5cf6; color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">
+                Redefinir Senha
+              </a>
+            </div>
+            
+            <p style="color: #6b7280; font-size: 14px;">
+              Se você não solicitou a redefinição de senha, ignore este email. Este link expira em 1 hora.
+            </p>
+            
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+              <p style="color: #6b7280; font-size: 14px;">
+                Este é um email automático do sistema Cubos Movies.
+              </p>
+            </div>
+          </div>
+        `,
+      })
+
+      this.logger.log(`Response from Resend: ${JSON.stringify(response)}`)
+
+      if (response.error) {
+        this.logger.error(`Resend API error: ${JSON.stringify(response.error)}`)
+        return { success: false, error: response.error }
+      }
+
+      this.logger.log(
+        `Password reset email sent successfully to ${data.to} with ID: ${response.data?.id}`
+      )
+
+      return response
+    } catch (error) {
+      this.logger.error(
+        `Failed to send password reset email to ${data.to}:`,
+        error
+      )
+      throw error
+    }
+  }
+
+  async sendPasswordChangedEmail(data: { to: string; userName: string }) {
+    try {
+      const verifiedDomain = process.env.RESEND_VERIFIED_DOMAIN
+      const fromEmail = verifiedDomain
+        ? `Movies <noreply@${verifiedDomain}>`
+        : 'Movies <onboarding@resend.dev>'
+
+      this.logger.log(`Sending password changed confirmation to ${data.to}`)
+
+      const response = await this.resend.emails.send({
+        from: fromEmail,
+        to: data.to,
+        subject: '✅ Senha alterada com sucesso - Cubos Movies',
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h1 style="color: #8b5cf6;">Olá, ${data.userName}! ✅</h1>
+            
+            <p>Sua senha foi alterada com sucesso!</p>
+            
+            <p>Se você não realizou esta alteração, entre em contato conosco imediatamente.</p>
+            
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+              <p style="color: #6b7280; font-size: 14px;">
+                Este é um email automático do sistema Cubos Movies.
+              </p>
+            </div>
+          </div>
+        `,
+      })
+
+      this.logger.log(`Response from Resend: ${JSON.stringify(response)}`)
+
+      if (response.error) {
+        this.logger.error(`Resend API error: ${JSON.stringify(response.error)}`)
+        return { success: false, error: response.error }
+      }
+
+      this.logger.log(
+        `Password changed confirmation sent successfully to ${data.to} with ID: ${response.data?.id}`
+      )
+
+      return response
+    } catch (error) {
+      this.logger.error(
+        `Failed to send password changed confirmation to ${data.to}:`,
+        error
+      )
+      throw error
+    }
+  }
 }

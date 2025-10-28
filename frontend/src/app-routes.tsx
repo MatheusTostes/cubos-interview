@@ -7,6 +7,12 @@ import { Container } from '@/shared/components/atoms/container'
 // Lazy loading das páginas
 const LoginPage = lazy(() => import('@/pages/auth/login-page'))
 const RegisterPage = lazy(() => import('@/pages/auth/register-page'))
+const ForgotPasswordPage = lazy(
+  () => import('./pages/auth/forgot-password-page')
+)
+const ResetPasswordPage = lazy(
+  () => import('./pages/auth/reset-password-page')
+)
 const MoviesPage = lazy(() => import('./pages/movies/movies-page'))
 const MoviePage = lazy(() => import('./pages/movies/[id]'))
 
@@ -40,6 +46,22 @@ export function AppRoutes() {
         element={
           <Suspense fallback={<AuthPageSkeleton />}>
             <RegisterPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/forgot-password"
+        element={
+          <Suspense fallback={<AuthPageSkeleton />}>
+            <ForgotPasswordPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/reset-password"
+        element={
+          <Suspense fallback={<AuthPageSkeleton />}>
+            <ResetPasswordPage />
           </Suspense>
         }
       />
