@@ -118,8 +118,11 @@ export const AddMovieDrawer = ({
       })
 
       // Atualizar data do calendário
+      // Subtrair 3h da data do backend para mostrar corretamente no date picker local
       if (initialData.releaseDate) {
-        setDate(new Date(initialData.releaseDate))
+        const backendDate = new Date(initialData.releaseDate)
+        backendDate.setHours(backendDate.getHours() - 3)
+        setDate(backendDate)
       }
     }
   }, [initialData, mode, reset])
@@ -128,11 +131,13 @@ export const AddMovieDrawer = ({
   const handleDateSelect = (selectedDate: Date | undefined) => {
     setDate(selectedDate)
     if (selectedDate) {
-      // Formatar como YYYY-MM-DD para o input date
-      const year = selectedDate.getFullYear()
-      const month = String(selectedDate.getMonth() + 1).padStart(2, '0')
-      const day = String(selectedDate.getDate()).padStart(2, '0')
-      setValue('releaseDate', `${year}-${month}-${day}`)
+      // Adicionar 3 horas para compensar o timezone do Brasil (UTC-3)
+      // Assim, quando o backend salvar como UTC 00:00, ao converter para local vai manter a data correta
+      const dateWithOffset = new Date(selectedDate)
+      dateWithOffset.setHours(selectedDate.getHours() + 3)
+
+      // Formatar como ISO string para enviar ao backend
+      setValue('releaseDate', dateWithOffset.toISOString())
     }
   }
 
