@@ -74,13 +74,11 @@ services:
       AWS_REGION: ${AWS_REGION:-auto}
       AWS_ENDPOINT: ${AWS_ENDPOINT}
       AWS_S3_BUCKET: ${AWS_S3_BUCKET}
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-      db-setup:
-        condition: service_completed_successfully
+        depends_on:
+          postgres:
+            condition: service_healthy
+          redis:
+            condition: service_healthy
     volumes:
       - backend_uploads:/app/uploads
 
