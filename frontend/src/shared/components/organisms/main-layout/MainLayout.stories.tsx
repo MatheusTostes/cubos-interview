@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { MemoryRouter } from 'react-router-dom'
 import { ThemeProvider } from '@/shared/contexts/theme-context'
+import { AuthProvider } from '@/shared/contexts/auth-context'
 import { MainLayout } from '@/shared/components/organisms/main-layout'
 
 const meta: Meta<typeof MainLayout> = {
@@ -10,7 +11,9 @@ const meta: Meta<typeof MainLayout> = {
     (Story) => (
       <MemoryRouter initialEntries={['/']}>
         <ThemeProvider>
-          <Story />
+          <AuthProvider>
+            <Story />
+          </AuthProvider>
         </ThemeProvider>
       </MemoryRouter>
     ),

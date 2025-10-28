@@ -9,7 +9,7 @@ import { HStack } from '@/shared/components/atoms/hstack'
 import { Typography } from '@/shared/components/atoms/typography'
 import { VStack } from '@/shared/components/atoms/vstack'
 import { Input } from '@/shared/components/atoms/input'
-import { MediaUpload } from '@/shared/components/molecules'
+import { MediaUpload } from '@/shared/components/molecules/media-upload'
 import { X, Calendar as CalendarIcon } from 'lucide-react'
 import { cn } from '@/shared/utils'
 import {

@@ -2,7 +2,7 @@ import { MovieCard } from './movie-card'
 import { MovieCardSkeleton } from './movie-card-skeleton'
 import { Container } from '@/shared/components/atoms/container'
 import { Typography } from '@/shared/components/atoms/typography'
-import { type MovieFromAPI } from '@/shared/services/movies.service'
+import { type MovieFromAPI } from '@/features/movies/services/movies.service'
 import { type Movie } from '../../types/movie-types'
 
 interface MovieListProps {

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { moviesService } from '@/shared/services/movies.service'
+import { moviesService } from '@/features/movies/services/movies.service'
 
 export const useMovieDetails = (movieId: string | undefined) => {
   return useQuery({

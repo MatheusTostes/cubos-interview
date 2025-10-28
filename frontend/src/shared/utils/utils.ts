@@ -53,3 +53,17 @@ export function getEmbedUrl(url: string): string {
     return url
   }
 }
+
+export const formatNumber = (value: number): string => {
+  if (value >= 1_000_000) {
+    const millions = value / 1_000_000
+    return `${millions.toFixed(2).replace('.', ',').replace(/,?0+$/, '')}M`
+  }
+
+  if (value >= 1_000) {
+    const thousands = value / 1_000
+    return `${thousands.toFixed(2).replace('.', ',').replace(/,?0+$/, '')}K`
+  }
+
+  return value.toString()
+}

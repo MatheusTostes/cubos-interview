@@ -5,7 +5,7 @@ import { useMovieDetails } from './hooks/useMovieDetails'
 import { Container } from '@/shared/components/atoms/container'
 import { Typography } from '@/shared/components/atoms/typography'
 import type { MovieDetails } from './types/movie-types'
-import type { MovieFromAPI } from '@/shared/services/movies.service'
+import type { MovieFromAPI } from '@/features/movies/services/movies.service'
 
 export type MovieDetailsFeatureProps = {
   movieId?: string

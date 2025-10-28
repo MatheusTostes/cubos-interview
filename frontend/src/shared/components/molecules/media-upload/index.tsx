@@ -1,6 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
 import { Upload, X } from 'lucide-react'
-import { Button } from '@/shared/components/atoms/button'
 import { cn } from '@/shared/utils'
 
 interface MediaUploadProps {

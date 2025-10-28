@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { ColorPalette } from '@/shared/components/design-system/color-palette'
+import { useEffect } from 'react'
 
 const meta: Meta<typeof ColorPalette> = {
   title: 'Design System/Color Palette',
@@ -14,6 +15,18 @@ const meta: Meta<typeof ColorPalette> = {
     },
   },
   tags: ['autodocs'],
+  decorators: [
+    (Story) => {
+      useEffect(() => {
+        // Garante que o theme padrão é light
+        document.documentElement.classList.remove('dark')
+        return () => {
+          // Cleanup
+        }
+      }, [])
+      return <Story />
+    },
+  ],
 }
 
 export default meta
@@ -32,12 +45,11 @@ export const LightTheme: Story = {
   },
   decorators: [
     (Story) => {
-      // Aplica a classe 'light' apenas no wrapper do story
-      return (
-        <div className="light">
-          <Story />
-        </div>
-      )
+      useEffect(() => {
+        // Remove a classe 'dark' do body para garantir light theme
+        document.documentElement.classList.remove('dark')
+      }, [])
+      return <Story />
     },
   ],
 }
@@ -51,7 +63,14 @@ export const DarkTheme: Story = {
   },
   decorators: [
     (Story) => {
-      // Aplica a classe 'dark' apenas no wrapper do story
+      useEffect(() => {
+        // Adiciona a classe 'dark' ao html
+        document.documentElement.classList.add('dark')
+        return () => {
+          // Remove ao desmontar
+          document.documentElement.classList.remove('dark')
+        }
+      }, [])
       return (
         <div className="dark">
           <Story />
