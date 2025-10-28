@@ -238,6 +238,50 @@ yarn dev
 
 Teste no Swagger: `http://localhost:3000/api/docs` → `/api/upload/image`
 
+## 📧 Configurar Resend (Envio de Emails)
+
+### 1. Criar conta no Resend
+
+1. Acesse [Resend Dashboard](https://resend.com)
+2. Crie uma conta gratuita
+3. Verifique seu domínio (opcional, pode usar domínio de teste)
+
+### 2. Obter API Key
+
+1. Vá em **API Keys** no dashboard
+2. Clique **"Create API Key"**
+3. Configure:
+   - **Name**: `cubos-movies-api`
+   - **Permissions**: Send emails
+4. **Copie e guarde** a API Key
+
+### 3. Configurar no backend
+
+Adicione ao `backend/.env`:
+
+```env
+# Resend API Key para envio de emails
+RESEND_API_KEY="re_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+# URL do frontend (domínio que será enviado nos emails)
+FRONTEND_URL="http://localhost:5173"
+```
+
+### 4. Testar envio de email
+
+```bash
+cd backend
+yarn dev
+```
+
+Teste no Swagger: `http://localhost:3000/api/docs` → `/api/auth/forgot-password`
+
+### 5. Tipos de email configurados
+
+- ✅ **Boas-vindas**: Após registro
+- ✅ **Recuperação de senha**: Magic link
+- ✅ **Notificação de filme**: Lançamento agendado
+
 ## 🔧 Comandos Úteis
 
 ```bash
