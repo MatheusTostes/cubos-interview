@@ -118,6 +118,23 @@ docker-compose ps  # verificar status
 cd backend
 yarn install
 cp .env.example .env
+```
+
+```bash
+notepad .env
+```
+
+ou
+
+```bash
+nano .env
+```
+
+e insira as variáveis do R2 e do Resend (há uma seção abaixo dedicada a isso).
+
+Continue com:
+
+```bash
 yarn prisma:generate
 yarn prisma:migrate
 yarn prisma:seed  # dados de exemplo
