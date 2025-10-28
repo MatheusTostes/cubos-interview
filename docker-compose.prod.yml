@@ -36,8 +36,10 @@ services:
 
   backend:
     build:
-      context: ./backend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./backend/Dockerfile
+      args:
+        BUILDKIT_INLINE_CACHE: 1
     container_name: cubos-backend-prod
     restart: unless-stopped
     ports:

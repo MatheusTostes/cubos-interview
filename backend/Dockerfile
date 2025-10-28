@@ -6,18 +6,25 @@ WORKDIR /app
 # Install Yarn
 RUN npm install -g yarn
 
-# Copy package files
-COPY package.json yarn.lock ./
-COPY prisma ./prisma/
+# Copy yarn.lock e package.json da raiz do workspace
+COPY yarn.lock package.json ./
+
+# Copy package.json do backend
+COPY backend/package.json ./backend/package.json
+
+# Copy prisma schema
+COPY backend/prisma ./backend/prisma/
+
+# Copy source code do backend
+COPY backend ./backend
+
+WORKDIR /app/backend
 
 # Install dependencies
 RUN yarn install --frozen-lockfile --production=false
 
 # Generate Prisma Client
 RUN yarn prisma:generate
-
-# Copy source code
-COPY . .
 
 # Build application
 RUN yarn build
@@ -30,14 +37,19 @@ WORKDIR /app
 # Install Yarn
 RUN npm install -g yarn
 
-# Copy package files and install production dependencies
+# Copy package files
 COPY package.json yarn.lock ./
-COPY prisma ./prisma/
+COPY backend/package.json ./backend/package.json
+COPY backend/prisma ./backend/prisma/
+
+WORKDIR /app/backend
+
+# Install production dependencies
 RUN yarn install --frozen-lockfile --production=true
 
 # Copy built application from builder
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/backend/dist ./dist
+COPY --from=builder /app/backend/node_modules/.prisma ./node_modules/.prisma
 
 # Expose port
 EXPOSE 3000
