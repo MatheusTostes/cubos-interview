@@ -79,8 +79,31 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      db-setup:
+        condition: service_completed_successfully
     volumes:
       - backend_uploads:/app/uploads
+
+  # Serviço para executar migrations e seed
+  db-setup:
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
+    container_name: cubos-db-setup
+    environment:
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-cubos}:${POSTGRES_PASSWORD:-cubos123}@postgres:5432/${POSTGRES_DB:-cubos_interview}"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: >
+      sh -c "
+        echo 'Executando migrations...' &&
+        yarn prisma migrate deploy &&
+        echo 'Executando seed...' &&
+        yarn prisma:seed &&
+        echo 'Setup do banco concluído!'
+      "
+    restart: "no"
 
   frontend:
     build:
