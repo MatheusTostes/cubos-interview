@@ -1,6 +1,5 @@
 node_modules
 dist
-npm-debug.log
 .env
 .env.local
 *.md
@@ -9,6 +8,6 @@ npm-debug.log
 coverage
 .vscode
 .idea
-test
-*.test.ts
-*.spec.ts
+storybook-static
+.vite
+
