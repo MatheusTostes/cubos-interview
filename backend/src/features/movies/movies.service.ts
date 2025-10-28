@@ -375,14 +375,59 @@ export class MoviesService {
       },
     })
 
+    // Se a data de lançamento foi alterada, atualiza o agendamento de email
+    if (releaseDate) {
+      // Remove o agendamento antigo
+      await this.removeScheduledNotification(id)
+
+      // Se a nova data é futura, agendar novo email
+      const newReleaseDate = new Date(releaseDate)
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+
+      if (newReleaseDate > today) {
+        await this.scheduleReleaseNotificationIfFuture(updatedMovie)
+      }
+    }
+
     return updatedMovie
   }
 
   async remove(id: string) {
-    await this.findOne(id)
+    const movie = await this.findOne(id)
+
+    // Remove o agendamento de email se existir
+    try {
+      const job = await this.notificationQueue.getJob(`movie-${id}`)
+      if (job) {
+        await job.remove()
+        console.log(
+          `Removed scheduled email notification for movie ${movie.primaryTitle}`
+        )
+      }
+    } catch (error) {
+      console.error('Error removing scheduled email notification:', error)
+      // Não bloqueia a deleção do filme se falhar ao remover o job
+    }
 
     return this.prisma.movie.delete({
       where: { id },
     })
+  }
+
+  // Método para remover agendamento de email
+  private async removeScheduledNotification(movieId: string) {
+    try {
+      const job = await this.notificationQueue.getJob(`movie-${movieId}`)
+      if (job) {
+        await job.remove()
+        console.log(`Removed scheduled email notification for movie ${movieId}`)
+      }
+    } catch (error) {
+      console.error(
+        `Error removing scheduled email notification for movie ${movieId}:`,
+        error
+      )
+    }
   }
 }
