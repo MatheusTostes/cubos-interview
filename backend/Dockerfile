@@ -3,9 +3,6 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Install Yarn
-RUN npm install -g yarn
-
 # Copy yarn.lock e package.json da raiz do workspace
 COPY yarn.lock package.json ./
 
@@ -33,9 +30,6 @@ RUN yarn build
 FROM node:20-alpine
 
 WORKDIR /app
-
-# Install Yarn
-RUN npm install -g yarn
 
 # Copy package files
 COPY package.json yarn.lock ./
