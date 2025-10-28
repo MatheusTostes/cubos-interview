@@ -341,6 +341,7 @@ docker-compose logs postgres
 
 - **Desenvolvimento:** Este README
 - **Produção:** Ver `README-PRODUCTION.md`
+- **CI/CD + VPS:** Ver `CI-CD-GUIDE.md`
 
 ## 📄 Licença
 

@@ -1,0 +1,115 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "yarn"
+
+      - name: Install dependencies
+        run: |
+          cd backend && yarn install --frozen-lockfile
+          cd ../frontend && yarn install --frozen-lockfile
+
+      - name: Build backend
+        run: |
+          cd backend
+          yarn build
+        env:
+          NODE_ENV: production
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          yarn build
+        env:
+          NODE_ENV: production
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+
+      - name: Create deployment package
+        run: |
+          mkdir -p deploy-package
+          cp -r backend/dist deploy-package/
+          cp -r frontend/dist deploy-package/frontend-dist
+          cp docker-compose.prod.yml deploy-package/
+          cp env.production.example deploy-package/.env.example
+          tar -czf deploy.tar.gz deploy-package/
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            # Criar diretório de deploy
+            mkdir -p /opt/cubos-interview
+            cd /opt/cubos-interview
+
+            # Parar containers existentes
+            docker-compose -f docker-compose.prod.yml down || true
+
+            # Backup do banco (opcional)
+            docker-compose -f docker-compose.prod.yml exec -T postgres pg_dump -U cubos cubos_interview > backup-$(date +%Y%m%d-%H%M%S).sql || true
+
+      - name: Upload files to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          source: "deploy.tar.gz"
+          target: "/opt/cubos-interview/"
+
+      - name: Extract and start services
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            cd /opt/cubos-interview
+
+            # Extrair arquivos
+            tar -xzf deploy.tar.gz
+            cp -r deploy-package/* .
+            rm -rf deploy-package deploy.tar.gz
+
+            # Configurar .env se não existir
+            if [ ! -f .env ]; then
+              cp .env.example .env
+              echo "⚠️  Configure o arquivo .env com suas credenciais!"
+            fi
+
+            # Subir serviços
+            docker-compose -f docker-compose.prod.yml up -d --build
+
+            # Aguardar serviços ficarem prontos
+            sleep 30
+
+            # Executar migrations
+            docker-compose -f docker-compose.prod.yml exec backend npx prisma migrate deploy
+
+            # Verificar status
+            docker-compose -f docker-compose.prod.yml ps
+
+            echo "✅ Deploy concluído!"
+            echo "🌐 Frontend: http://${{ secrets.VPS_HOST }}:80"
+            echo "🔧 Backend: http://${{ secrets.VPS_HOST }}:3000/api"
