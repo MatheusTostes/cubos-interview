@@ -20,9 +20,12 @@ async function bootstrap() {
     })
   )
 
-  // CORS
+  // CORS - Aceita qualquer origem durante desenvolvimento
+  // TODO: Restringir para URLs específicas em produção
   app.enableCors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    origin: true, // Aceita qualquer origem
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
   })
 
@@ -48,12 +51,16 @@ async function bootstrap() {
   SwaggerModule.setup('api/docs', app, document)
 
   const port = process.env.PORT || 3000
+  const host = process.env.HOST || '0.0.0.0' // Aceita conexões de qualquer dispositivo na rede
   const logger = app.get(Logger)
 
-  await app.listen(port)
+  await app.listen(port, host)
 
-  logger.log(`Application is running on: http://localhost:${port}`)
-  logger.log(`Swagger documentation: http://localhost:${port}/api/docs`)
+  const localUrl = `http://localhost:${port}`
+  const networkUrl = `http://0.0.0.0:${port}`
+  logger.log(`Application is running locally at: ${localUrl}`)
+  logger.log(`Application is accessible on network at: ${networkUrl}`)
+  logger.log(`Swagger documentation: ${localUrl}/api/docs`)
 }
 
 bootstrap()
