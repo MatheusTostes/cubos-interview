@@ -27,18 +27,28 @@ export class AuthService {
   async register(registerDto: RegisterDto) {
     const { email, name, password } = registerDto
 
-    // Verifica se o email já existe
-    const existingUserByEmail = await this.prisma.user.findUnique({
-      where: { email },
+    // Verifica se o email já existe (case-insensitive)
+    const existingUserByEmail = await this.prisma.user.findFirst({
+      where: {
+        email: {
+          equals: email,
+          mode: 'insensitive',
+        },
+      },
     })
 
     if (existingUserByEmail) {
       throw new ConflictException('Email já está em uso')
     }
 
-    // Verifica se o nome já existe
-    const existingUserByName = await this.prisma.user.findUnique({
-      where: { name },
+    // Verifica se o nome já existe (case-insensitive)
+    const existingUserByName = await this.prisma.user.findFirst({
+      where: {
+        name: {
+          equals: name,
+          mode: 'insensitive',
+        },
+      },
     })
 
     if (existingUserByName) {
@@ -89,9 +99,21 @@ export class AuthService {
     // Verifica se é email ou nome de usuário
     const isEmail = identifier.includes('@')
 
-    // Busca o usuário por email ou nome
-    const user = await this.prisma.user.findUnique({
-      where: isEmail ? { email: identifier } : { name: identifier },
+    // Busca o usuário por email ou nome (case-insensitive)
+    const user = await this.prisma.user.findFirst({
+      where: isEmail
+        ? {
+            email: {
+              equals: identifier,
+              mode: 'insensitive',
+            },
+          }
+        : {
+            name: {
+              equals: identifier,
+              mode: 'insensitive',
+            },
+          },
     })
 
     if (!user) {
@@ -155,9 +177,21 @@ export class AuthService {
     // Verifica se é email ou nome de usuário
     const isEmail = identifier.includes('@')
 
-    // Busca o usuário
-    const user = await this.prisma.user.findUnique({
-      where: isEmail ? { email: identifier } : { name: identifier },
+    // Busca o usuário (case-insensitive)
+    const user = await this.prisma.user.findFirst({
+      where: isEmail
+        ? {
+            email: {
+              equals: identifier,
+              mode: 'insensitive',
+            },
+          }
+        : {
+            name: {
+              equals: identifier,
+              mode: 'insensitive',
+            },
+          },
     })
 
     if (!user) {
@@ -172,7 +206,7 @@ export class AuthService {
       }
     )
 
-    // Cria o link de reset
+    // Cria o link de reset usando a variável de ambiente FRONTEND_URL
     const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173'
     const resetLink = `${frontendUrl}/reset-password?token=${resetToken}`
 
