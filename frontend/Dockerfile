@@ -3,14 +3,19 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copy package files
-COPY package.json yarn.lock ./
+# Copy yarn.lock e package.json da raiz do workspace
+COPY yarn.lock package.json ./
+
+# Copy package.json do frontend
+COPY frontend/package.json ./frontend/package.json
+
+# Copy source code do frontend
+COPY frontend ./frontend
+
+WORKDIR /app/frontend
 
 # Install dependencies
-RUN yarn install --frozen-lockfile
-
-# Copy source code
-COPY . .
+RUN yarn install --frozen-lockfile --production=false
 
 # Build application
 RUN yarn build
@@ -19,10 +24,10 @@ RUN yarn build
 FROM nginx:alpine
 
 # Copy built files from builder
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /app/frontend/dist /usr/share/nginx/html
 
 # Copy nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose port
 EXPOSE 80
