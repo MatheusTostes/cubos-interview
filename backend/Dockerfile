@@ -41,8 +41,8 @@ COPY backend/prisma ./backend/prisma/
 
 WORKDIR /app/backend
 
-# Install production dependencies
-RUN yarn install --frozen-lockfile --production=true
+# Install dependencies (including Prisma CLI for migrations)
+RUN yarn install --frozen-lockfile --production=false
 
 # Copy built application from builder
 COPY --from=builder /app/backend/dist ./dist
