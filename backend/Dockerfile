@@ -23,6 +23,9 @@ RUN yarn install --frozen-lockfile --production=false
 # Generate Prisma Client
 RUN yarn prisma:generate
 
+# Copy Prisma Client to backend directory
+RUN cp -r /app/node_modules/.prisma /app/backend/node_modules/
+
 # Build application
 RUN yarn build
 
@@ -43,7 +46,7 @@ RUN yarn install --frozen-lockfile --production=true
 
 # Copy built application from builder
 COPY --from=builder /app/backend/dist ./dist
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/backend/node_modules/.prisma ./node_modules/.prisma
 
 # Expose port
 EXPOSE 3000
