@@ -49,6 +49,8 @@ Sistema full stack para gerenciamento de filmes desenvolvido como teste técnico
 - **Storybook**: Documentação visual de componentes React
 - **Pino Logger**: Logging estruturado e performático
 - **ESLint + Prettier**: Código limpo e padronizado
+- **Commitlint + Husky**: Conventional commits com validação automática
+- **Pre-commit hooks**: Lint automático antes de cada commit
 
 ## 🚀 Tecnologias
 
