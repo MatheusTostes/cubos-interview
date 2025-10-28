@@ -40,7 +40,7 @@ const transformMovieData = (apiMovie: MovieFromAPI): MovieDetails => {
       : { id: 'default', code: 'pt', name: 'Português' },
     // Pass full language object
     languageObj: apiMovie.language,
-    languageId: apiMovie.languageId,
+    languageId: apiMovie.language?.id,
     genres: apiMovie.genres.map((g) => ({
       id: g.genre.id, // Keep as string
       name: g.genre.name,

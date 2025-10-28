@@ -24,6 +24,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
+  args: {} as never,
   render: () => {
     const [open, setOpen] = useState(false)
     return (
@@ -68,6 +69,7 @@ export const Default: Story = {
 }
 
 export const WithForm: Story = {
+  args: {} as never,
   render: () => {
     const [open, setOpen] = useState(false)
     const [email, setEmail] = useState('')
@@ -138,6 +140,7 @@ export const WithForm: Story = {
 }
 
 export const FiltersDrawer: Story = {
+  args: {} as never,
   render: () => {
     const [open, setOpen] = useState(false)
     const [genre, setGenre] = useState('')
@@ -230,6 +233,7 @@ export const FiltersDrawer: Story = {
 }
 
 export const TopDirection: Story = {
+  args: {} as never,
   render: () => {
     const [open, setOpen] = useState(false)
     return (
@@ -269,6 +273,7 @@ export const TopDirection: Story = {
 }
 
 export const LeftDirection: Story = {
+  args: {} as never,
   render: () => {
     const [open, setOpen] = useState(false)
     return (
@@ -308,6 +313,7 @@ export const LeftDirection: Story = {
 }
 
 export const RightDirection: Story = {
+  args: {} as never,
   render: () => {
     const [open, setOpen] = useState(false)
     return (
@@ -347,6 +353,7 @@ export const RightDirection: Story = {
 }
 
 export const NoHeaderFooter: Story = {
+  args: {} as never,
   render: () => {
     const [open, setOpen] = useState(false)
     return (
@@ -377,6 +384,7 @@ export const NoHeaderFooter: Story = {
 }
 
 export const ScrollableContent: Story = {
+  args: {} as never,
   render: () => {
     const [open, setOpen] = useState(false)
     return (

@@ -13,7 +13,7 @@ interface ColorScaleProps {
 const ColorScale: React.FC<ColorScaleProps> = ({ name, colors }) => {
   return (
     <div className="space-y-4">
-      <Typography variant="h3" font="display" className="text-foreground">
+      <Typography variant="h3" font="montserrat" className="text-foreground">
         {name}
       </Typography>
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
@@ -75,7 +75,7 @@ export const ColorPalette: React.FC = () => {
   return (
     <div className="space-y-8 p-6">
       <div className="space-y-2 text-center">
-        <Typography variant="h1" font="display" className="text-foreground">
+        <Typography variant="h1" font="montserrat" className="text-foreground">
           Design System Colors
         </Typography>
         <Typography variant="p" className="text-muted-foreground">
@@ -160,19 +160,19 @@ export const ColorPalette: React.FC = () => {
               Background Colors
             </Typography>
             <div className="flex flex-wrap gap-2">
-              <div className="text-purple-1200 rounded bg-purple-100 px-3 py-1 text-sm">
+              <div className="rounded bg-purple-100 px-3 py-1 text-sm text-purple-1200">
                 bg-purple-100
               </div>
               <div className="rounded bg-purple-500 px-3 py-1 text-sm text-white">
                 bg-purple-500
               </div>
-              <div className="bg-purple-1200 rounded px-3 py-1 text-sm text-white">
+              <div className="rounded bg-purple-1200 px-3 py-1 text-sm text-white">
                 bg-purple-1200
               </div>
-              <div className="bg-mauve-200 text-mauve-1200 rounded px-3 py-1 text-sm">
+              <div className="rounded bg-mauve-200 px-3 py-1 text-sm text-mauve-1200">
                 bg-mauve-200
               </div>
-              <div className="bg-mauve-800 text-mauve-100 rounded px-3 py-1 text-sm">
+              <div className="rounded bg-mauve-800 px-3 py-1 text-sm text-mauve-100">
                 bg-mauve-800
               </div>
             </div>
@@ -206,7 +206,7 @@ export const ColorPalette: React.FC = () => {
               <div className="rounded border-2 border-purple-300 p-2">
                 Borda roxa clara (border-purple-300)
               </div>
-              <div className="border-mauve-400 rounded border-2 p-2">
+              <div className="rounded border-2 border-mauve-400 p-2">
                 Borda neutra (border-mauve-400)
               </div>
             </div>

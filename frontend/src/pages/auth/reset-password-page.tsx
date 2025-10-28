@@ -1,9 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import ResetPasswordFeature from '@/features/reset-password/reset-password-feature'
 import { Container } from '@/shared/components/atoms/container'
-import { Card } from '@/shared/components/atoms/card'
-import { Typography } from '@/shared/components/atoms/typography'
 import { ROUTES } from '@/shared/constants'
 
 export default function ResetPasswordPage() {
@@ -29,4 +27,3 @@ export default function ResetPasswordPage() {
     </Container>
   )
 }
-

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Calendar } from './index'
 import { useState } from 'react'
+import type { DateRange as ReactDateRange } from 'react-day-picker'
 import { Button } from '@/shared/components/atoms/button'
 import {
   Popover,
@@ -30,6 +31,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
+  args: {} as never,
   render: () => {
     const [date, setDate] = useState<Date>()
 
@@ -45,8 +47,9 @@ export const Default: Story = {
 }
 
 export const DateRange: Story = {
+  args: {} as never,
   render: () => {
-    const [range, setRange] = useState<{ from?: Date; to?: Date }>({})
+    const [range, setRange] = useState<ReactDateRange | undefined>(undefined)
 
     return (
       <Calendar
@@ -60,6 +63,7 @@ export const DateRange: Story = {
 }
 
 export const WithPopover: Story = {
+  args: {} as never,
   render: () => {
     const [date, setDate] = useState<Date>()
 
@@ -91,8 +95,9 @@ export const WithPopover: Story = {
 }
 
 export const DateRangeWithPopover: Story = {
+  args: {} as never,
   render: () => {
-    const [range, setRange] = useState<{ from?: Date; to?: Date }>({})
+    const [range, setRange] = useState<ReactDateRange | undefined>(undefined)
 
     return (
       <Popover>
@@ -101,11 +106,11 @@ export const DateRangeWithPopover: Story = {
             variant="outline"
             className={cn(
               'w-[280px] justify-start text-left font-normal',
-              !range.from && 'text-muted-foreground'
+              !range?.from && 'text-muted-foreground'
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
-            {range.from
+            {range?.from
               ? range.to
                 ? `${range.from.toLocaleDateString()} - ${range.to.toLocaleDateString()}`
                 : range.from.toLocaleDateString()
@@ -126,6 +131,7 @@ export const DateRangeWithPopover: Story = {
 }
 
 export const DisabledDates: Story = {
+  args: {} as never,
   render: () => {
     const [date, setDate] = useState<Date>()
 
@@ -146,6 +152,7 @@ export const DisabledDates: Story = {
 }
 
 export const WithMultipleMonths: Story = {
+  args: {} as never,
   render: () => {
     const [date, setDate] = useState<Date>()
 
@@ -162,6 +169,7 @@ export const WithMultipleMonths: Story = {
 }
 
 export const FiltersExample: Story = {
+  args: {} as never,
   render: () => {
     const [startDate, setStartDate] = useState<Date>()
     const [endDate, setEndDate] = useState<Date>()

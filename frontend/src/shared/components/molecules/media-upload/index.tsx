@@ -19,7 +19,7 @@ export const MediaUpload = ({
   className,
   initialUrl,
 }: MediaUploadProps) => {
-  const [file, setFile] = useState<File | null>(null)
+  const [, setFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(initialUrl || null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 

@@ -173,19 +173,19 @@ export const FontComparison: Story = {
   render: () => (
     <div className="space-y-4">
       <div>
-        <Typography variant="h2" font="sans">
+        <Typography variant="h2" font="inter">
           Inter Font (Default)
         </Typography>
-        <Typography font="sans">
+        <Typography font="inter">
           This text uses Inter font, which is the default font for the project.
           It's optimized for readability and user interface design.
         </Typography>
       </div>
       <div>
-        <Typography variant="h2" font="display">
+        <Typography variant="h2" font="montserrat">
           Montserrat Font (Display)
         </Typography>
-        <Typography font="display">
+        <Typography font="montserrat">
           This text uses Montserrat font, which is great for headings and
           display text. It has a more distinctive character and works well for
           titles.

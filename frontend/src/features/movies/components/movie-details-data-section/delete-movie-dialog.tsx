@@ -6,7 +6,6 @@ import { Button } from '@/shared/components/atoms/button'
 import { Dialog } from '@/shared/components/atoms/dialog'
 import { Typography } from '@/shared/components/atoms/typography'
 import { HStack } from '@/shared/components/atoms/hstack'
-import { VStack } from '@/shared/components/atoms/vstack'
 import type { MovieDetails } from '../../types/movie-types'
 
 export type DeleteMovieDialogProps = {
@@ -72,7 +71,7 @@ export const DeleteMovieDialog = ({
           </Dialog.Description>
         </Dialog.Header>
 
-        <Dialog.Footer asChild>
+        <Dialog.Footer>
           <HStack className="gap-3">
             <Button
               variant="secondary"

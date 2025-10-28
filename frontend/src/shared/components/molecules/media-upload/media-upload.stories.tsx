@@ -106,7 +106,7 @@ export const MultipleFormats: Story = {
 export const Interactive: Story = {
   render: () => {
     const [file, setFile] = useState<File | null>(null)
-    const [preview, setPreview] = useState<string | null>(null)
+    const [, setPreview] = useState<string | null>(null)
 
     return (
       <div className="flex w-[400px] flex-col gap-4">

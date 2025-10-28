@@ -349,6 +349,7 @@ export const movieMocks: Movie[] = [
 
 export const movieMock: MovieDetails = {
   id: 'tt32549601',
+  userId: '1',
   primaryTitle: 'Caramelo',
   originalTitle: 'Caramelo',
   primaryImageUrl:
@@ -361,15 +362,15 @@ export const movieMock: MovieDetails = {
   classification: '16',
   situation: 'Lançado',
   language: {
-    id: 1,
+    id: '1',
     code: 'PT',
     name: 'Português',
   },
   runtimeSeconds: 6060,
   genres: [
-    { id: 1, name: 'Comedy' },
-    { id: 2, name: 'Drama' },
-    { id: 3, name: 'Family' },
+    { id: '1', name: 'Comedy' },
+    { id: '2', name: 'Drama' },
+    { id: '3', name: 'Family' },
   ],
   aggregateRating: 7.2,
   voteCount: 4671,

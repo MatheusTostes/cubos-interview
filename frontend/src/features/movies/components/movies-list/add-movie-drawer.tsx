@@ -18,10 +18,7 @@ import {
   PopoverTrigger,
 } from '@/shared/components/atoms/popover'
 import { Calendar } from '@/shared/components/atoms/calendar'
-import {
-  addMovieSchema,
-  type AddMovieFormData,
-} from '../../schemas/add-movie.schema'
+import { addMovieSchema } from '../../schemas/add-movie.schema'
 import { useGenres } from '@/features/genres'
 import { useClassifications } from '@/features/classifications'
 import { useSituations } from '@/features/situations'

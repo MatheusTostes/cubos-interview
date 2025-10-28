@@ -80,7 +80,7 @@ const IconColorExample: React.FC<{
         </Typography>
       </div>
       <div className="flex items-center gap-4">
-        <IconComponent className="text-mauve-600 h-6 w-6" />
+        <IconComponent className="h-6 w-6 text-mauve-600" />
         <Typography variant="small" className="text-muted-foreground">
           text-mauve-600
         </Typography>
@@ -133,7 +133,7 @@ export const Icons: React.FC = () => {
   return (
     <div className="space-y-8 p-6">
       <div className="space-y-2 text-center">
-        <Typography variant="h1" font="display" className="text-foreground">
+        <Typography variant="h1" font="montserrat" className="text-foreground">
           Design System Icons
         </Typography>
         <Typography variant="p" className="text-muted-foreground">
