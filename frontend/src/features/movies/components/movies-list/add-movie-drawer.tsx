@@ -36,11 +36,11 @@ export const AddMovieDrawer = ({
   disabled,
 }: AddMovieDrawerProps) => {
   const queryClient = useQueryClient()
-  const { data: genresData = [] } = useGenres()
-  const { data: classificationsData = [] } = useClassifications()
-  const { data: situationsData = [] } = useSituations()
-  const { data: languagesData = [] } = useLanguages()
   const [open, setOpen] = useState(false)
+  const { data: genresData = [] } = useGenres(open)
+  const { data: classificationsData = [] } = useClassifications(open)
+  const { data: situationsData = [] } = useSituations(open)
+  const { data: languagesData = [] } = useLanguages(open)
   const [isLoading, setIsLoading] = useState(false)
   const [date, setDate] = useState<Date | undefined>(
     initialData?.releaseDate ? new Date(initialData.releaseDate) : undefined

@@ -1,10 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
 import { classificationsService } from '../services/classifications.service'
 
-export const useClassifications = () => {
+export const useClassifications = (enabled: boolean = true) => {
   return useQuery({
     queryKey: ['classifications'],
     queryFn: () => classificationsService.getClassifications(),
+    enabled,
     staleTime: 10 * 60 * 1000, // 10 minutos
   })
 }

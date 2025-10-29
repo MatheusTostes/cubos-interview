@@ -1,10 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
 import { languagesService } from '../services/languages.service'
 
-export const useLanguages = () => {
+export const useLanguages = (enabled: boolean = true) => {
   return useQuery({
     queryKey: ['languages'],
     queryFn: () => languagesService.getLanguages(),
+    enabled,
     staleTime: Infinity,
   })
 }

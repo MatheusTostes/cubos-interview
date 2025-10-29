@@ -27,7 +27,7 @@ interface FiltersFormData {
 export function FiltersDialog({ children }: FiltersDialogProps) {
   const [open, setOpen] = useState(false)
   const { params, updateParams, clearParams } = useUrlParams()
-  const { data: genresData, isLoading: isLoadingGenres } = useGenres()
+  const { data: genresData, isLoading: isLoadingGenres } = useGenres(open)
 
   const { handleSubmit, setValue, watch, reset } = useForm<FiltersFormData>({
     defaultValues: {
