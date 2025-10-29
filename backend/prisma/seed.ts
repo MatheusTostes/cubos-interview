@@ -131,7 +131,7 @@ async function main() {
     'Western',
   ]
 
-  const genres = []
+  const genres: any[] = []
   for (const name of genreNames) {
     const genre = await prisma.genre.upsert({
       where: { name },
@@ -381,7 +381,7 @@ async function main() {
         userId: user.id,
         genres: {
           create: movieGenres.map((genreName) => {
-            const genre = genres.find((g) => g.name === genreName)
+            const genre = genres.find((g: any) => g.name === genreName)
             return {
               genre: { connect: { id: genre!.id } },
             }

@@ -98,7 +98,7 @@ services:
         echo 'Executando migrations...' &&
         yarn prisma migrate deploy &&
         echo 'Executando seed...' &&
-        yarn prisma:seed &&
+        yarn prisma db seed &&
         echo 'Setup do banco concluído!'
       "
     restart: "no"
