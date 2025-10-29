@@ -23,8 +23,6 @@ import {
   ApiConsumes,
 } from '@nestjs/swagger'
 import { MoviesService } from './movies.service'
-import { CreateMovieDto } from './dto/create-movie.dto'
-import { UpdateMovieDto } from './dto/update-movie.dto'
 import { JwtAuthGuard } from '../../shared/guards/jwt-auth.guard'
 
 @ApiTags('Filmes')

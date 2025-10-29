@@ -2,6 +2,8 @@
 
 Sistema full stack para gerenciamento de filmes desenvolvido como teste técnico, implementando as melhores práticas de desenvolvimento moderno.
 
+🌐 **Aplicação em produção:** [cubos-movies.devtostes.com](https://cubos-movies.devtostes.com)
+
 ## 🎯 Destaques do Projeto
 
 ### 🚀 Performance e Build
@@ -315,6 +317,7 @@ yarn storybook              # Documentação de componentes
 
 ## 📚 Documentação
 
+**Aplicação em Produção:** [cubos-movies.devtostes.com](https://cubos-movies.devtostes.com)  
 **API Swagger:** `http://localhost:3000/api/docs`  
 **Storybook:** `cd frontend && yarn storybook` → `http://localhost:6006`
 
