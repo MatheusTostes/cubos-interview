@@ -3,7 +3,6 @@ import { Button } from '@/shared/components/atoms/button'
 import { useTheme } from '@/shared/hooks/useTheme'
 import { Typography } from '@/shared/components/atoms/typography'
 import { HStack } from '../../atoms/hstack'
-import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/shared/constants'
 import { cn } from '@/shared/utils'
 import { useAuth } from '@/shared/hooks/useAuth'
@@ -30,24 +29,21 @@ export const Header: React.FC = () => {
 }
 
 const HeaderLogo = () => {
-  const navigate = useNavigate()
   const { theme } = useTheme()
 
-  const handleClick = () => {
-    navigate(ROUTES.PROTECTED.MOVIES.LIST)
-  }
-
   return (
-    <HStack className="cursor-pointer items-center gap-3" onClick={handleClick}>
-      <HStack className="w-10 overflow-hidden md:w-[160px]">
-        <img
-          src="/cubos-logo.svg"
-          alt="Logo"
-          className={cn('min-w-[160px]', theme === 'light' && 'invert')}
-        />
+    <a href={ROUTES.PROTECTED.MOVIES.LIST} className="my-auto cursor-pointer">
+      <HStack className="items-center gap-3">
+        <HStack className="w-10 overflow-hidden md:w-[160px]">
+          <img
+            src="/cubos-logo.svg"
+            alt="Logo"
+            className={cn('min-w-[160px]', theme === 'light' && 'invert')}
+          />
+        </HStack>
+        <Typography variant="h3">Movies</Typography>
       </HStack>
-      <Typography variant="h3">Movies</Typography>
-    </HStack>
+    </a>
   )
 }
 
