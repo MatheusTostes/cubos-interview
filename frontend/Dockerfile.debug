@@ -1,0 +1,31 @@
+# Build stage
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Copy yarn.lock e package.json da raiz do workspace
+COPY yarn.lock package.json ./
+
+# Copy package.json do frontend
+COPY frontend/package.json ./frontend/package.json
+
+# Copy source code do frontend
+COPY frontend ./frontend
+
+WORKDIR /app/frontend
+
+# Install dependencies
+RUN yarn install --frozen-lockfile --production=false
+
+# Debug: Listar arquivos para verificar se os index.ts existem
+RUN echo "=== Checking if index.ts files exist ===" && \
+    find . -name "index.ts" -type f && \
+    echo "=== Checking features directory ===" && \
+    ls -la src/features/ && \
+    echo "=== Checking login feature ===" && \
+    ls -la src/features/login/ && \
+    echo "=== Checking register feature ===" && \
+    ls -la src/features/register/
+
+# Build application
+RUN yarn build
