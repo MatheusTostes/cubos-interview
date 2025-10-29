@@ -44,16 +44,25 @@ export const ProgressiveImage = ({
   const placeholder = placeholderSrc || src
 
   return (
-    <div className={cn('relative overflow-hidden', className)}>
+    <div
+      className={cn('relative overflow-hidden', className)}
+      style={{
+        width: '100%',
+        height: '100%',
+        minWidth: 'inherit',
+        maxWidth: 'inherit',
+      }}
+    >
       {/* Placeholder embaçado */}
       <img
         src={placeholder}
         alt={alt}
         loading="eager"
         className={cn(
-          'absolute inset-0 h-full w-full object-cover blur-md transition-opacity duration-300',
+          'absolute inset-0 object-fill blur-md transition-opacity duration-300',
           isLoading ? 'opacity-100' : 'opacity-0'
         )}
+        style={{ width: '100%', height: '100%' }}
       />
 
       {/* Imagem real */}
@@ -64,9 +73,10 @@ export const ProgressiveImage = ({
           loading="lazy"
           decoding="async"
           className={cn(
-            'relative h-full w-full object-cover transition-opacity duration-500',
+            'object-fill transition-opacity duration-500',
             isLoading ? 'opacity-0' : 'opacity-100'
           )}
+          style={{ width: '100%', height: '100%' }}
           {...props}
         />
       )}
