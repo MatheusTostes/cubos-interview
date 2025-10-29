@@ -69,10 +69,10 @@ export const MovieCard = ({ movie }: { movie: Movie }) => {
         <Typography
           variant="span"
           className={cn(
-            `text-[12.8px] transition-all duration-300 ease-in-out`,
+            `overflow-hidden text-[12.8px] transition-all duration-300 ease-in-out`,
             isHovered
-              ? 'translate-y-0 opacity-100'
-              : 'pointer-events-none translate-y-2 opacity-0'
+              ? 'max-h-32 translate-y-0 opacity-100'
+              : 'pointer-events-none max-h-6 translate-y-2 opacity-0'
           )}
           font="montserrat"
         >
