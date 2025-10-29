@@ -368,9 +368,24 @@ export const movieMock: MovieDetails = {
   },
   runtimeSeconds: 6060,
   genres: [
-    { id: '1', name: 'Comedy' },
-    { id: '2', name: 'Drama' },
-    { id: '3', name: 'Family' },
+    {
+      id: '1',
+      name: 'Comedy',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+    {
+      id: '2',
+      name: 'Drama',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+    {
+      id: '3',
+      name: 'Family',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
   ],
   aggregateRating: 7.2,
   voteCount: 4671,

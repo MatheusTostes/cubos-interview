@@ -4,8 +4,7 @@ import { MovieDetailsTrailerSection } from './components/movie-details-trailer-s
 import { useMovieDetails } from './hooks/useMovieDetails'
 import { Container } from '@/shared/components/atoms/container'
 import { Typography } from '@/shared/components/atoms/typography'
-import type { MovieDetails } from './types/movie-types'
-import type { MovieFromAPI } from '@/features/movies/services/movies.service'
+import type { MovieDetails, MovieFromAPI } from './types/movie-types'
 
 export type MovieDetailsFeatureProps = {
   movieId?: string
@@ -13,24 +12,13 @@ export type MovieDetailsFeatureProps = {
 
 // Função para transformar MovieFromAPI para MovieDetails
 const transformMovieData = (apiMovie: MovieFromAPI): MovieDetails => {
-  const transformed = {
-    id: apiMovie.id,
-    primaryTitle: apiMovie.primaryTitle,
-    originalTitle: apiMovie.originalTitle,
-    primaryImageUrl: apiMovie.primaryImageUrl,
-    secondaryImageUrl: apiMovie.secondaryImageUrl,
-    plot: apiMovie.plot,
-    subTitle: apiMovie.subTitle,
-    releaseDate: apiMovie.releaseDate,
-    runtimeSeconds: apiMovie.runtimeSeconds,
+  return {
+    // Spread das propriedades idênticas
+    ...apiMovie,
+
+    // Transformações específicas
     classification: apiMovie.classification.name,
-    // Pass full classification object
-    classificationObj: apiMovie.classification,
-    classificationId: apiMovie.classificationId,
     situation: apiMovie.situation.name as MovieDetails['situation'],
-    // Pass full situation object
-    situationObj: apiMovie.situation,
-    situationId: apiMovie.situationId,
     language: apiMovie.language
       ? {
           id: apiMovie.language.id,
@@ -38,26 +26,27 @@ const transformMovieData = (apiMovie: MovieFromAPI): MovieDetails => {
           name: apiMovie.language.name,
         }
       : { id: 'default', code: 'pt', name: 'Português' },
-    // Pass full language object
-    languageObj: apiMovie.language,
-    languageId: apiMovie.language?.id,
     genres: apiMovie.genres.map((g) => ({
-      id: g.genre.id, // Keep as string
+      id: g.genre.id,
       name: g.genre.name,
+      createdAt: apiMovie.createdAt,
+      updatedAt: apiMovie.updatedAt,
     })),
-    // Pass genre IDs for select
     genreIds: apiMovie.genres.map((g) => g.genre.id),
-    aggregateRating: apiMovie.aggregateRating,
-    voteCount: apiMovie.voteCount,
-    budget: apiMovie.budget,
-    revenue: apiMovie.revenue,
-    profit: apiMovie.profit,
-    trailerUrl: apiMovie.trailerUrl,
-    userId: apiMovie.userId,
-    owner: apiMovie.owner,
-  }
 
-  return transformed
+    // Propriedades opcionais para compatibilidade com formulários
+    classificationObj: {
+      ...apiMovie.classification,
+      createdAt: apiMovie.createdAt,
+      updatedAt: apiMovie.updatedAt,
+    },
+    situationObj: {
+      ...apiMovie.situation,
+      createdAt: apiMovie.createdAt,
+      updatedAt: apiMovie.updatedAt,
+    },
+    languageObj: apiMovie.language,
+  }
 }
 
 export default function MovieDetailsFeature({

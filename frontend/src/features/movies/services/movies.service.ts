@@ -1,72 +1,9 @@
 import { api } from '../../../shared/services/api'
-
-export interface MoviesListParams {
-  skip?: number
-  take?: number
-  search?: string
-  genres?: string[]
-  classifications?: string[]
-  situations?: string[]
-  durationMin?: number
-  durationMax?: number
-  releaseDateStart?: string
-  releaseDateEnd?: string
-}
-
-export interface MoviesListResponse {
-  data: MovieFromAPI[]
-  total: number
-  skip: number
-  take: number
-}
-
-export interface MovieFromAPI {
-  id: string
-  primaryTitle: string
-  originalTitle: string
-  primaryImageUrl: string
-  secondaryImageUrl: string
-  plot: string
-  subTitle: string
-  releaseDate: string
-  runtimeSeconds: number
-  trailerUrl: string
-  budget: number
-  revenue: number
-  profit: number
-  aggregateRating: number
-  voteCount: number
-  classificationId: string
-  situationId: string
-  userId: string
-  createdAt: string
-  updatedAt: string
-  genres: {
-    genre: {
-      id: string
-      name: string
-    }
-  }[]
-  language: {
-    id: string
-    code: string
-    name: string
-  }
-  classification: {
-    id: string
-    name: string
-    age: number
-  }
-  situation: {
-    id: string
-    name: string
-  }
-  owner?: {
-    id: string
-    name: string
-    email: string
-  }
-}
+import type {
+  MoviesListParams,
+  MoviesListResponse,
+  MovieFromAPI,
+} from '../types/movie-types'
 
 export const moviesService = {
   async getMovies(params: MoviesListParams = {}): Promise<MoviesListResponse> {

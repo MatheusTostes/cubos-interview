@@ -4,9 +4,9 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { ToastContainer } from 'react-toastify'
 import App from '@/App'
 import { queryClient } from '@/shared/config/query-client'
-import { InitialLoading } from '@/shared/components/initial-loading'
 import '../styles/globals.css'
 import 'react-toastify/dist/ReactToastify.css'
+import { InitialLoading } from './shared/components/atoms/initial-loading'
 
 const AppWithLoading = () => {
   const [showInitialLoading, setShowInitialLoading] = useState(true)

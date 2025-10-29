@@ -1,3 +1,66 @@
+import { Classification } from '@/features/classifications'
+import { Genre } from '@/features/genres'
+import { Language } from '@/features/languages'
+import { Situation } from '@/features/situations'
+
+// API Types
+export interface MoviesListParams {
+  skip?: number
+  take?: number
+  search?: string
+  genres?: string[]
+  classifications?: string[]
+  situations?: string[]
+  durationMin?: number
+  durationMax?: number
+  releaseDateStart?: string
+  releaseDateEnd?: string
+}
+
+export interface MoviesListResponse {
+  data: MovieFromAPI[]
+  total: number
+  skip: number
+  take: number
+}
+
+export interface MovieFromAPI {
+  id: string
+  primaryTitle: string
+  originalTitle: string
+  primaryImageUrl: string
+  secondaryImageUrl: string
+  plot: string
+  subTitle: string
+  releaseDate: string
+  runtimeSeconds: number
+  trailerUrl: string
+  budget: number
+  revenue: number
+  profit: number
+  aggregateRating: number
+  voteCount: number
+  classificationId: string
+  situationId: string
+  userId: string
+  createdAt: string
+  updatedAt: string
+  genres: {
+    genre: {
+      id: string
+      name: string
+    }
+  }[]
+  language: Language
+  classification: Classification
+  situation: Situation
+  owner?: {
+    id: string
+    name: string
+    email: string
+  }
+}
+
 export type Movie = {
   id: string
   primaryTitle: string
@@ -21,23 +84,16 @@ export type MovieDetails = {
   runtimeSeconds: number
   classification: string
   classificationId?: string
-  classificationObj?: { id: string; name: string }
-  situation:
-    | 'Lançado'
-    | 'Em Breve'
-    | 'Em Produção'
-    | 'Pós-Produção'
-    | 'Cancelado'
-    | 'Pausado'
-    | 'Completo'
+  classificationObj?: Classification
+  situation: string
   situationId?: string
-  situationObj?: { id: string; name: string }
+  situationObj?: Situation
   language: Language
   languageId?: string
-  languageObj?: { id: string; code: string; name: string }
+  languageObj?: Language
   genres: Genre[]
   genreIds?: string[]
-  genresObj?: Array<{ genre: { id: string; name: string } }>
+  genresObj?: Genre[]
   aggregateRating: number
   voteCount: number
   budget: number
@@ -50,15 +106,4 @@ export type MovieDetails = {
     name: string
     email: string
   }
-}
-
-export type Language = {
-  id: string
-  code: string
-  name: string
-}
-
-export type Genre = {
-  id: string
-  name: string
 }

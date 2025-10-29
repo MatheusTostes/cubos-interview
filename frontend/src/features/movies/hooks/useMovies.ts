@@ -1,8 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import {
-  moviesService,
-  type MoviesListParams,
-} from '@/features/movies/services/movies.service'
+import { moviesService } from '@/features/movies/services/movies.service'
+import type { MoviesListParams } from '../types/movie-types'
 
 export const useMovies = (params: MoviesListParams = {}) => {
   return useQuery({

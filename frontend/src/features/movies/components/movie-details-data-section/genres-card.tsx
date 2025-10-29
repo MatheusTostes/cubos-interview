@@ -1,5 +1,5 @@
 import { VStack } from '@/shared/components/atoms/vstack'
-import { Genre } from '../../types/movie-types'
+import { Genre } from '@/features/genres'
 import React from 'react'
 import { cn } from '@/shared/utils/utils'
 import { Typography } from '@/shared/components/atoms/typography'
