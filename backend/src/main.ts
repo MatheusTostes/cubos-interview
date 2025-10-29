@@ -23,9 +23,13 @@ async function bootstrap() {
   // CORS - Aceita qualquer origem durante desenvolvimento
   // TODO: Restringir para URLs específicas em produção
   app.enableCors({
-    origin: true, // Aceita qualquer origem
+    origin: [
+      'https://cubos-movies.devtostes.com',
+      'http://localhost:5173', // Para desenvolvimento local
+      'http://localhost:3001', // Para desenvolvimento local
+    ],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
     credentials: true,
   })
 
