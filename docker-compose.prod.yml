@@ -97,8 +97,10 @@ services:
       sh -c "
         echo 'Executando migrations...' &&
         yarn prisma migrate deploy &&
+        echo 'Compilando seed...' &&
+        yarn tsc prisma/seed.ts --outDir dist &&
         echo 'Executando seed...' &&
-        yarn prisma db seed &&
+        node dist/prisma/seed.js &&
         echo 'Setup do banco concluído!'
       "
     restart: "no"
