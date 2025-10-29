@@ -8,6 +8,7 @@ import { cn } from '@/shared/utils'
 import { useAuth } from '@/shared/hooks/useAuth'
 import { SunIcon } from '@/shared/icons/SunIcon'
 import { MoonIcon } from '@/shared/icons/MoonIcon'
+import { Link } from 'react-router-dom'
 
 export const Header: React.FC = () => {
   const { logout } = useAuth()
@@ -32,7 +33,7 @@ const HeaderLogo = () => {
   const { theme } = useTheme()
 
   return (
-    <a href={ROUTES.PROTECTED.MOVIES.LIST} className="my-auto cursor-pointer">
+    <Link to={ROUTES.PROTECTED.MOVIES.LIST} className="my-auto cursor-pointer">
       <HStack className="items-center gap-3">
         <HStack className="w-10 overflow-hidden md:w-[160px]">
           <img
@@ -43,7 +44,7 @@ const HeaderLogo = () => {
         </HStack>
         <Typography variant="h3">Movies</Typography>
       </HStack>
-    </a>
+    </Link>
   )
 }
 
