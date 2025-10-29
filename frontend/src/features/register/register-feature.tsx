@@ -14,7 +14,7 @@ export default function RegisterFeature() {
         </Typography>
       </Card.Header>
 
-      <Card.Content>
+      <Card.Content className="flex flex-col gap-4">
         <RegisterForm />
       </Card.Content>
     </Card.Root>
