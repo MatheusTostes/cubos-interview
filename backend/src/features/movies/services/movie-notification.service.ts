@@ -23,13 +23,11 @@ export class MovieNotificationService {
   }
 
   async updateSchedule(movieId: string, movie: any) {
-    // Remove o agendamento antigo
     await MovieNotificationHelper.removeScheduledNotification(
       this.notificationQueue,
       movieId
     )
 
-    // Se a nova data é futura, agendar novo email
     const newReleaseDate = new Date(movie.releaseDate)
     const today = new Date()
     today.setHours(0, 0, 0, 0)
@@ -49,4 +47,3 @@ export class MovieNotificationService {
     )
   }
 }
-

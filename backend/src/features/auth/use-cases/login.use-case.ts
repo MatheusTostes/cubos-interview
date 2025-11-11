@@ -14,19 +14,16 @@ export class LoginUseCase {
   async execute(loginDto: LoginDto) {
     const { identifier, password } = loginDto
 
-    // Busca o usuário por email ou nome
     const user = await this.userRepository.findByEmailOrName(identifier)
     if (!user) {
       throw new UnauthorizedException('Credenciais inválidas')
     }
 
-    // Verifica a senha
     const isPasswordValid = await bcrypt.compare(password, user.password)
     if (!isPasswordValid) {
       throw new UnauthorizedException('Credenciais inválidas')
     }
 
-    // Gera os tokens JWT
     const tokens = await this.tokenService.generateTokens(user.id, user.email)
 
     return {

@@ -78,7 +78,6 @@ export class MovieDataMapper {
       ...(genreIds && genreIds.length > 0 && { genreIds }),
     }
 
-    // Calcula profit se budget/revenue estiverem sendo atualizados
     if (budget !== undefined && revenue !== undefined) {
       updateData.profit = revenue - budget
     }
@@ -86,4 +85,3 @@ export class MovieDataMapper {
     return updateData
   }
 }
-

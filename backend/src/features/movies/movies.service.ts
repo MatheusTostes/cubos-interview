@@ -51,7 +51,6 @@ export class MoviesService {
     return this.deleteMovieUseCase.execute(id)
   }
 
-  // Método temporário para testar envio de notificação imediatamente
   async testNotification(movieId: string) {
     const movie = await this.findOne(movieId)
 

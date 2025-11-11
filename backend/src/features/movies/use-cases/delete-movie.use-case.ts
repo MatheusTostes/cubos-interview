@@ -10,17 +10,13 @@ export class DeleteMovieUseCase {
   ) {}
 
   async execute(id: string) {
-    // Verifica se o filme existe
     const movie = await this.movieRepository.findOne(id)
     if (!movie) {
       throw new NotFoundException('Filme não encontrado')
     }
 
-    // Remove notificação agendada
     await this.movieNotificationService.removeSchedule(id)
 
-    // Deleta o filme
     return this.movieRepository.delete(id)
   }
 }
-

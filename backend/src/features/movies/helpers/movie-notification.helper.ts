@@ -14,7 +14,6 @@ export class MovieNotificationHelper {
     const today = new Date()
     today.setHours(0, 0, 0, 0)
 
-    // Se a data de lançamento é no futuro, agendar email
     if (releaseDate > today) {
       const delay = releaseDate.getTime() - today.getTime()
 
@@ -52,4 +51,3 @@ export class MovieNotificationHelper {
     }
   }
 }
-

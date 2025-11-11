@@ -14,17 +14,14 @@ export class ForgotPasswordUseCase {
   ) {}
 
   async execute(identifier: string) {
-    // Busca o usuário
     const user = await this.userRepository.findByEmailOrName(identifier)
     if (!user) {
       throw new UnauthorizedException('Email ou nome de usuário não encontrado')
     }
 
-    // Gera token e link de reset
     const { resetToken, resetLink } =
       await this.passwordResetTokenService.generateResetLink(user.id)
 
-    // Envia email
     try {
       await this.emailService.sendPasswordResetEmail({
         to: user.email,
