@@ -24,6 +24,7 @@ import {
 } from '@nestjs/swagger'
 import { MoviesService } from './movies.service'
 import { JwtAuthGuard } from '../../shared/guards/jwt-auth.guard'
+import { MovieParserHelper } from './helpers/movie-parser.helper'
 
 @ApiTags('Filmes')
 @ApiBearerAuth('JWT-auth')
@@ -43,16 +44,9 @@ export class MoviesController {
     @Body() body: any,
     @Request() req: any
   ) {
-    // Converter arrays stringificados de volta para arrays
+    // Converter arrays stringificados de volta para arrays usando helper
     const createMovieDto = {
-      ...body,
-      genreIds: JSON.parse(body.genreIds || '[]'),
-      languageId: body.languageId,
-      budget: parseFloat(body.budget),
-      revenue: parseFloat(body.revenue),
-      runtimeSeconds: parseInt(body.runtimeSeconds),
-      aggregateRating: parseFloat(body.aggregateRating),
-      voteCount: parseInt(body.voteCount),
+      ...MovieParserHelper.parseCreateDto(body),
       userId: req.user.id, // Adiciona o userId do usuário logado
     }
 
@@ -138,21 +132,8 @@ export class MoviesController {
       )
     }
 
-    // Converter arrays stringificados de volta para arrays
-    const updateMovieDto = {
-      ...body,
-      genreIds: JSON.parse(body.genreIds || '[]'),
-      languageId: body.languageId,
-      budget: body.budget ? parseFloat(body.budget) : undefined,
-      revenue: body.revenue ? parseFloat(body.revenue) : undefined,
-      runtimeSeconds: body.runtimeSeconds
-        ? parseInt(body.runtimeSeconds)
-        : undefined,
-      aggregateRating: body.aggregateRating
-        ? parseFloat(body.aggregateRating)
-        : undefined,
-      voteCount: body.voteCount ? parseInt(body.voteCount) : undefined,
-    }
+    // Converter arrays stringificados de volta para arrays usando helper
+    const updateMovieDto = MovieParserHelper.parseUpdateDto(body)
 
     return this.moviesService.update(id, updateMovieDto, files)
   }
